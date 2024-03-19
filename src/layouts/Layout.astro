@@ -1,0 +1,58 @@
+---
+import 'uno.css'
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+// TODO: change favicon
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+
+		<script src="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly.min.js" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly.min.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly-bootstrap5.min.css" />
+
+		<title>{title}</title>
+	</head>
+	<body>
+		<div dir="rtl" class="sticky inset-0 text-xl shadow-md z-50 py-4 text-center bg-indigo-400">
+			<p class="prose mx-auto px-10 md:px-20">
+			🚀
+			מערכת <span class="font-semibold italic">formali</span> נמצאת בשלבי פיתוח. הפידבק שלכם חשוב לנו!
+			</p>
+		</div>
+		<slot />
+	</body>
+</html>
+
+<style is:global>
+	.drop-shadow-plain {
+			 filter: drop-shadow(3px 3px 0 #000);
+	}
+
+	.drop-shadow-3xl {
+			 filter: drop-shadow(3px 3px 0 #000);
+	}
+
+	.drop-shadow-4xl {
+			 filter: drop-shadow(4px 4px 0 #000);
+	}
+
+</style>
+
+<style>
+	.logo {
+		width: 186px;
+	}
+
+</style>

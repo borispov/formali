@@ -1,0 +1,25 @@
+{
+  "name": "@example/basics",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/netlify": "^5.2.0",
+    "@astrojs/svelte": "^5.2.0",
+    "@unocss/reset": "^0.58.6",
+    "astro": "^4.5.5",
+    "daisyui": "^4.7.3",
+    "svelte": "^4.2.12",
+    "typescript": "^5.4.2",
+    "unocss": "^0.58.6",
+    "unocss-preset-daisy": "^7.0.0",
+    "unpoly": "^3.7.3"
+  }
+}

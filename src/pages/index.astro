@@ -1,0 +1,74 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Welcome to Astro.">
+    <div class="bg-[#F7D046] bg-orange-200 bg-local bg-cover bg-no-repeat bg-center">
+        <!-- Navbar -->
+         <nav class="max-w-6xl mx-auto">
+           <div class="relative overflow-hidden">
+             <div class="flex justify-between items-center px-10 py-4 md:py-8 md:px-20">
+              <!-- Logo -->
+               <div class="logo">
+                 <a href="/">
+                   <img src="/logo.png" alt="logo" width="186px" />
+                 </a> 
+               </div>
+              <!-- Menu -->
+                <div class="flex space-x-4">
+                  <a href="/" class="bg-yellow-500 px-6 py-2 text-black rounded-sm border-2 border-black drop-shadow-plain hover:drop-shadow-4xl hover:bg-yellow-300 transition-all">
+                    הרשמה
+                  </a>
+                </div>
+             </div>
+           </div>
+         </nav>
+
+      <main dir="rtl">
+        <div class="relative max-w-7xl mx-auto mt-20 pb-20">
+          <div class="flex flex-col justify-center lg:grid grid-cols-5 items-center px-10 md:px-20">
+            <div class=" flex flex-col items-center lg:items-start col-span-3 lg:pl-16 xl:pl-20">
+                        <p class="text-center lg:text-right text-3xl  sm:text-5xl xl:text-6xl font-bold">
+                          כל אחד יכול לבנות טופס בכלום זמן
+                        </p>
+                        <p class="text-center lg:text-right text-base sm:text-lg xl:text-xl font-regular mt-10">
+                          עם <span class="italic font-semibold">formali</span> אפשר לבנות טפסים <span class="underline underline-offset-4">ללא הגבלה</span> ולחסוך זמן יקר.
+                        </p>
+                        <div class="lg:flex lg:items-center gap-6 mt-10 text-center">
+                            <a href="/partials/info" class="inline-block mx-auto text-2xl bg-yellow-400 border-2 border-black drop-shadow-3xl hover:drop-shadow-[4px_4px_0_#000000] px-10 py-2 text-black rounded-md" up-layer="new" up-target=".content" up-position="bottom" up-align="right" size="grow" >
+                                הצטרף לרשימה
+                            </a>
+                            <div class="content"></div>
+                            <a href="/" target="_blank" class="underline group transition-all hover:no-underline inline-block mx-auto mt-4 lg:mt-0 text-sm">
+                                לבינתיים, תראו דוגמא, (עדיין בפיתוח) <span class="hidden group-hover:inline">👀</span>
+                            </a>
+                        </div>
+                        <div class="text-sm pt-6 pr-4 font-semibold rotate-1">
+                            <p>
+                                ✅ תוצאות ללא הגבלה
+                            </p>
+
+                            <p class="pt-2">
+                                ✅ חבילה חינמית נדיבה
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-12 lg:pt-0 col-span-2 hidden lg:block">
+                        <img class="w-full m-auto" src="/riff.png" alt="">
+                    </div>
+                </div>
+                <div class="pt-10">
+                    <img src="/builder.png" alt="">
+                </div>
+            </div>
+      </main>
+    </div>
+</Layout>
+
+<style>
+    .bg-local {
+        background-image: url('/header-bg.png');
+    }
+hover:drop-shadow-4xl
+
+</style>
