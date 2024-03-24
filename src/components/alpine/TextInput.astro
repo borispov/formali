@@ -1,0 +1,49 @@
+---
+import FormBtnContainer from '../FormBtnContainer.astro';
+
+interface Props {
+  readonly type?: string;
+  readonly className?: string;
+}
+
+const { className } = Astro.props;
+
+---
+
+<div>
+  <label x-text="field.label" class={"text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal " + className}>
+    <template x-if="field.required">
+      <sup class="text-red-600"> * </sup>
+    </template>
+  </label>
+
+  <p 
+    x-text="field.subLabel" 
+    class="text-lg font-normal leading-relaxed text-neutral-600" />
+
+
+  <input
+    :type="field.type"
+    :placeholder="field.placeholder"
+    :required="field.required"
+    :name="field.name || ''"
+    class={`transition-all bg-transparent border-b-2 border-b-neutral-600 text-gray-800 mt-8 pb-2 question-input__text ${className} placeholder:italic placeholder:text-neutral-500 focus:border-b-neutral-100 outline-0`}
+    />
+
+  <FormBtnContainer text="המשך" />
+  <input hidden value={''} />
+</div>
+
+<style>
+  .question-input__text {
+    font-size: 2rem;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 599px) {
+    .question-input__text {
+      font-size: 2.9rem;
+      margin-top: 32px;
+    }
+  }
+</style>

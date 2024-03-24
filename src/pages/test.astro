@@ -1,0 +1,93 @@
+---
+export const prerender = true
+
+import Layout from '../layouts/Layout.astro';
+import EmailInput from "../components/EmailInput.astro"
+import TextInput from '../components/alpine/TextInput.astro';
+
+const sampleForm = [
+  {
+    type: 'email',
+    label: 'לאיזה אימייל תרצו שנשלח לכם הודעה?',
+    subLabel: 'שורת תיאור נוספת, ניתן להשאירה ריקה.',
+    placeholder: 'name@example.com',
+    required: true,
+  },
+  {
+    type: 'text',
+    label: 'רשמו את שמכם הפרטי',
+    subLabel: '',
+    placeholder: 'גדעון בן יואש',
+    required: true,
+  },
+  {
+    type: 'select', 
+    label: 'אלו מבין האפשרויות הכי תואם אתכם?',
+    subLabel: 'בחרו אפשרות אחת בלבד',
+    option: [
+      "חיפשתי בול מערכת כזו! פשוט תקחו את הכסף שלי.",
+      "נראה חמוד, לא בטוח שיש לי צורך במערכת כרגע",
+      "פחות מתחבר לי כל העניין",
+      "לא!"
+  ],
+    required: false,
+  },
+]
+
+const sample = {
+  welcome: {
+    title: 'ברוכים הבאים, תודה על זמנכם.',
+    subtitle: 'מילוי הטופס יקח רק 5 דקות מזמנכם ויעזור לנו באופן משמעותי בקידום ודיוק המערכת שלנו.',
+    buttonText: 'התחל'
+  },
+  fields: sampleForm,
+  ending: {
+    title: 'תודה ששיתפתם פעולה איתנו!',
+    subtitle: 'נשמח לשמוע מכם שוב.                    ',
+    buttonText: 'התחל'
+  }
+}
+
+
+---
+
+<Layout title="">
+
+
+  <form x-data="data" dir='rtl'>
+    <h1 x-text="msg"></h1>
+    <div class="flex justify-center flex-col w-80 mt-32 items-center mx-auto">
+      <section 
+        class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
+        <div class="flex flex-col gap-8 items-center">
+          <h2 x-text="form.welcome.title" class="text-60px max-w-xl font-bold leading-tight" />
+          <p x-text="form.welcome.subtitle" />
+          <button x-text="form.welcome.buttonText" class="w-36 bg-purple-700 font-bold px-6 py-2 rounded-lg text-white" />
+        </div>
+      </section>
+      <template x-for="field in fields">
+      <!-- <template x-for="field in fields"> -->
+        <template x-if="field.type == 'email' || field.type == 'text'">
+          <section 
+            class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
+            <div class="flex flex-col gap-8 items-center">
+              <TextInput />
+            </div>
+          </section>
+        </template>
+      </template>
+    </div>
+  </form>
+</Layout>
+
+
+<script define:vars={{ form: sample, fields: sampleForm }}>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('data', () => ({
+      form,
+      fields,
+      msg: 'hello',
+    }))
+  })
+
+</script>

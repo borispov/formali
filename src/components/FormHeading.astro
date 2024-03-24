@@ -1,0 +1,13 @@
+---
+interface Props {
+  readonly heading?: string;
+  readonly className?: string;
+  readonly required?: boolean;
+}
+
+const { heading, className, required } = Astro.props;
+---
+
+<div x-text="field.label" class={"text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal " + className}>
+    {required && <sup class="text-red-600"> * </sup>}
+</div>

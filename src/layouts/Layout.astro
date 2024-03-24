@@ -3,9 +3,11 @@ import 'uno.css'
 
 interface Props {
 	title: string;
+	topbar?: boolean;
+	unpoly?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, topbar, unpoly } = Astro.props;
 // TODO: change favicon
 ---
 
@@ -18,19 +20,24 @@ const { title } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 
-		<script src="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly.min.js" />
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly.min.css" />
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly-bootstrap5.min.css" />
+		{unpoly !== false && 
+			<script src="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly.min.js" />
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly.min.css" />
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly-bootstrap5.min.css" />
+		}
 
 		<title>{title}</title>
 	</head>
 	<body>
-		<div dir="rtl" class="sticky inset-0 text-xl shadow-md z-50 py-4 text-center bg-indigo-400">
-			<p class="prose mx-auto px-10 md:px-20">
-			🚀
-			מערכת <span class="font-semibold italic">formali</span> נמצאת בשלבי פיתוח. הפידבק שלכם חשוב לנו!
-			</p>
-		</div>
+	 {
+		topbar &&
+			<div dir="rtl" class="sticky inset-0 text-xl shadow-md z-50 py-4 text-center bg-indigo-400">
+				<p class="prose mx-auto px-10 md:px-20">
+				🚀
+				מערכת <span class="font-semibold italic">formali</span> נמצאת בשלבי פיתוח. הפידבק שלכם חשוב לנו!
+				</p>
+			</div>
+	 }
 		<slot />
 	</body>
 </html>
@@ -47,6 +54,19 @@ const { title } = Astro.props;
 	.drop-shadow-4xl {
 			 filter: drop-shadow(4px 4px 0 #000);
 	}
+
+  .snap {
+    scroll-snap-type: var(--scroll-snap-direction) var(--scroll-snap-constraint);
+  }
+  .snap-y {
+    --scroll-snap-direction: y;
+  }
+  .snap-mandatory {
+    --scroll-snap-constraint: mandatory;
+  }
+  .snap-start {
+    scroll-snap-align: start;
+  }
 
 </style>
 

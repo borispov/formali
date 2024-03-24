@@ -1,0 +1,22 @@
+---
+import FormBoxPara from './FormBoxPara.astro';
+import FormInputText from './FormInputText.astro';
+import FormHeading from './FormHeading.astro';
+import FormBtnContainer from './FormBtnContainer.astro';
+
+interface Props {
+  readonly heading?: string;
+  readonly className?: string;
+  readonly forName?: string;
+}
+
+const { heading, className, forName } = Astro.props;
+
+---
+
+<div>
+  <FormHeading heading={heading || "הזן כתובת דואל"} />
+  <FormBoxPara text="נשמח ליצור עמכם קשר באמצעות כתובת הדואל שלכם" />
+  <FormInputText name={forName || 'email'} type="email" placeholder='name@example.com' />
+  <FormBtnContainer text="המשך" />
+</div>

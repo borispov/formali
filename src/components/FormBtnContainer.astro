@@ -1,0 +1,62 @@
+---
+interface Props {
+  readonly text: string;
+  readonly showPressEnter: boolean;
+  readonly className?: string;
+  readonly onClick?: Function;
+};
+
+const { text, showPressEnter, className, onClick } = Astro.props;
+
+const isMobile = navigator?.userAgent.toLowerCase().includes("mobile")
+
+const buttonClass = "inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500 custom-button-background-color custom-button-text-color"
+
+console.log(isMobile)
+---
+
+<div class="btn-container">
+  <button onclick={onClick} class={buttonClass}>
+    {text}
+
+  </button>
+          {!isMobile && (
+            <span class="hidden">
+              press <strong>Enter ↵</strong>
+            </span>
+          ) }
+</div>
+
+<style>
+
+.btn-container {
+  align-items: center;
+  display: flex;
+  gap: 12.5px;
+  margin-top: 32px;
+  width: 100%;
+}
+
+.btn-container > span {
+  color: var(--btn-text-color);
+  font-size: 1.25rem;
+}
+
+.btn-container > span strong {
+  font-weight: bolder;
+  letter-spacing: 0.04em;
+}
+
+@media screen and (max-width: 599px) {
+  .btn-container {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 17.5px;
+  }
+
+  .btn-container > span {
+    font-size: 1.5rem;
+  }
+}
+
+</style>

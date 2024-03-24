@@ -1,0 +1,28 @@
+---
+import FormBoxPara from './FormBoxPara.astro';
+import FormInputText from './FormInputText.astro';
+import FormHeading from './FormHeading.astro';
+import FormBtnContainer from './FormBtnContainer.astro';
+
+interface Props {
+  readonly type?: string;
+  readonly heading: string;
+  readonly description?: string;
+  readonly className?: string;
+}
+
+const { heading, description, className } = Astro.props;
+
+const change = (e) => {
+  console.log(e)
+}
+
+---
+
+<div>
+  <FormHeading heading={heading} />
+  <FormBoxPara text={description} />
+  <FormInputText value={''} placeholder='שם פרטי' onChange={change} />
+  <FormBtnContainer text="המשך" />
+  <input hidden value={''} />
+</div>

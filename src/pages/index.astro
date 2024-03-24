@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Welcome to Astro." topbar={true}>
     <div class="bg-[#F7D046] bg-orange-200 bg-local bg-cover bg-no-repeat bg-center">
         <!-- Navbar -->
          <nav class="max-w-6xl mx-auto">
@@ -39,7 +39,7 @@ import Layout from '../layouts/Layout.astro';
                                 הצטרף לרשימה
                             </a>
                             <div class="content"></div>
-                            <a href="/" target="_blank" class="underline group transition-all hover:no-underline inline-block mx-auto mt-4 lg:mt-0 text-sm">
+                            <a href="/demo" target="_blank" class="underline group transition-all hover:no-underline inline-block mx-auto mt-4 lg:mt-0 text-sm">
                                 לבינתיים, תראו דוגמא, (עדיין בפיתוח) <span class="hidden group-hover:inline">👀</span>
                             </a>
                         </div>

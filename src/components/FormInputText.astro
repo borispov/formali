@@ -1,0 +1,30 @@
+---
+interface Props {
+  readonly placeholder?: string;
+  readonly className?: string;
+  readonly value?: string;
+  readonly onChange?: Function;
+  readonly type?: string;
+}
+
+const { placeholder, className, value, onChange, type = "text", forName, emailVal } = Astro.props;
+---
+
+<input
+  name={forName}
+  class={`transition-all bg-transparent border-b-2 border-b-neutral-600 text-gray-800 mt-8 pb-2 question-input__text ${className} placeholder:italic placeholder:text-neutral-500 focus:border-b-neutral-100 outline-0`}
+  />
+
+<style>
+  .question-input__text {
+    font-size: 2rem;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 599px) {
+    .question-input__text {
+      font-size: 2.9rem;
+      margin-top: 32px;
+    }
+  }
+</style>

@@ -11,9 +11,12 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/alpinejs": "^0.4.0",
     "@astrojs/netlify": "^5.2.0",
     "@astrojs/svelte": "^5.2.0",
+    "@types/alpinejs": "^3.13.9",
     "@unocss/reset": "^0.58.6",
+    "alpinejs": "^3.13.7",
     "astro": "^4.5.5",
     "daisyui": "^4.7.3",
     "svelte": "^4.2.12",

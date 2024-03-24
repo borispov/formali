@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import EmailInput from "../components/EmailInput.astro"
+import SingleInput from "../components/SingleInput.astro"
+
+const { type, label, subLabel, placeholder, required } = Astro.props;
+---
+
+{
+  type == 'email' &&
+   <EmailInput heading="label" /> ||
+  type == 'text' &&
+   <SingleInput heading="label" /> ||
+  type == 'select' && 
+    <select>
+    </select>
+}
+
+<script define:vars={{ msg: 'hello' }}>
+  console.log('this is: ...', msg)
+</script>
