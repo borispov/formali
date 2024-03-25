@@ -4,8 +4,17 @@ export const prerender = true
 import Layout from '../layouts/Layout.astro';
 import EmailInput from "../components/EmailInput.astro"
 import TextInput from '../components/alpine/TextInput.astro';
+import Select from '../components/alpine/Select.astro';
 
 const sampleForm = [
+  {
+    type: 'select',
+    label: 'תחום התמחות החברה שלכם',
+    required: true, 
+    options: [
+      'finance', 'tech', 'marketing', 'social media'
+    ]
+  },
   {
     type: 'email',
     label: 'לאיזה אימייל תרצו שנשלח לכם הודעה?',
@@ -24,13 +33,13 @@ const sampleForm = [
     type: 'select', 
     label: 'אלו מבין האפשרויות הכי תואם אתכם?',
     subLabel: 'בחרו אפשרות אחת בלבד',
-    option: [
+    required: false,
+    options: [
       "חיפשתי בול מערכת כזו! פשוט תקחו את הכסף שלי.",
       "נראה חמוד, לא בטוח שיש לי צורך במערכת כרגע",
       "פחות מתחבר לי כל העניין",
       "לא!"
-  ],
-    required: false,
+    ],
   },
 ]
 
@@ -44,40 +53,51 @@ const sample = {
   ending: {
     title: 'תודה ששיתפתם פעולה איתנו!',
     subtitle: 'נשמח לשמוע מכם שוב.                    ',
-    buttonText: 'התחל'
+    buttonText: 'שלח טופס'
   }
 }
 
 
 ---
-
-<Layout title="">
-
-
-  <form x-data="data" dir='rtl'>
-    <h1 x-text="msg"></h1>
-    <div class="flex justify-center flex-col w-80 mt-32 items-center mx-auto">
-      <section 
-        class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
-        <div class="flex flex-col gap-8 items-center">
-          <h2 x-text="form.welcome.title" class="text-60px max-w-xl font-bold leading-tight" />
-          <p x-text="form.welcome.subtitle" />
-          <button x-text="form.welcome.buttonText" class="w-36 bg-purple-700 font-bold px-6 py-2 rounded-lg text-white" />
-        </div>
-      </section>
-      <template x-for="field in fields">
-      <!-- <template x-for="field in fields"> -->
-        <template x-if="field.type == 'email' || field.type == 'text'">
-          <section 
-            class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
-            <div class="flex flex-col gap-8 items-center">
-              <TextInput />
-            </div>
-          </section>
+<Layout title="demo formali">
+  <div id="full-screen" class="max-h-screen overflow-y-scroll snap snap-y snap-mandatory">
+    <form x-data="data" dir='rtl'>
+        <!-- Introduction Note -->
+        <section 
+          class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
+          <div class="flex flex-col gap-8 items-center">
+            <h2 x-text="form.welcome.title" class="text-60px max-w-xl font-bold leading-tight" />
+            <p x-text="form.welcome.subtitle" />
+            <button x-text="form.welcome.buttonText" class="w-36 bg-purple-700 font-bold px-6 py-2 rounded-lg text-white" />
+          </div>
+        </section>
+        <template x-for="field in fields">
+        <!-- <template x-for="field in fields"> -->
+            <section 
+              class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
+              <div class="flex flex-col gap-8 items-center">
+                <template x-if="field.type == 'email' || field.type == 'text'">
+                      <TextInput />
+                </template>
+                <template x-if="field.type == 'select'">
+                  <Select 
+                    className="transition-all bg-transparent border-b-2 border-b-neutral-600 text-gray-800 mt-8 pb-2 question-input__text placeholder:italic placeholder:text-neutral-500 focus:border-b-neutral-100 outline-0" />
+                </template>
+              </div>
+            </section>
         </template>
-      </template>
-    </div>
-  </form>
+
+        <!-- Thank You Note -->
+        <section 
+          class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
+          <div class="flex flex-col gap-8 items-center">
+            <h2 x-text="form.ending.title" class="text-60px max-w-xl font-bold leading-tight" />
+            <p x-text="form.ending.subtitle" />
+            <button x-text="form.ending.buttonText" class="w-36 bg-purple-700 font-bold px-6 py-2 rounded-lg text-white" />
+          </div>
+        </section>
+    </form>
+  </div>
 </Layout>
 
 
@@ -86,7 +106,6 @@ const sample = {
     Alpine.data('data', () => ({
       form,
       fields,
-      msg: 'hello',
     }))
   })
 

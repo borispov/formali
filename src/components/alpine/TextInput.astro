@@ -12,9 +12,7 @@ const { className } = Astro.props;
 
 <div>
   <label x-text="field.label" class={"text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal " + className}>
-    <template x-if="field.required">
-      <sup class="text-red-600"> * </sup>
-    </template>
+    <sup class="text-red-600"> * </sup>
   </label>
 
   <p 
@@ -23,15 +21,14 @@ const { className } = Astro.props;
 
 
   <input
+    :name="$id('text-input')"
     :type="field.type"
     :placeholder="field.placeholder"
     :required="field.required"
-    :name="field.name || ''"
     class={`transition-all bg-transparent border-b-2 border-b-neutral-600 text-gray-800 mt-8 pb-2 question-input__text ${className} placeholder:italic placeholder:text-neutral-500 focus:border-b-neutral-100 outline-0`}
     />
 
   <FormBtnContainer text="המשך" />
-  <input hidden value={''} />
 </div>
 
 <style>
