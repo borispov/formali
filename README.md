@@ -1,13 +1,15 @@
 # TODOS:
 - [ ] Implement SelectInput as a list of cards-like items instead of <select>
 
+=INDEX(SPLIT(IMPORTXML("https://dividendhistory.org/payout/"&$B5, "//p[contains(text(), 'Yield')]", "en_US"), ":%"), 1, 2)
+
 
 # Welcome
 
 This is a potential spin-off from my forcard project, which is a web
 page builder that has been built too broadly. This project can
 potentially serve as a more specialized purpose while using some of the
-same **components**, utilities and approach.
+same components, utilities and approach.
 
 I must decide early on whether or not I'll be building for the Hebrew
 community first or not. If yes, then I prefer to make the UI in Hebrew
