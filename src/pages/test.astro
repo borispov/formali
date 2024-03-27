@@ -1,5 +1,4 @@
 ---
-export const prerender = true
 import Layout from '../layouts/Layout.astro';
 import TextInput from '../components/alpine/TextInput.astro';
 import Select from '../components/alpine/Select.astro';
@@ -98,7 +97,7 @@ const sample = {
 </Layout>
 
 
-<script define:vars={{ form: sample, fields: sampleForm }}>
+<script define:vars={{ form: sample, fields: sampleForm }} >
   document.addEventListener('alpine:init', () => {
     Alpine.data('data', () => ({
       form,

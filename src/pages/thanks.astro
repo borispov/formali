@@ -33,17 +33,6 @@ const someData = {
     }))
   })
 
-  up.on('click', 'button', async function() {
-    await fetch('/thanks', {
-      method: 'POST',
-      content: "application/json",
-      body: {
-        messsage: "No"
-      }
-    })
-    alert("Great! I am thrilled that you like Formali's MVP version!")
-  })
-
 </script>
 
 <style>

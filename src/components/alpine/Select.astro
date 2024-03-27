@@ -20,7 +20,7 @@ const { className } = Astro.props;
 
       <div class="mt-6 inline-block">
       <label 
-        x-data=`{
+        x-data="{
           isChecked: false,
           value: option,
           id: $id('select-input'),
@@ -31,7 +31,7 @@ const { className } = Astro.props;
               this.isChecked = v === this.value
             })
           }
-        }`
+        }"
         :for="id"
         class="relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none border-indigo-200 ring-2 ring-indigo-500 border-transparent"
         :class="isChecked ? 'border-neutral-600' : ''"

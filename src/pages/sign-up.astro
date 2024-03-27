@@ -5,7 +5,6 @@ export const prerender = false;
 
 const answer = Astro.url.searchParams.get('answer')
 const isInterested = !(answer && answer == 'no' || false)
-console.log(answer, isInterested)
 
 const welcomeMessage = 'איזה כיף שבאתם!'
 const notInterestedWelcomeMessage = 'חבל, אבל...'
