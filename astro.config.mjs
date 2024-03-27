@@ -8,7 +8,9 @@ import netlify from "@astrojs/netlify";
 
 // https://astro.build/config
 export default defineConfig({
+  adapter: netlify(),
   output: "server",
+  base: "/",
   integrations: [
     UnoCSS({
       presets: [presetUno()],
@@ -17,5 +19,4 @@ export default defineConfig({
     svelte(),
     alpine(),
   ],
-  adapter: netlify()
 });
