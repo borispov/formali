@@ -8,9 +8,9 @@ const someData = {
 
 <Layout title="תודה על הרשמתכם">
   <div class="container bg-orange-300"></div>
-  <div class="mx-auto max-4-xl mt-20 text-xl font-bold">
+  <div x-data="data" class="mx-auto max-4-xl mt-20 text-xl font-bold">
     תודה רבה שהצטרפתם!
-    <a href="/" class="text-base block pt-4">חזרה לבית</a>
+    <a x-transition:enter.duration.400ms href="/" class="text-base block pt-4">חזרה לבית</a>
   </div>
 </Layout>
 

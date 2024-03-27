@@ -1,11 +1,6 @@
 ---
 import FormBtnContainer from '../FormBtnContainer.astro';
 
-interface Props {
-  readonly type?: string;
-  readonly className?: string;
-}
-
 const { className } = Astro.props;
 ---
 
@@ -70,9 +65,6 @@ const { className } = Astro.props;
 </div>
 
 <style>
-  .active {
-  }
-
   ul {
     list-style: none;
     margin: 0;
