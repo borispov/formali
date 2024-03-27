@@ -1,5 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const someData = {
+  msg: 'hello world'
+}
 ---
 
 <Layout title="תודה על הרשמתכם">
@@ -9,3 +13,13 @@ import Layout from '../layouts/Layout.astro';
     <a href="/" class="text-base block pt-4">חזרה לבית</a>
   </div>
 </Layout>
+
+
+<script define:vars={{ data: someData }}>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('data', () => ({
+      data,
+    }))
+  })
+
+</script>
