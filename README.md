@@ -1,8 +1,7 @@
 # TODOS:
-- [ ] Implement SelectInput as a list of cards-like items instead of <select>
-
-=INDEX(SPLIT(IMPORTXML("https://dividendhistory.org/payout/"&$B5, "//p[contains(text(), 'Yield')]", "en_US"), ":%"), 1, 2)
-
+- [x] Implement SelectInput as a list of cards-like items instead of <select>
+- [ ] Implement a validation upon each ```nextStep``` function call, i.e,
+    after each step completeion or attempt to proceed.
 
 # Welcome
 

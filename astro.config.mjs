@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import UnoCSS from 'unocss/astro';
+import presetIcons from '@unocss/preset-icons'
 import { presetUno } from 'unocss';
 import svelte from "@astrojs/svelte";
 import alpine from '@astrojs/alpinejs'
@@ -13,7 +14,10 @@ export default defineConfig({
   base: "/",
   integrations: [
     UnoCSS({
-      presets: [presetUno()],
+      presets: [
+        presetUno(),
+        presetIcons()
+    ],
       injectReset: true
     }), 
     svelte(),

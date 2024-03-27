@@ -24,5 +24,9 @@
     "unocss": "^0.58.6",
     "unocss-preset-daisy": "^7.0.0",
     "unpoly": "^3.7.3"
+  },
+  "devDependencies": {
+    "@iconify-json/mdi": "^1.1.64",
+    "@unocss/preset-icons": "^0.58.7"
   }
 }

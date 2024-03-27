@@ -11,12 +11,12 @@ import FormBtnContainer from '../FormBtnContainer.astro';
     x-text="field.subLabel" 
     class="text-lg font-normal leading-relaxed text-neutral-600" />
 
-
   <input
-    :name="$id('text-input')"
+    :name="$id('input')"
     :type="field.type"
     :placeholder="field.placeholder"
     :required="field.required"
+    required
     class={`transition-all bg-transparent border-b-2 border-b-neutral-600 text-gray-800 mt-8 pb-2 question-input__text placeholder:italic placeholder:text-neutral-500 focus:border-b-neutral-100 outline-0`}
     />
 

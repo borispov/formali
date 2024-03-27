@@ -1,10 +1,17 @@
 ---
 export const prerender = true
+
 import Layout from '../layouts/Layout.astro';
 import TextInput from '../components/alpine/TextInput.astro';
 import Select from '../components/alpine/Select.astro';
 
 const sampleForm = [
+  {
+    type: 'text',
+    label: 'ברוכים הבאים, תודה על זמנכם.',
+    subLabel: 'מילוי הטופס יקח רק 5 דקות מזמנכם ויעזור לנו באופן משמעותי בקידום ודיוק המערכת שלנו.',
+    buttonText: 'התחל'
+  },
   {
     type: 'select',
     label: 'תחום התמחות החברה שלכם',
@@ -21,7 +28,7 @@ const sampleForm = [
     required: true,
   },
   {
-    type: 'text',
+    type: 'textInput',
     label: 'רשמו את שמכם הפרטי',
     subLabel: '',
     placeholder: 'גדעון בן יואש',
@@ -39,71 +46,80 @@ const sampleForm = [
       "לא!"
     ],
   },
-]
-
-const sample = {
-  welcome: {
-    title: 'ברוכים הבאים, תודה על זמנכם.',
-    subtitle: 'מילוי הטופס יקח רק 5 דקות מזמנכם ויעזור לנו באופן משמעותי בקידום ודיוק המערכת שלנו.',
-    buttonText: 'התחל'
-  },
-  fields: sampleForm,
-  ending: {
-    title: 'תודה ששיתפתם פעולה איתנו!',
-    subtitle: 'נשמח לשמוע מכם שוב.',
+  {
+    type: 'text',
+    label: 'הגעתם לסוף :-)',
+    subLabel: 'כעת, נסו לשגר את הטופס... קדימה!',
     buttonText: 'שלח טופס'
   }
-}
-
-
+]
 ---
 <Layout title="demo formali">
-  <div id="full-screen" class="max-h-screen overflow-y-scroll snap snap-y snap-mandatory">
-    <form x-data="data" dir='rtl'>
+  <div id="full-screen" class="relative max-h-screen overflow-y-scroll snap snap-y snap-mandatory">
+    <form x-data="data" dir='rtl' x-ref="form" >
         <!-- Introduction Note -->
-        <section 
-          class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
-          <div class="flex flex-col gap-8 items-center">
-            <h2 x-text="form.welcome.title" class="text-60px max-w-xl font-bold leading-tight" />
-            <p x-text="form.welcome.subtitle" />
-            <button x-text="form.welcome.buttonText" class="w-36 bg-purple-700 font-bold px-6 py-2 rounded-lg text-white" />
-          </div>
-        </section>
-        <template x-for="(field, index) in fields">
-            <section 
+        <template x-for="(field, index) in form" :key="index">
+          <section 
+              x-transition
+              x-show="index == currentStep"
               class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
-              <div class="flex flex-col gap-8 items-center">
-                <template x-if="field.type == 'email' || field.type == 'text'">
-                      <TextInput />
-                </template>
-                <template x-if="field.type == 'select'">
-                  <Select 
-                    className="transition-all bg-transparent border-b-2 border-b-neutral-600 text-gray-800 mt-8 pb-2 question-input__text placeholder:italic placeholder:text-neutral-500 focus:border-b-neutral-100 outline-0" />
-                </template>
-              </div>
-            </section>
-        </template>
+            <template x-if="field.type=='text'">
+                <div class="flex flex-col gap-8 items-center">
+                  <h2 x-text="field.label" class="text-60px max-w-xl font-bold leading-tight" />
+                  <p x-text="field.subLabel" />
+                  <template x-if="currentStep == (form.length - 1)">
+                    <a href="/thanks" x-text="field.buttonText" class="w-36 bg-purple-700 font-bold px-6 py-2 rounded-lg text-white" />
+                  </template>
+                  <template x-if="currentStep < form.length - 1">
+                    <button @click.prevent="nextStep" x-text="field.buttonText" class="w-36 bg-purple-700 font-bold px-6 py-2 rounded-lg text-white" />
+                  </template>
+                </div>
+            </template>
+            <template x-if="field.type == 'textInput' || field.type == 'email'">
+              <TextInput />
+            </template>
+            <template x-if="field.type == 'select'">
+              <Select 
+                className="transition-all bg-transparent border-b-2 border-b-neutral-600 text-gray-800 mt-8 pb-2 question-input__text placeholder:italic placeholder:text-neutral-500 focus:border-b-neutral-100 outline-0" />
+            </template>
+          </section>
 
+        </template>
         <!-- Thank You Note -->
-        <section 
-          class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
-          <div class="flex flex-col gap-8 items-center">
-            <h2 x-text="form.ending.title" class="text-60px max-w-xl font-bold leading-tight" />
-            <p x-text="form.ending.subtitle" />
-            <a href="/thanks" x-text="form.ending.buttonText" class="w-36 bg-purple-700 font-bold px-6 py-2 rounded-lg text-white" />
-          </div>
-        </section>
+
+        <div class="absolute sticky flex gap-4 bottom-[5%] right-[5%] w-60 p-4 rounded-md">
+          <button 
+            @click.prevent="nextStep" 
+            class="bg-teal-600 py-2 px-2">
+            <span class="i-mdi-arrow-down bg-white text-2xl z-10 block" />
+          </button>
+          <button 
+            @click.prevent="prevStep" 
+            class="bg-teal-600 py-2 px-2">
+            <span class="i-mdi-arrow-up bg-white text-2xl z-10 block" />
+          </button>
+        </div>
+
     </form>
   </div>
 </Layout>
 
 
-<script define:vars={{ form: sample, fields: sampleForm }}>
+<script define:vars={{ form: sampleForm }}>
   document.addEventListener('alpine:init', () => {
-  console.log(form)
     Alpine.data('data', () => ({
       form,
-      fields,
+      currentStep: 0,
+      prevStep() {
+       if (this.currentStep > 0) {
+            this.currentStep--;
+        }
+      },
+      nextStep() {
+        if (this.currentStep < this.form.length - 1) {
+          this.currentStep++
+        }
+      },
     }))
   })
 
