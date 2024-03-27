@@ -8,11 +8,8 @@ interface Props {
 
 const { text, showPressEnter, className, onClick } = Astro.props;
 
-const isMobile = navigator?.userAgent.toLowerCase().includes("mobile")
-
 const buttonClass = "inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500 custom-button-background-color custom-button-text-color"
 
-console.log(isMobile)
 ---
 
 <div class="btn-container">
@@ -20,11 +17,12 @@ console.log(isMobile)
     {text}
 
   </button>
-          {!isMobile && (
-            <span class="hidden">
-              press <strong>Enter ↵</strong>
-            </span>
-          ) }
+
+  <span 
+    x-data="{ isMobile = navigator?.userAgent.toLowerCase().includes('mobile') || false }"
+    :class="{ 'hidden': isMobile }">
+      press <strong>Enter ↵</strong>
+  </span>
 </div>
 
 <style>
@@ -58,5 +56,4 @@ console.log(isMobile)
     font-size: 1.5rem;
   }
 }
-
 </style>
