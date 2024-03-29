@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Welcome to Astro." topbar={true}>
-    <div class="bg-teal-800 bg-local bg-cove bg-no-repeat bg-center">
+    <div class="bg-[#1B1A21] bg-local bg-no-repeat ">
         <!-- Navbar -->
          <nav class="max-w-6xl mx-auto">
            <div class="relative overflow-hidden">
@@ -24,11 +24,11 @@ import Layout from '../layouts/Layout.astro';
            </div>
          </nav>
 
-      <main dir="rtl">
+      <main dir="rtl" class="relative pb-36 lg:pb-80">
         <div class="relative max-w-7xl mx-auto mt-20 pb-20">
           <div class="flex flex-col justify-center lg:grid grid-cols-5 items-center px-10 md:px-20">
             <div class=" flex flex-col items-center lg:items-start col-span-3 lg:pl-16 xl:pl-20">
-                        <p class="text-center lg:text-right text-3xl  sm:text-5xl xl:text-6xl font-bold text-neutral-100">
+                        <p class="text-center lg:text-right text-3xl sm:text-5xl xl:text-6xl font-bold text-neutral-100">
                           כל אחד יכול לבנות טופס בכלום זמן
                         </p>
                         <p class="text-center lg:text-right text-base sm:text-lg xl:text-xl font-regular mt-10 text-neutral-200">
@@ -43,31 +43,78 @@ import Layout from '../layouts/Layout.astro';
                                 לבינתיים, תראו דוגמא, (עדיין בפיתוח) <span class="hidden group-hover:inline">👀</span>
                             </a>
                         </div>
-                        <div class="text-sm pt-6 pr-4 font-semibold rotate-1 text-white">
-                            <p>
-                                ✅ תוצאות ללא הגבלה
-                            </p>
+                    <div class="text-sm pt-6 pr-4 font-semibold rotate-1 text-white">
+                        <p>
+                            ✅ תוצאות ללא הגבלה
+                        </p>
 
-                            <p class="pt-2">
-                                ✅ חבילה חינמית נדיבה
-                            </p>
-                        </div>
-                    </div>
-                    <div class="pt-12 lg:pt-0 col-span-2 hidden lg:block">
-                        <img class="w-full m-auto" src="/riff.png" alt="">
+                        <p class="pt-2">
+                            ✅ חבילה חינמית נדיבה
+                        </p>
                     </div>
                 </div>
-                <div class="pt-10">
+                <div class="pt-12 lg:pt-0 col-span-2 hidden lg:block">
+                    <img class="w-full m-auto" src="/riff.png" alt="">
+                </div>
+                </div>
+                <div class="absolute w-full z-10">
+                  <div class="max-w-6xl mx-auto">
                     <img src="/builder.png" alt="">
+                  </div>
                 </div>
+
+            </div>
+            <div class="bg-paper -bottom-40 absolute flip-y">
             </div>
       </main>
     </div>
 </Layout>
 
 <style>
-    .bg-local {
-        background-image: url('/header-bg.png');
-    }
+  :root {
+     --tw-border-spacing-x: 0;
+    --tw-border-spacing-y: 0;
+    --tw-translate-x: 0;
+    --tw-translate-y: 0;
+    --tw-rotate: 0;
+    --tw-skew-x: 0;
+    --tw-skew-y: 0;
+    --tw-scale-x: 1;
+    --tw-scale-y: 1;
+    --tw-pan-x: ;
+    --tw-pan-y: ;
+    --tw-pinch-zoom: ;
+    --tw-scroll-snap-strictness: proximity;
+    --tw-gradient-from-position: ;
+    --tw-gradient-via-position: ;
+    --tw-gradient-to-position: ;
+    --tw-ordinal: ;
+    --tw-slashed-zero: ;
+    --tw-numeric-figure: ;
+    --tw-numeric-spacing: ;
+    --tw-numeric-fraction: ;
+    --tw-ring-inset: ;
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: rgba(59,130,246,.5);
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+  }
+
+  .bg-paper {
+  background: transparent url('/tear.png') top repeat-x;
+  background-size: 1280px;
+  height: 182px;
+  width: 100%;
+  }
+  .flip-y {
+    --tw-scale-y: -1;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+  .bg-local {
+      background-image: url('/header-bg.png');
+  }
 
 </style>
