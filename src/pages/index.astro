@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Welcome to Astro." topbar={true}>
-    <div class="bg-[#F7D046] bg-orange-200 bg-local bg-cover bg-no-repeat bg-center">
+    <div class="bg-teal-800 bg-local bg-cove bg-no-repeat bg-center">
         <!-- Navbar -->
          <nav class="max-w-6xl mx-auto">
            <div class="relative overflow-hidden">
@@ -11,12 +11,12 @@ import Layout from '../layouts/Layout.astro';
               <!-- Logo -->
                <div class="logo">
                  <a href="/">
-                   <img src="/logo.png" alt="logo" width="186px" />
+                   <img src="/logo-dark.png" alt="logo" width="186px" />
                  </a> 
                </div>
               <!-- Menu -->
                 <div class="flex space-x-4">
-                  <a href="/" class="bg-yellow-500 px-6 py-2 text-black rounded-sm border-2 border-black drop-shadow-plain hover:drop-shadow-4xl hover:bg-yellow-300 transition-all">
+                  <a href="/sign-up" up-target=".content" up-position="bottom" size="grow" up-align="right" up-layer="new" class="button button-primary p-2 block text-base">
                     הרשמה
                   </a>
                 </div>
@@ -28,22 +28,22 @@ import Layout from '../layouts/Layout.astro';
         <div class="relative max-w-7xl mx-auto mt-20 pb-20">
           <div class="flex flex-col justify-center lg:grid grid-cols-5 items-center px-10 md:px-20">
             <div class=" flex flex-col items-center lg:items-start col-span-3 lg:pl-16 xl:pl-20">
-                        <p class="text-center lg:text-right text-3xl  sm:text-5xl xl:text-6xl font-bold">
+                        <p class="text-center lg:text-right text-3xl  sm:text-5xl xl:text-6xl font-bold text-neutral-100">
                           כל אחד יכול לבנות טופס בכלום זמן
                         </p>
-                        <p class="text-center lg:text-right text-base sm:text-lg xl:text-xl font-regular mt-10">
+                        <p class="text-center lg:text-right text-base sm:text-lg xl:text-xl font-regular mt-10 text-neutral-200">
                           עם <span class="italic font-semibold">formali</span> אפשר לבנות טפסים <span class="underline underline-offset-4">ללא הגבלה</span> ולחסוך זמן יקר.
                         </p>
                         <div class="lg:flex lg:items-center gap-6 mt-10 text-center">
-                            <a href="/sign-up" class="inline-block mx-auto text-2xl bg-yellow-400 border-2 border-black drop-shadow-3xl hover:drop-shadow-[4px_4px_0_#000000] px-10 py-2 text-black rounded-md" up-layer="new" up-target=".content" up-position="bottom" up-align="right" size="grow" >
+                            <a href="/sign-up" class="button-xl button-primary inline-block mx-auto text-2xl bg-yellow-400 border-2 border-black drop-shadow-3xl hover:drop-shadow-[4px_4px_0_#000000] px-10 py-2 text-black rounded-md" up-layer="new" up-target=".content" up-position="bottom" up-align="right" size="grow" >
                                 הצטרף לרשימה
                             </a>
                             <div class="content"></div>
-                            <a href="/test" target="_blank" class="underline group transition-all hover:no-underline inline-block mx-auto mt-4 lg:mt-0 text-sm">
+                            <a href="/test" target="_blank" class="text-teal-100 underline group transition-all hover:no-underline inline-block mx-auto mt-4 lg:mt-0 text-sm">
                                 לבינתיים, תראו דוגמא, (עדיין בפיתוח) <span class="hidden group-hover:inline">👀</span>
                             </a>
                         </div>
-                        <div class="text-sm pt-6 pr-4 font-semibold rotate-1">
+                        <div class="text-sm pt-6 pr-4 font-semibold rotate-1 text-white">
                             <p>
                                 ✅ תוצאות ללא הגבלה
                             </p>

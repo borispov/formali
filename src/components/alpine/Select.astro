@@ -23,7 +23,7 @@ const { className } = Astro.props;
         x-data="{
           isChecked: false,
           value: option,
-          id: $id('select-input'),
+          id: $id('input'),
           init() {
             console.log('initialized')
             this.$watch('checked', v => {
@@ -33,8 +33,8 @@ const { className } = Astro.props;
           }
         }"
         :for="id"
-        class="relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none border-indigo-200 ring-2 ring-indigo-500 border-transparent"
-        :class="isChecked ? 'border-neutral-600' : ''"
+        class="relative flex cursor-pointer rounded-lg border bg-white p-2 shadow-sm focus:outline-none border-indigo-200 ring-2 border-transparent transition duration-75 ease-in-out" x-transition
+        :class="isChecked ? 'border-neutral-600 ring-indigo-500' : ''"
       >
         <input
           x-model="checked"
@@ -59,6 +59,18 @@ const { className } = Astro.props;
         </label>
       </div>
     </template>
+    <div x-data="{
+         id: $id('input'),
+         show: false,
+         defaultMessage: 'שדה זה הינו חובה למילוי',
+         handleErr(e){
+         if (e && e.detail && e.detail.id && e.detail.id === this.id){
+          this.show = true
+         }
+         }
+         }" x-show="show"">
+      <span x-text="defaultMessage" />
+    </div>
   </fieldset>
 
   <FormBtnContainer text="המשך" />

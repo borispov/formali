@@ -12,13 +12,26 @@ import FormBtnContainer from '../FormBtnContainer.astro';
     class="text-lg font-normal leading-relaxed text-neutral-600" />
 
   <input
+    :id="$id('input')"
     :name="$id('input')"
     :type="field.type"
+    @keyup="handleErr"
     :placeholder="field.placeholder"
     :required="field.required"
-    required
     class={`transition-all bg-transparent border-b-2 border-b-neutral-600 text-gray-800 mt-8 pb-2 question-input__text placeholder:italic placeholder:text-neutral-500 focus:border-b-neutral-100 outline-0`}
     />
+  <div x-data="{
+       id: $id('input'),
+       show: false,
+       defaultMessage: 'שדה זה הינו חובה למילוי',
+       handleErr(e){
+       if (e && e.detail && e.detail.id && e.detail.id === this.id){
+        this.show = true
+       }
+       }
+       }" x-show="show"">
+    <span x-text="defaultMessage" />
+  </div>
 
   <FormBtnContainer text="המשך" />
 </div>

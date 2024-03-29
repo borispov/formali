@@ -7,18 +7,18 @@ const someData = {
 ---
 
 <Layout title="תודה על הרשמתכם">
-  <div class="h-lvh bg-orange-300 flex flex-col align-center items-center justify-center" dir="rtl">
+  <div class="h-lvh bg-neutral-900 text-white flex flex-col align-center items-center justify-center" dir="rtl">
     <div x-transition:enter.duration.400ms x-data="data" class="shadow-md max-2-xl w-[400px] py-10 px-8 text-center">
-      <span class="font-semibold text-xl block">
-        האם אהבתם את formali?
+      <h1 class="font-black text-4xl block leading-none tracking-tight">
+        האם אהבתם את <span class="text-6xl font-brush font-normal antialiased text-transparent leading-none py-1 bg-clip-text bg-gradient-to-r from-pink-hot to-purple-new">formali</span>?
       </span>
-      <p class="mt-2">
+      <p class="mt-2 text-base font-thin">
         האם תהיו מוכנים להשתמש באפליקציה בעבור תשלום סמלי קבוע?
       </p>
       <div class="flex justify-center mt-8 gap-10">
-        <a href="/sign-up" up-layer="new" up-target=".content" up-position="bottom" up-align="right" size="grow" class="text-base block pt-4">בטח!</a>
-        <a href="/sign-up" up-layer="new" up-target=".content" up-position="bottom" up-align="right" size="grow" class="text-base block pt-4">רק בחינם</a>
-        <a href="/sign-up?answer=no" up-layer="new" up-target=".content" up-position="bottom" up-align="right" size="grow" class="text-base block pt-4">לא</a>
+        <a href="/sign-up" up-layer="new" up-target=".content" up-position="bottom" up-align="right" size="grow" class="button-xl button-primary text-base block pt-4">בטח!</a>
+        <a href="/sign-up" up-layer="new" up-target=".content" up-position="bottom" up-align="right" size="grow" class="button-xl button-secondary border-2 border-neutral-600 text-base block pt-4">רק בחינם</a>
+        <a href="/sign-up?answer=no" up-layer="new" up-target=".content" up-position="bottom" up-align="right" size="grow" class="button-xl button-secondary text-base block pt-4">לא</a>
       </div>
         <div class="content"></div>
     </div>
@@ -38,8 +38,32 @@ const someData = {
 <style>
   button, a {
     padding: 6px 12px;
-    color: #fafafa;
-    background: #212121;
+    /* color: #fafafa; */
+    /* background: #212121; */
     border-radius: 0.25em;
   }
+
+  .font-brush {
+    font-family: 'Road Rage', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .to-purple-new {
+    --tw-gradient-to: #af00ff !important;
+  }
+
+  .from-pink-hot {
+    --tw-gradient-from: #ff269e !important;
+  }
+
+  .bg-gradient-to-r {
+    background-image: linear-gradient(to right, var(--tw-gradient-from), var(--tw-gradient-to));
+  }
+
+  .bg-clip-text {
+    background-clip: text !important;
+  }
+
+
 </style>

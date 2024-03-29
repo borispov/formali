@@ -20,6 +20,20 @@ const { title, topbar, unpoly } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Miriam+Libre:wght@400;700&family=Road+Rage&display=swap" rel="stylesheet">
+
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-1RYVPQ8BRD"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'G-1RYVPQ8BRD');
+		</script>
+
 		{unpoly !== false && 
 			<script src="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly.min.js" />
 			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly.min.css" />
@@ -31,11 +45,13 @@ const { title, topbar, unpoly } = Astro.props;
 	<body>
 	 {
 		topbar &&
-			<div dir="rtl" class="sticky inset-0 text-xl shadow-md z-50 py-4 text-center bg-indigo-400">
-				<p class="prose mx-auto px-10 md:px-20">
-				🚀
-				מערכת <span class="font-semibold italic">formali</span> נמצאת בשלבי פיתוח. הפידבק שלכם חשוב לנו!
-				</p>
+			<div dir="rtl" class="sticky inset-0 text-sm shadow-md z-50 py-4 text-start bg-gradient-to-r from-pink-hot to-purple-new text-white">
+				<div class="max-w-6xl mx-auto">
+					<p class="font-[Miriam Libre] tracking-[1.2px] font-bold prose mx-auto px-10 md:px-20">
+					🚀
+				מערכת <span class="font-semibold italic underline underline-offset-4">{`</ formali>`}</span> נמצאת בשלבי פיתוח. הפידבק שלכם חשוב לנו!
+					</p>
+				</div>
 			</div>
 	 }
 		<slot />
@@ -43,6 +59,11 @@ const { title, topbar, unpoly } = Astro.props;
 </html>
 
 <style is:global>
+
+	:root {
+		 --tw-shadow; 0 0 #000;
+	 }
+
 	.drop-shadow-plain {
 			 filter: drop-shadow(3px 3px 0 #000);
 	}
@@ -68,6 +89,132 @@ const { title, topbar, unpoly } = Astro.props;
     scroll-snap-align: start;
   }
 
+			 .button-xl {
+				 border-radius: .25em;
+				 cursor: pointer;
+				 font-size: 1.125rem;
+				 font-weight: 700;
+				 line-height: 1.75rem;
+				 position: relative;
+				 text-align: center;
+				 white-space: nowrap;
+				 transition: all .05s ease-in;
+			 }
+			 .button-xl:hover {
+				--tw-shadow: 1px 1px 0 #002f3c;
+			 }
+
+			 .button-xl:hover, .button-primary:hover {
+				 box-shadow: 0 0 0 -1px #fff, 0 0 0 #fff;
+				 transform: translate(3px, 3px);
+			 }
+
+			 .button-primary {
+					--tw-border-opacity: 1;
+				 background: rgba(255, 255, 255, 1);
+					 border-width: 2px;
+				 border-color: rgb(25, 26, 27);
+				 color: rgb(25, 25, 27);
+				 box-shadow: 3px 3px 0 #fff, 3px 3px 0 #fff;
+			 }
+			 .button-secondary {
+			 --tw-secondary: rgb(1, 215, 176);
+				 background: var(--tw-secondary);
+				 border-width: 2px;
+				 border-color: rgb(25, 26, 27);
+				 color: rgb(25, 25, 27);
+				 box-shadow: 3px 3px 0 var(--tw-secondary), 3px 3px 0 var(--tw-secondary);
+			 }
+
+
+.button {
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    --tw-shadow: 3px 3px 0 #002f3c;
+    --tw-shadow-colored: 3px 3px 0 var(--tw-shadow-color);
+	 background-color: rgb(250, 247, 125);
+    border-radius: .25rem;
+    border-width: 2px;
+    color: rgb(25 26 27);
+    cursor: pointer;
+    display: inline-block;
+    font-size: .875rem;
+    font-weight: 700;
+    line-height: 1.25rem;
+    padding: .25rem 1rem;
+    position: relative;
+    text-align: center;
+    -webkit-text-decoration-line: none;
+    text-decoration-line: none;
+    transition-duration: .15s;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition: all .05s ease-in!important;
+    white-space: nowrap
+}
+
+.button,.button:hover {
+			 box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+}
+
+.button:hover {
+    --tw-shadow: 1px 1px 0 #002f3c;
+    --tw-shadow-colored: 1px 1px 0 var(--tw-shadow-color);
+    transform: translate(2px,2px)
+}
+
+.button:active,.button:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px
+}
+
+.button:active {
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+    left: 1px;
+    top: 1px
+}
+
+.button.on-black {
+    --tw-border-opacity: 1;
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1;
+    background-color: rgb(25 26 27/var(--tw-bg-opacity));
+    border-color: rgb(255 255 255/var(--tw-border-opacity));
+    border-width: 1px;
+    box-shadow: 3px 3px 0 -1px #191a1b,3px 3px 0 #fff;
+    color: rgb(255 255 255/var(--tw-text-opacity))
+}
+
+.button.button-primary {
+    --tw-border-opacity: 1;
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1;
+		 background-color: rgb(255,255,255);
+		 border-color: rgb(25,26,27);
+    border-width: 2px;
+	 box-shadow: 3px 3px 0 -1px #fff, 3px 3px 0 #fff;
+	 color: rgb(25,26,27);
+}
+
+.button.button-primary:hover {
+    box-shadow: 0 0 0 -1px #fff,0 0 0 #fff;
+    transform: translate(3px,3px)
+}
+
+.to-purple-new {
+	--tw-gradient-to: #af00ff !important;
+}
+
+.from-pink-hot {
+	--tw-gradient-from: #ff269e !important;
+}
+
+  .bg-gradient-to-r {
+    background-image: linear-gradient(to left, var(--tw-gradient-from), var(--tw-gradient-to));
+  }
 </style>
 
 <style>
