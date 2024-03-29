@@ -2,12 +2,12 @@
 import 'uno.css'
 
 interface Props {
-	title: string;
+	title?: string;
 	topbar?: boolean;
 	unpoly?: boolean;
 }
 
-const { title, topbar, unpoly } = Astro.props;
+const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly } = Astro.props;
 // TODO: change favicon
 ---
 
@@ -17,7 +17,7 @@ const { title, topbar, unpoly } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href="/logo.png" />
 		<meta name="generator" content={Astro.generator} />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
