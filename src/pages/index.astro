@@ -1,78 +1,154 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import PathDown from "../components/art/PathDown.astro";
+
+const oldDemo = 'text-teal-100 underline group transition-all hover:no-underline inline-block mx-auto mt-4 lg:mt-0 text-sm'
 ---
 
 <Layout topbar={true}>
-    <div class="bg-[#1B1A21] bg-local bg-no-repeat ">
-        <!-- Navbar -->
-         <nav class="max-w-6xl mx-auto">
-           <div class="relative overflow-hidden">
-             <div class="flex justify-between items-center px-10 py-4 md:py-8 md:px-20">
-              <!-- Logo -->
-               <div class="logo">
-                 <a href="/">
-                   <img src="/logo-dark.png" alt="logo" width="186px" />
-                 </a> 
-               </div>
-              <!-- Menu -->
-                <div class="flex space-x-4">
-                  <a id="cta-reg-top" href="/sign-up" up-target=".content" up-position="bottom" size="grow" up-align="right" up-layer="new" class="button button-primary p-2 block text-base">
-                    הרשמה
-                  </a>
-                </div>
-             </div>
-           </div>
-         </nav>
+  <main id="main" dir="rtl" class="main">
+    <!-- Navbar -->
+    <nav id="nav" class="bg-transparent at-top">
+      <div class="max-w-3xl lg:max-w-6xl 2xl:max-w-8xl space-y-4 flex items-center justify-between mx-auto print:hidden relative">
+        <!-- Menu -->
+        <div class="flex px-4 md:px-0 md:pb-0 h-full z-50">
+          <a
+            id="cta-reg-top"
+            href="/sign-up"
+            up-target=".content"
+            up-position="bottom"
+            size="grow"
+            up-align="right"
+            up-layer="new"
+            class="button button-primary block text-base"
+          >
+            הרשמה
+          </a>
+        </div>
+        <!-- Logo -->
+        <a id="logo" href="/" class="relative z-50 w-[186px]">
+          <img src="/logo-dark.png" alt="logo" />
+        </a>
+      </div>
+    </nav>
 
-      <main dir="rtl" class="relative pb-36 lg:pb-80">
-        <div class="relative max-w-7xl mx-auto mt-20 pb-20">
-          <div class="flex flex-col justify-center lg:grid grid-cols-5 items-center px-10 md:px-20">
-            <div class=" flex flex-col items-center lg:items-start col-span-3 lg:pl-16 xl:pl-20">
-                        <p class="text-center lg:text-right text-3xl sm:text-5xl xl:text-6xl font-bold text-neutral-100">
-                          כל אחד יכול לבנות טופס בכלום זמן
-                        </p>
-                        <p class="text-center lg:text-right text-base sm:text-lg xl:text-xl font-regular mt-10 text-neutral-200">
-                          עם <span class="italic font-semibold">formali</span> אפשר לבנות טפסים <span class="underline underline-offset-4">ללא הגבלה</span> ולחסוך זמן יקר.
-                        </p>
-                        <div class="lg:flex lg:items-center gap-6 mt-10 text-center">
-                            <a id="cta-reg-hero" href="/sign-up" class="button-xl button-primary inline-block mx-auto text-2xl bg-yellow-400 border-2 border-black drop-shadow-3xl hover:drop-shadow-[4px_4px_0_#000000] px-10 py-2 text-black rounded-md" up-layer="new" up-target=".content" up-position="bottom" up-align="right" size="grow" >
-                                הצטרף לרשימה
-                            </a>
-                            <div class="content"></div>
-                            <a id='cta-test' href="/test" target="_blank" class="text-teal-100 underline group transition-all hover:no-underline inline-block mx-auto mt-4 lg:mt-0 text-sm">
-                                לבינתיים, תראו דוגמא, (עדיין בפיתוח) <span class="hidden group-hover:inline">👀</span>
-                            </a>
-                        </div>
-                    <div class="text-sm pt-6 pr-4 font-semibold rotate-1 text-white">
-                        <p>
-                            ✅ תוצאות ללא הגבלה
-                        </p>
-
-                        <p class="pt-2">
-                            ✅ חבילה חינמית נדיבה
-                        </p>
-                    </div>
-                </div>
-                <div class="pt-12 lg:pt-0 col-span-2 hidden lg:block">
-                    <img class="w-full m-auto" src="/riff.png" alt="">
-                </div>
-                </div>
-                <div class="absolute w-full z-10">
-                  <div class="max-w-6xl mx-auto">
-                    <img src="/builder.png" alt="">
-                  </div>
-                </div>
-
+    <div class="relative w-full -top-15 lg:-top-24 overflow-hidden w-full">
+      <header
+        class="text-white pt-28 md:pt-24 pb-36 md:pb-60 lg:pb-80 bg-[#1B1A21] bg-local mb-[300px]"
+      >
+        <div class="relative max-w-7xl mx-auto mt-20 pb-2 md:pb-2">
+          <div
+            class="flex flex-col justify-center lg:grid grid-cols-5 items-center px-10 md:px-20"
+          >
+            <div
+              class="flex flex-col items-center lg:items-start col-span-3 lg:pl-16 xl:pl-20"
+            >
+              <h1
+                class="text-center text-white lg:text-right text-5xl md:text-6xl xl:text-7xl font-black text-neutral-100 tracking-tight leading-none"
+              >
+                כל אחד יכול לבנות טופס דיגיטלי בכלום זמן
+              </h1>
+              <p
+                class="text-center lg:text-right text-base sm:text-lg xl:text-xl font-regular mt-10 text-slate-300"
+              >
+              כולם, גם אתם, לא משנה כמה רקע טכני יש לכם, יכולים לבנות טופס דיגיטלי.
+                עם <span class="italic font-semibold">formali</span> תבנו טפסים
+                <span class="underline underline-offset-4">ללא הגבלה</span> ולחסוך
+                זמן יקר.
+              </p>
+              <div class="lg:flex lg:items-center space-y-2 md:gap-6 mt-10 text-center">
+                <a
+                  id="cta-reg-hero"
+                  href="/sign-up"
+                  class="button-xl button-primary inline-block mx-auto text-2xl bg-yellow-400 border-2 border-black drop-shadow-3xl hover:drop-shadow-[4px_4px_0_#000000] px-10 py-2 text-black rounded-md"
+                  up-layer="new"
+                  up-target=".content"
+                  up-position="bottom"
+                  up-align="right"
+                  size="grow"
+                >
+                  הצטרף לרשימה
+                </a>
+                <div class="content"></div>
+                <a
+                  id="cta-test"
+                  href="/test"
+                  target="_blank"
+                  class="button-xl group button-secondary inline-block mx-auto text-2xl border-2 border-black drop-shadow-3xl px-10 py-2 text-black rounded-md"
+                >
+                טופס דוגמא
+                  <span class="hidden group-hover:inline">👀</span
+                  >
+                </a>
+              </div>
+              <div class="text-sm pt-6 pr-4 font-semibold rotate-1 text-white">
+                <p>✅ תוצאות ללא הגבלה</p>
+                <p class="pt-2">✅ חבילה חינמית נדיבה</p>
+              </div>
             </div>
-            <div class="bg-paper -bottom-40 absolute flip-y">
+            <div class="pt-12 lg:pt-0 col-span-2 hidden lg:block">
+              <img class="w-full m-auto" src="/riff.png" alt="" />
             </div>
-      </main>
+          </div>
+        </div>
+        <div class="absolute w-full z-50 px-2">
+          <div class="max-w-6xl mx-auto">
+            <img src="/builder.png" alt="" />
+          </div>
+        </div>
+        <div class="bg-paper bottom-40 md:bottom-50 lg:bottom-40 absolute flip-y"></div>
+      </header>
     </div>
+
+    <div class="bg-noise">
+      <div class="max-w-lg lg:max-w-4xl text-center mx-auto pt-0 pb-16 md:py-16 px-4 relative -mt-52 md:mt-0">
+        <div class="relative">
+          <div class="bg-teal-100 h-8 lg:h-16 inset-0 w-full absolute m-auto rotate-1"></div>
+          <h2
+            class="-rotate-1 font-bold leading-none relative z-10 italic text-3xl lg:text-5xl"
+          >
+            מתאים לכל צורך, מתאים לכל מכשיר
+          </h2>
+        </div>
+        <div class="max-w-3xl pb-3 mx-auto">
+          <p class="text-center text-base md:text-2xl py-8">
+            הטפסים של formali מתאימים ונראים טוב במובייל וגם בגסקטופ עם דגש
+            משמעותי על חווית המשתמש וממלא הטופס. עיצוב ובניית הטופס כרוכים בתהליך
+            קל עם עקומת למידה מזערית, כך שכל אחד יוכל לעשות שימוש יעיל במערכת
+            ולקבל מידע מלקוחותיו וקהל היעד שלו.
+          </p>
+        </div>
+        <div class="flex justify-center py-6">
+          <PathDown />
+        </div>
+        <div>
+          <div class="max-w-4xl mx-auto text-center mb-1">
+            <h2 class="mb-6 text-3xl italic antialiased">
+              עזרו לנו לפתח את <mark>formali</mark>, ספרו לנו מה הכי הייתם רוצים
+              במערכת <mark>שלכם.</mark>
+            </h2>
+            <a
+              id="cta-reg-bottom"
+              href="/sign-up"
+              class="button-xl button-primary inline-block mx-auto text-2xl bg-yellow-400 border-2 border-black drop-shadow-3xl hover:drop-shadow-[4px_4px_0_#000000] px-10 py-2 text-black rounded-md"
+              up-layer="new"
+              up-target=".content"
+              up-position="bottom"
+              up-align="right"
+              size="grow"
+            >
+              הצטרף לרשימה
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 </Layout>
 
 <style>
   :root {
-     --tw-border-spacing-x: 0;
+    --tw-border-spacing-x: 0;
     --tw-border-spacing-y: 0;
     --tw-translate-x: 0;
     --tw-translate-y: 0;
@@ -96,25 +172,45 @@ import Layout from '../layouts/Layout.astro';
     --tw-ring-inset: ;
     --tw-ring-offset-width: 0px;
     --tw-ring-offset-color: #fff;
-    --tw-ring-color: rgba(59,130,246,.5);
+    --tw-ring-color: rgba(59, 130, 246, 0.5);
     --tw-ring-offset-shadow: 0 0 #0000;
     --tw-ring-shadow: 0 0 #0000;
     --tw-shadow: 0 0 #0000;
     --tw-shadow-colored: 0 0 #0000;
   }
 
+
+   #main {
+    height: 6rem;
+    top: 80px;
+   }
+
   .bg-paper {
-  background: transparent url('/tear.png') top repeat-x;
-  background-size: 1280px;
-  height: 182px;
-  width: 100%;
+    background: transparent url("/tear.png") top repeat-x;
+    background-size: 1280px;
+    height: 182px;
+    width: 100%;
   }
   .flip-y {
     --tw-scale-y: -1;
-    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+      rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+      scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
   .bg-local {
-      background-image: url('/header-bg.png');
+    background-image: url("/header-bg.png");
+    background-blend-mode: overlay;
   }
 
+  h1, h2 {
+    font-family: "Suez One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .bg-noise {
+    background: #f9f9f9 url('/noise.png');
+    background-position: top;
+    background-size: 1132px 1024px;
+  }
 </style>

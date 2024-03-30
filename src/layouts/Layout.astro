@@ -33,7 +33,10 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly } = As
 		<!-- End Google Tag Manager -->
 
 
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Suez+One&display=swap" rel="stylesheet">
+    
 
 		{unpoly !== false && 
 			<script src="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly.min.js" />
@@ -50,7 +53,7 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly } = As
 		<!-- End Google Tag Manager (noscript) -->
 	 {
 		topbar &&
-			<div dir="rtl" class="sticky inset-0 text-sm shadow-md z-50 py-4 text-center md:text-start bg-gradient-to-r from-pink-hot to-purple-new text-white">
+			<div dir="rtl" class="sticky hidden inset-0 text-sm shadow-md z-50 py-4 text-center md:text-start bg-gradient-to-r from-pink-hot to-purple-new text-white">
 				<div class="max-w-6xl mx-auto">
 					<p class="font-[Miriam Libre] tracking-[1.2px] font-bold prose mx-auto px-10 md:px-20">
 					🚀
@@ -94,42 +97,42 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly } = As
     scroll-snap-align: start;
   }
 
-			 .button-xl {
-				 border-radius: .25em;
-				 cursor: pointer;
-				 font-size: 1.125rem;
-				 font-weight: 700;
-				 line-height: 1.75rem;
-				 position: relative;
-				 text-align: center;
-				 white-space: nowrap;
-				 transition: all .05s ease-in;
-			 }
-			 .button-xl:hover {
-				--tw-shadow: 1px 1px 0 #002f3c;
-			 }
+  .button-xl {
+    border-radius: .25em;
+    cursor: pointer;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.75rem;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    transition: all .05s ease-in;
+  }
+  .button-xl:hover {
+  --tw-shadow: 1px 1px 0 #002f3c;
+  }
 
-			 .button-xl:hover, .button-primary:hover {
-				 box-shadow: 0 0 0 -1px #fff, 0 0 0 #fff;
-				 transform: translate(3px, 3px);
-			 }
+  .button-xl:hover, .button-primary:hover {
+    box-shadow: 0 0 0 -1px #fff, 0 0 0 #fff;
+    transform: translate(3px, 3px);
+  }
 
-			 .button-primary {
-					--tw-border-opacity: 1;
-				 background: rgba(255, 255, 255, 1);
-					 border-width: 2px;
-				 border-color: rgb(25, 26, 27);
-				 color: rgb(25, 25, 27);
-				 box-shadow: 3px 3px 0 #fff, 3px 3px 0 #fff;
-			 }
-			 .button-secondary {
-			 --tw-secondary: rgb(1, 215, 176);
-				 background: var(--tw-secondary);
-				 border-width: 2px;
-				 border-color: rgb(25, 26, 27);
-				 color: rgb(25, 25, 27);
-				 box-shadow: 3px 3px 0 var(--tw-secondary), 3px 3px 0 var(--tw-secondary);
-			 }
+  .button-primary {
+    --tw-border-opacity: 1;
+    background: rgba(255, 255, 255, 1);
+      border-width: 2px;
+    border-color: rgb(25, 26, 27);
+    color: rgb(25, 25, 27);
+    box-shadow: 3px 3px 0 #fff, 3px 3px 0 #fff;
+  }
+  .button-secondary {
+  --tw-secondary: rgb(1, 215, 176);
+        background: var(--tw-secondary);
+        border-width: 2px;
+        border-color: rgb(25, 26, 27);
+        color: rgb(25, 25, 27);
+        box-shadow: 3px 3px 0 var(--tw-secondary), 3px 3px 0 var(--tw-secondary);
+      }
 
 
 .button {
@@ -156,7 +159,7 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly } = As
     transition-duration: .15s;
     transition-timing-function: cubic-bezier(.4,0,.2,1);
     transition: all .05s ease-in!important;
-    white-space: nowrap
+    white-space: nowrap;
 }
 
 .button,.button:hover {
@@ -220,11 +223,4 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly } = As
   .bg-gradient-to-r {
     background-image: linear-gradient(to left, var(--tw-gradient-from), var(--tw-gradient-to));
   }
-</style>
-
-<style>
-	.logo {
-		width: 186px;
-	}
-
 </style>
