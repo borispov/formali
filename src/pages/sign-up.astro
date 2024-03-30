@@ -16,13 +16,13 @@ const paraText = isInterested ? welcomeText : nonWelcomeText
   <!-- Modal content -->
   <div class="flex items-center justify-center flex-col bg-white rounded-lg relative dark:bg-gray-700">
     <div class="flex justify-end p-2">
-        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="authentication-modal">
+        <button id="cta-submit" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="authentication-modal">
         </button>
     </div>
     <form 
         name="sign-up"
         method="POST"
-        action="/thanks"
+        action="/thanks?source=registration"
         data-netlify="true"
         netlify
         class="form space-y-6 px-6 lg:px-8 pb-4 sm:pb-6 xl:pb-8" 
