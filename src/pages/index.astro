@@ -16,7 +16,7 @@ import Layout from '../layouts/Layout.astro';
                </div>
               <!-- Menu -->
                 <div class="flex space-x-4">
-                  <a href="/sign-up" up-target=".content" up-position="bottom" size="grow" up-align="right" up-layer="new" class="button button-primary p-2 block text-base">
+                  <a id="cta-reg-top" href="/sign-up" up-target=".content" up-position="bottom" size="grow" up-align="right" up-layer="new" class="button button-primary p-2 block text-base">
                     הרשמה
                   </a>
                 </div>
@@ -35,11 +35,11 @@ import Layout from '../layouts/Layout.astro';
                           עם <span class="italic font-semibold">formali</span> אפשר לבנות טפסים <span class="underline underline-offset-4">ללא הגבלה</span> ולחסוך זמן יקר.
                         </p>
                         <div class="lg:flex lg:items-center gap-6 mt-10 text-center">
-                            <a href="/sign-up" class="button-xl button-primary inline-block mx-auto text-2xl bg-yellow-400 border-2 border-black drop-shadow-3xl hover:drop-shadow-[4px_4px_0_#000000] px-10 py-2 text-black rounded-md" up-layer="new" up-target=".content" up-position="bottom" up-align="right" size="grow" >
+                            <a id="cta-reg-hero" href="/sign-up" class="button-xl button-primary inline-block mx-auto text-2xl bg-yellow-400 border-2 border-black drop-shadow-3xl hover:drop-shadow-[4px_4px_0_#000000] px-10 py-2 text-black rounded-md" up-layer="new" up-target=".content" up-position="bottom" up-align="right" size="grow" >
                                 הצטרף לרשימה
                             </a>
                             <div class="content"></div>
-                            <a href="/test" target="_blank" class="text-teal-100 underline group transition-all hover:no-underline inline-block mx-auto mt-4 lg:mt-0 text-sm">
+                            <a id='cta-test' href="/test" target="_blank" class="text-teal-100 underline group transition-all hover:no-underline inline-block mx-auto mt-4 lg:mt-0 text-sm">
                                 לבינתיים, תראו דוגמא, (עדיין בפיתוח) <span class="hidden group-hover:inline">👀</span>
                             </a>
                         </div>
