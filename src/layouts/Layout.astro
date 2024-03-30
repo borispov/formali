@@ -24,6 +24,14 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly } = As
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Miriam+Libre:wght@400;700&family=Road+Rage&display=swap" rel="stylesheet">
 
+		<!-- Google Tag Manager -->
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-ND28Q7MD');</script>
+		<!-- End Google Tag Manager -->
+
 		<!-- Google tag (gtag.js) -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-1RYVPQ8BRD"></script>
 		<script>
@@ -34,6 +42,8 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly } = As
 			gtag('config', 'G-1RYVPQ8BRD');
 		</script>
 
+
+
 		{unpoly !== false && 
 			<script src="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly.min.js" />
 			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly.min.css" />
@@ -43,6 +53,10 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly } = As
 		<title>{title}</title>
 	</head>
 	<body>
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-ND28Q7MD"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
 	 {
 		topbar &&
 			<div dir="rtl" class="sticky inset-0 text-sm shadow-md z-50 py-4 text-center md:text-start bg-gradient-to-r from-pink-hot to-purple-new text-white">
