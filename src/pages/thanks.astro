@@ -1,14 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-const someData = {
-  msg: 'hello world'
-}
 ---
 
 <Layout title="תודה על הרשמתכם">
   <div class="h-lvh bg-neutral-900 text-white flex flex-col align-center items-center justify-center" dir="rtl">
-    <div x-transition:enter.duration.400ms x-data="data" class="shadow-md max-2-xl w-[400px] py-10 px-8 text-center">
+    <div x-transition:enter.duration.400ms class="shadow-md max-2-xl w-[400px] py-10 px-8 text-center">
       <h1 class="font-black text-4xl block leading-none tracking-tight">
         האם אהבתם את <span class="text-6xl font-brush font-normal antialiased text-transparent leading-none py-1 bg-clip-text bg-gradient-to-r from-pink-hot to-purple-new">formali</span>?
       </span>
@@ -25,15 +21,6 @@ const someData = {
   </div>
 </Layout>
 
-
-<script define:vars={{ data: someData }}>
-  document.addEventListener('alpine:init', () => {
-    Alpine.data('data', () => ({
-      data,
-    }))
-  })
-
-</script>
 
 <style>
   button, a {
