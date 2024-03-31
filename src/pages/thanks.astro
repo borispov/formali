@@ -1,6 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+import { Resend } from 'resend'
+
+if (Astro.request.method === 'POST' ) {
+  try {
+    const resend = new Resend(import.meta.env.RESEND)
+    const data = await Astro.request.formData()
+    const email = data.get('email')
+    resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: 'boristofu@gmail.com',
+      subject: 'New Signup For Formali!',
+      html: `<h1>New Signup For Formali</h1><p>${email} - has signed up.</p>`
+    })
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    }
+    
+  }
+
+}
+
+
 const source = Astro.url.searchParams.get('source')
 ---
 
@@ -26,6 +49,11 @@ const source = Astro.url.searchParams.get('source')
           <p class="mt-4 text-red font-thin italic text-sm">
             ואם תרצו לכתוב: boristofu@gmail.com
           </p>
+
+          <hr class="divider mt-4">
+          <a href="/" class="button mt-4 button-primary w-1/3">
+            חזרה
+          </a>
         </div> ||
         <h1 class="font-black text-4xl block leading-none tracking-tight">
           האם אהבתם את <span class="text-6xl font-brush font-normal antialiased text-transparent leading-none py-1 bg-clip-text bg-gradient-to-r from-pink-hot to-purple-new">formali</span>?
@@ -41,6 +69,8 @@ const source = Astro.url.searchParams.get('source')
         </div>
         <div class="content"></div>
       }
+
+
     </div>
   </div>
 </Layout>

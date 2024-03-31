@@ -19,6 +19,7 @@
     "alpinejs": "^3.13.7",
     "astro": "^4.5.5",
     "daisyui": "^4.7.3",
+    "resend": "^3.2.0",
     "svelte": "^4.2.12",
     "typescript": "^5.4.2",
     "unocss": "^0.58.6",
