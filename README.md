@@ -1,7 +1,21 @@
 # TODOS:
 - [x] Implement SelectInput as a list of cards-like items instead of <select>
-- [ ] Implement a validation upon each ```nextStep``` function call, i.e,
-    after each step completeion or attempt to proceed.
+- [x] Implement a validation upon each ```nextStep``` function call, i.e,
+- [ ] Add More Images mimicking a form builder UI
+- [ ] Add those images to the landing page
+- [x] Write a compelling copy section for the landing page
+- [ ] Add SVGs and art to various sections to augment the experience.
+- [x] Add TextAreas with basic WYSIWYG elements (Bold, Italic, H2,H3,P for sizings) or maybe enable markdown? nah..
+- [x] Add YouTube Embeds As Fields or Descriptions // added Link
+- [x] DRAG & DROP functionality for side panel
+ADD BLOCKS:
+- [ ] Create a block/form step creation modal
+
+# BUILDER:
+to HTMX or to SVELTE?
+IF HTMX:
+State is managed in the server.
+Every modification means a server trip to update the state.
 
 # Welcome
 

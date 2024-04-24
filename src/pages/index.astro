@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import PathDown from "../components/art/PathDown.astro";
+import CurlyPath from "../components/art/CurlyPath.astro";
 
 const oldDemo = 'text-teal-100 underline group transition-all hover:no-underline inline-block mx-auto mt-4 lg:mt-0 text-sm'
 ---
@@ -112,7 +113,7 @@ const oldDemo = 'text-teal-100 underline group transition-all hover:no-underline
         </div>
         <div class="max-w-3xl pb-3 mx-auto">
           <p class="text-center text-base md:text-2xl py-8">
-            הטפסים של formali מתאימים ונראים טוב במובייל וגם בגסקטופ עם דגש
+            הטפסים של formali מתאימים ונראים טוב במובייל וגם בדסקטופ עם דגש
             משמעותי על חווית המשתמש וממלא הטופס. עיצוב ובניית הטופס כרוכים בתהליך
             קל עם עקומת למידה מזערית, כך שכל אחד יוכל לעשות שימוש יעיל במערכת
             ולקבל מידע מלקוחותיו וקהל היעד שלו.
@@ -141,6 +142,68 @@ const oldDemo = 'text-teal-100 underline group transition-all hover:no-underline
             </a>
           </div>
         </div>
+        <div class="flex max-w-2xl mx-auto items-center mt-10 md:mt-30 gap-2 pb-20 md:pr-20 pr-10">
+          <CurlyPath />
+          <div class="pb-8 flex-1 max-w-lg md:pr-22">
+            <h2 class="text-2xl mt-2 leading-snug md:text-center lg:text-right font-bold italic antialiased">
+              10 סוגי בלוקים שונים שיתנו מענה לכל סוג של שאלה ותשובה
+            </h2>
+          </div>
+        </div>
+
+        <div class="max-w-2xl mx-auto -mt-20 lg:mt-0 z-10 relative">
+          <div class="block md:flex gap-2 text-slate-100 p-6 max-w-lg max-w-[400px] mx-auto bg-neutral-800 rounded-md shadow-[10px_10px_0_-1px_#5c5a5a,10px_10px_0_#191a1b,20px_20px_0_-1px_#e1e1e1,20px_20px_0_#191a1b]">
+            <ul class="list-none m-0 p-2 flex-col flex gap-4">
+              <li class="flex items-center gap-2">
+                <div class="i-mdi:layers-outline w-1.5em h-1.5em"></div>
+                בלוק תיאור
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="i-mdi:format-text w-1.5em h-1.5em"></div>
+                טקסט
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="i-mdi:email-outline w-1.5em h-1.5em"></div>
+                אימייל
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="i-mdi:checkbox-marked-outline w-1.5em h-1.5em"></div>
+                בחירה בודדת
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="i-mdi:check-all w-1.5em h-1.5em"></div>
+                בחירה מרובה
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="i-mdi:form-dropdown w-1.5em h-1.5em"></div>
+                תפריט נופל
+              </li>
+            </ul>
+            <ul class="list-none m-0 md:mr-6 p-2 flex-col flex gap-4">
+              <li class="flex items-center gap-2">
+                <div class="i-mdi:calendar-outline w-1.5em h-1.5em"></div>
+                תאריך
+              </li>
+              <!-- <li class="flex items-center gap-2">
+                <div class="i-mdi:signature-freehand w-1.5em h-1.5em"></div>
+                חתימה דיגיטלית
+              </li> -->
+              <li class="flex items-center gap-2">
+                <div class="i-mdi:email-outline w-1.5em h-1.5em"></div>
+                דירוג
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="i-mdi:phone w-1.5em h-1.5em"></div>
+                מס׳ טלפון
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="i-mdi:file-upload w-1.5em h-1.5em"></div>
+                העלאת קובץ
+              </li>
+            </ul>
+          </div>
+        </div>
+
       </div>
     </div>
   </main>

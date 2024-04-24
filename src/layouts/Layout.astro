@@ -14,7 +14,7 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly, trans
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="rtl">
 	<head>
 		<meta charset="UTF-8" />
     <ViewTransitions />
@@ -39,7 +39,7 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly, trans
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Suez+One&display=swap" rel="stylesheet">
-    
+		 <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>   
 
 		{unpoly !== false && 
 			<script src="https://cdn.jsdelivr.net/npm/unpoly@3.7.3/unpoly.min.js" />
@@ -87,6 +87,10 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly, trans
 			 filter: drop-shadow(4px 4px 0 #000);
 	}
 
+	.drop-shadow-5xl {
+			 filter: drop-shadow(9px 9px 0 #000);
+	}
+
   .snap {
     scroll-snap-type: var(--scroll-snap-direction) var(--scroll-snap-constraint);
   }
@@ -100,7 +104,60 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly, trans
     scroll-snap-align: start;
   }
 
+  .button-tiny {
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1;
+    --tw-shadow: 3px 3px 0 #002f3c;
+    --tw-shadow-colored: 3px 3px 0 var(--tw-shadow-color);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    border-radius: .25em;
+    cursor: pointer;
+    font-size: 0.625rem;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    transition: all .05s ease-in;
+
+    padding: .25rem .5rem;
+    color: rgb(25 26 27);
+    background-color: rgb(250, 247, 125);
+
+    border-width: 1px;
+    display: inline-flex;
+    -webkit-text-decoration-line: none;
+    text-decoration-line: none;
+    transition-duration: .15s;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition: all .05s ease-in!important;
+    border-width: 0.5px;
+  }
+
+  .button-tiny.button-primary {
+    box-shadow: 1px 1px 0 #fff, 1px 1px 0 #fff !important;
+    border-width: 1px;
+  }
+
+  .button-tiny.button-primary:hover {
+    box-shadow: 1px 1px 0 #fff, 1px 1px 0 #fff !important;
+    border-width: 1px;
+    transform: translate(1px,1px)
+  }
+
+  .button-tiny.button-secondary {
+    box-shadow: 1px 1px 0 var(--tw-secondary), 1px 1px 0 var(--tw-secondary) !important;
+    border-width: 1px;
+  }
+
+  .button-tiny.button-secondary:hover {
+    box-shadow: 1px 1px 0 var(--tw-secondary), 1px 1px 0 var(--tw-secondary) !important;
+    transform: translate(1px,1px);
+    border-width: 1px;
+  }
+
   .button-xl {
+		display: inline-flex;
     border-radius: .25em;
     cursor: pointer;
     font-size: 1.125rem;
@@ -123,46 +180,46 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly, trans
   .button-primary {
     --tw-border-opacity: 1;
     background: rgba(255, 255, 255, 1);
-      border-width: 2px;
+    border-width: 2px;
     border-color: rgb(25, 26, 27);
     color: rgb(25, 25, 27);
     box-shadow: 3px 3px 0 #fff, 3px 3px 0 #fff;
   }
   .button-secondary {
-  --tw-secondary: rgb(1, 215, 176);
-        background: var(--tw-secondary);
-        border-width: 2px;
-        border-color: rgb(25, 26, 27);
-        color: rgb(25, 25, 27);
-        box-shadow: 3px 3px 0 var(--tw-secondary), 3px 3px 0 var(--tw-secondary);
-      }
+      --tw-secondary: rgb(1, 215, 176);
+      background: var(--tw-secondary);
+      border-width: 2px;
+      border-color: rgb(25, 26, 27);
+      color: rgb(25, 25, 27);
+      box-shadow: 3px 3px 0 var(--tw-secondary), 3px 3px 0 var(--tw-secondary);
+  }
 
 
 .button {
-    --tw-bg-opacity: 1;
-    --tw-text-opacity: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    --tw-shadow: 3px 3px 0 #002f3c;
-    --tw-shadow-colored: 3px 3px 0 var(--tw-shadow-color);
-	 background-color: rgb(250, 247, 125);
-    border-radius: .25rem;
-    border-width: 2px;
-    color: rgb(25 26 27);
-    cursor: pointer;
-    display: inline-block;
-    font-size: .875rem;
-    font-weight: 700;
-    line-height: 1.25rem;
-    padding: .25rem 1rem;
-    position: relative;
-    text-align: center;
-    -webkit-text-decoration-line: none;
-    text-decoration-line: none;
-    transition-duration: .15s;
-    transition-timing-function: cubic-bezier(.4,0,.2,1);
-    transition: all .05s ease-in!important;
-    white-space: nowrap;
+	--tw-bg-opacity: 1;
+	--tw-text-opacity: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	--tw-shadow: 3px 3px 0 #002f3c;
+	--tw-shadow-colored: 3px 3px 0 var(--tw-shadow-color);
+	background-color: rgb(250, 247, 125);
+	border-radius: .25rem;
+	border-width: 2px;
+	color: rgb(25 26 27);
+	cursor: pointer;
+	display: inline-flex;
+	font-size: .875rem;
+	font-weight: 700;
+	line-height: 1.25rem;
+	padding: .25rem 1rem;
+	position: relative;
+	text-align: center;
+	-webkit-text-decoration-line: none;
+	text-decoration-line: none;
+	transition-duration: .15s;
+	transition-timing-function: cubic-bezier(.4,0,.2,1);
+	transition: all .05s ease-in!important;
+	white-space: nowrap;
 }
 
 .button,.button:hover {
@@ -205,7 +262,7 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly, trans
     --tw-text-opacity: 1;
 		 background-color: rgb(255,255,255);
 		 border-color: rgb(25,26,27);
-    border-width: 2px;
+	border-width: 2px;
 	 box-shadow: 3px 3px 0 -1px #fff, 3px 3px 0 #fff;
 	 color: rgb(25,26,27);
 }

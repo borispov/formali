@@ -1,14 +1,14 @@
 ---
 export const partial = true;
-import FormBtnContainer from '../FormBtnContainer.astro';
-const { error } = Astro.props
+const { field } = Astro.props
+const { error, question, description, type, placeholder, required } = field
 ---
 
-<fieldset hx-swap="none" x-data="{init() {this.$data.currentBlock = field.id }}">
+<fieldset hx-swap="none" x-data="data" hx-target="this">
   <label 
-    x-text="field.question" 
     class="text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal">
-    <sup x-show="{field.required}" class="text-red-600"> * </sup>
+    {question}
+    <sup x-show="field.required" class="text-red-600"> * </sup>
   </label>
 
   <template x-if="field.description">
@@ -18,19 +18,18 @@ const { error } = Astro.props
   </template>
 
   <input
-    hx-post="/test"
-    :id="$id('input')"
-    :name="$id('input')"
+    name={field.id}
+    id={field.id}
+    hx-post="/form"
     :type="field.type"
     :placeholder="field.placeholder"
-    :required="field.required"
+    required={required}
     class={`
     [ question-input__text transition-all bg-transparent text-gray-800 ]
     [ border-b-2 border-b-neutral-600 mt-8 pb-2 ] 
     [ placeholder:italic placeholder:text-neutral-500 placeholder:text-xl lg:placeholder:text-3xl focus:border-b-neutral-100 outline-0 ]`}
     />
   <div id="input-error" class="error hidden mt-2 p-1 text-red-600 bg-yellow-200" />
-  <FormBtnContainer text="המשך" />
 </fieldset>
 
 <style>
@@ -46,3 +45,13 @@ const { error } = Astro.props
     }
   }
 </style>
+
+
+<script is:inline define:vars={{ field: field }} >
+  console.log(field)
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('data', () => ({
+      field: field,
+    }))
+  })
+</script>

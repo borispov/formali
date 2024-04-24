@@ -1,0 +1,14 @@
+---
+import Block from "../../../components/Builder/Block.astro";
+
+if (Astro.request.method === 'GET') {
+  console.log("HELLLLOOOOOOOOOOOOOOOOOO")
+  return new Response(
+    JSON.stringify({ message: "HELLO"}), { status: 200}
+  );
+}
+---
+
+<div>
+  HELLO GET /api/builder/block
+</div>

@@ -1,22 +1,21 @@
 ---
-import FormBtnContainer from '../FormBtnContainer.astro';
-
-const { className } = Astro.props;
+export const partial = true;
+const { field } = Astro.props
+const { error, question, description, type, placeholder, required, options } = field
 ---
 
-<div>
-  <div x-text="field.question" class={"text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal " + className}>
-      <sup class="text-red-600"> * </sup>
+<fieldset>
+  <div x-text="field.question" class="text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal">
+    {question}
+    <sup x-show="{field.required}" class="text-red-600"> * </sup>
   </div>
   <p 
     x-text="field.description" 
     class="text-lg font-normal leading-relaxed text-neutral-600" 
   />
 
-    <fieldset x-data="{ checked: ''}" class="flex flex-col gap-2">
-    <template 
-      class="mt-6" 
-      x-for="option in field.options">
+    <div x-data="{ checked: ''}" class="flex flex-col gap-2">
+    <template class="mt-6" x-for="option in field.options">
 
       <div class="mt-6 inline-block">
       <label 
@@ -37,14 +36,14 @@ const { className } = Astro.props;
         :class="isChecked ? 'border-neutral-600 ring-indigo-500' : ''"
       >
         <input
-            x-model="checked"
-            :text="option"
-            :id="id"
-            :name="id"
-            required="field.required"
-            type="radio"
-            class="sr-only" 
-            @click="checked = option; currentStepValue = option"
+          x-model="checked"
+          :text="option"
+          :id="id"
+          :name="id"
+          required="field.required"
+          type="radio"
+          class="sr-only" 
+          @click="checked = option"
           />
           <span class="flex flex-1" x-text="option" />
 
@@ -60,28 +59,19 @@ const { className } = Astro.props;
         </label>
       </div>
     </template>
-    <div x-data="{
-         id: $id('input'),
-         show: false,
-         defaultMessage: 'שדה זה הינו חובה למילוי',
-         handleErr(e){
-         if (e && e.detail && e.detail.id && e.detail.id === this.id){
-          this.show = true
-         }
-         }
-         }" x-show="show"">
-      <span x-text="defaultMessage" />
+      <div class="error hidden" />
     </div>
-  </fieldset>
+  </div>
 
-  <FormBtnContainer text="המשך" />
-</div>
+  <button type="submit" hx-post="/form">
+    המשך
+  </button>
+</fieldset>
 
-<style>
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-</style>
+<script is:inline define:vars={{ field: field }} >
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('data', () => ({
+      form: field,
+    }))
+  })
+</script>

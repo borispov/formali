@@ -13,14 +13,23 @@
   "dependencies": {
     "@astrojs/alpinejs": "^0.4.0",
     "@astrojs/netlify": "^5.2.0",
-    "@astrojs/svelte": "^5.2.0",
+    "@astrojs/svelte": "^5.4.0",
+    "@julr/unocss-preset-forms": "^0.1.0",
+    "@tiptap/core": "^2.3.0",
+    "@tiptap/extension-focus": "^2.3.0",
+    "@tiptap/extension-link": "^2.3.0",
+    "@tiptap/extension-underline": "^2.3.0",
+    "@tiptap/extension-youtube": "^2.3.0",
+    "@tiptap/pm": "^2.3.0",
+    "@tiptap/starter-kit": "^2.3.0",
     "@types/alpinejs": "^3.13.9",
     "@unocss/reset": "^0.58.6",
     "alpinejs": "^3.13.7",
     "astro": "^4.5.5",
     "daisyui": "^4.7.3",
     "resend": "^3.2.0",
-    "svelte": "^4.2.12",
+    "svelte": "next",
+    "svelte-dnd-action": "^0.9.43",
     "typescript": "^5.4.2",
     "unocss": "^0.58.6",
     "unocss-preset-daisy": "^7.0.0",
@@ -28,6 +37,8 @@
   },
   "devDependencies": {
     "@iconify-json/mdi": "^1.1.64",
-    "@unocss/preset-icons": "^0.58.7"
+    "@unocss/preset-icons": "^0.58.7",
+    "@unocss/preset-mini": "^0.59.2",
+    "svelte-awesome-color-picker": "^3.0.6"
   }
 }

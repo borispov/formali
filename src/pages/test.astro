@@ -1,20 +1,23 @@
 ---
-export const prerender = true
+// export const prerender = true
+
+import { z } from 'astro:content'
 
 import Layout from '../layouts/Layout.astro';
 import TextInput from '../components/alpine/TextInput.astro';
 import Select from '../components/alpine/Select.astro';
+import ErrorNotification from '../components/alpine/ErrorNotification.astro';
 
 const sampleForm = [
   {
-    type: 'text',
-    label: 'ברוכים הבאים, תודה על זמנכם.',
-    subLabel: 'מילוי הטופס יקח רק 5 דקות מזמנכם ויעזור לנו באופן משמעותי בקידום ודיוק המערכת שלנו.',
+    type: 'descriptor',
+    question: 'ברוכים הבאים, תודה על זמנכם.',
+    description: 'מילוי הטופס יקח רק 5 דקות מזמנכם ויעזור לנו באופן משמעותי בקידום ודיוק המערכת שלנו.',
     buttonText: 'התחל'
   },
   {
     type: 'select',
-    label: 'תחום התמחות החברה שלכם',
+    question: 'תחום התמחות החברה שלכם',
     required: true, 
     options: [
       'שיווק ופרסום דיגיטל', 'רשתות חברתיות', 'ייעוץ ושירותים פיננסיים', 'אחר'
@@ -22,22 +25,22 @@ const sampleForm = [
   },
   {
     type: 'email',
-    label: 'לאיזה אימייל תרצו שנשלח לכם הודעה?',
-    subLabel: 'שורת תיאור נוספת, ניתן להשאירה ריקה.',
+    question: 'לאיזה אימייל תרצו שנשלח לכם הודעה?',
+    description: 'שורת תיאור נוספת, ניתן להשאירה ריקה.',
     placeholder: 'name@example.com',
     required: true,
   },
   {
-    type: 'textInput',
-    label: 'רשמו את שמכם הפרטי',
-    subLabel: '',
+    type: 'text',
+    question: 'רשמו את שמכם הפרטי',
+    description: '',
     placeholder: 'גדעון בן יואש',
     required: true,
   },
   {
     type: 'select', 
-    label: 'אלו מבין האפשרויות הכי תואם אתכם?',
-    subLabel: 'בחרו אפשרות אחת בלבד',
+    question: 'אלו מבין האפשרויות הכי תואם אתכם?',
+    description: 'בחרו אפשרות אחת בלבד',
     required: false,
     options: [
       "חיפשתי בול מערכת כזו! פשוט תקחו את הכסף שלי.",
@@ -47,26 +50,45 @@ const sampleForm = [
     ],
   },
   {
-    type: 'text',
-    label: 'הגעתם לסוף :-)',
-    subLabel: 'כעת, נסו לשגר את הטופס... קדימה!',
+    type: 'descriptor',
+    question: 'הגעתם לסוף :-)',
+    description: 'כעת, נסו לשגר את הטופס... קדימה!',
     buttonText: 'שלח טופס'
   }
-]
+] 
+
+const emailSchema = z.string().email()
+// when to initiate a post reueqst?
+// to render the next step? 
+const errors = {}
+if (Astro.request.method === 'POST') {
+  const fd = await Astro.request.formData()
+  const inputFieldName = Astro.request.headers.get('hx-trigger')
+  const email = fd.get(inputFieldName) // the email value
+  try {
+    emailSchema.parse(email)
+  } catch(err) {
+    // make it a CONSTANT somewhere else
+    const errorMsg = encodeURI('כתובת מייל לא תקינה, אנא תקנו ונסו שנית.')
+    return Astro.redirect(`/api/form/error-msg?msg=${errorMsg}`, 302)
+  }
+}
+
 ---
 <Layout title="demo formali">
   <div id="full-screen" class="relative max-h-screen overflow-y-scroll snap snap-y snap-mandatory">
-    <form x-data="data" dir='rtl'>
+    <form x-data="data" dir='rtl' method="POST">
         <!-- Introduction Note -->
         <template x-for="(field, index) in form" :key="index">
           <section 
+              x-init="this.$data.currentBlock = field.id"
               x-transition
               x-show="index == currentStep"
               class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
-            <template x-if="field.type=='text'">
+            <template x-if="field.type=='descriptor'">
                 <div class="flex flex-col gap-8 items-center">
-                  <h2 x-text="field.label" class="text-60px max-w-xl font-bold leading-tight" />
-                  <p x-text="field.subLabel" />
+                  <h2 x-text="field.question" class="text-60px max-w-xl font-bold leading-tight" />
+                  <p x-text="field.description" />
                   <template x-if="currentStep == (form.length - 1)">
                     <a href="/thanks" x-text="field.buttonText" class="w-36 bg-purple-700 font-bold px-6 py-2 rounded-lg text-white" />
                   </template>
@@ -75,7 +97,7 @@ const sampleForm = [
                   </template>
                 </div>
             </template>
-            <template x-if="field.type == 'textInput' || field.type == 'email'">
+            <template x-if="field.type == 'text' || field.type == 'email'">
               <TextInput />
             </template>
             <template x-if="field.type == 'select'">
@@ -86,7 +108,6 @@ const sampleForm = [
 
         </template>
         <!-- Thank You Note -->
-
         <div class="absolute sticky flex gap-4 bottom-[5%] right-[5%] w-60 p-4 rounded-md">
           <button 
             @click.prevent="nextStep" 
@@ -105,17 +126,44 @@ const sampleForm = [
 </Layout>
 
 
-<script define:vars={{ form: sampleForm }}>
+<script is:inline define:vars={{ form: sampleForm }} >
+
   document.addEventListener('alpine:init', () => {
+
+    let parsedForm = null
+    const jsonPreviewFormData = localStorage.getItem('latest_form')
+    if (jsonPreviewFormData) {
+      parsedForm = JSON.parse(jsonPreviewFormData)
+    } 
+
     Alpine.data('data', () => ({
-      form,
+      form: parsedForm.formSteps ?? form,
       currentStep: 0,
+      currentBlock: '',
+      currentStepValue: '',
+
+      getValue() {
+        const block = this.form[this.currentStep]
+        let value 
+        switch (true) {
+          case 'select':
+            value = document.getElementsByName('text-' + block.id);
+            break;
+          default:
+            value = document.getElementsByName('text-' + block.id);
+            break;
+        }
+        return value
+      },
+
       prevStep() {
        if (this.currentStep > 0) {
             this.currentStep--;
         }
       },
       nextStep() {
+        // let v = document.getElementsByName(this.currentBlock)
+        // console.log(v)
         if (this.currentStep < this.form.length - 1) {
           this.currentStep++
         }

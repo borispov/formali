@@ -3,6 +3,8 @@ import UnoCSS from 'unocss/astro';
 import presetIcons from '@unocss/preset-icons'
 import { presetUno } from 'unocss';
 import svelte from "@astrojs/svelte";
+import { presetForms } from '@julr/unocss-preset-forms';
+import presetMini from '@unocss/preset-mini';
 import alpine from '@astrojs/alpinejs'
 
 import netlify from "@astrojs/netlify";
@@ -16,7 +18,9 @@ export default defineConfig({
     UnoCSS({
       presets: [
         presetUno(),
-        presetIcons()
+        presetMini(),
+        presetIcons(),
+        presetForms(),
     ],
       injectReset: true
     }), 

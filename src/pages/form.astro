@@ -1,0 +1,47 @@
+---
+import Layout from "../layouts/Layout.astro"
+import { formData } from "../sample.ts"
+import Input from './partials/input.astro'
+import SelectInput from './partials/select.astro'
+
+import { z } from 'astro:content'
+const emailSchema = z.string().email()
+
+let currenStep = 0
+let formStep = formData.formSteps[currenStep];
+
+if (Astro.request.method === 'POST') {
+  const fd = await Astro.request.formData()
+  const inputFieldName = Astro.request.headers.get('hx-trigger')
+  const email = fd.get(inputFieldName) // the email value
+  try {
+    emailSchema.parse(email)
+    currenStep++
+  } catch(err) {
+    currenStep++
+    console.log(err.message)
+    // make it a CONSTANT somewhere else
+    const errorMsg = encodeURI('כתובת מייל לא תקינה, אנא תקנו ונסו שנית.')
+    return Astro.redirect(`/api/form/error-msg?msg=${errorMsg}`, 302)
+  }
+}
+
+---
+
+<Layout title="builder">
+  <div id="full-screen" class="relative max-h-screen overflow-y-scroll snap snap-y snap-mandatory">
+    <form action="/form" dir="rtl" method="POST" hx-target="this" hx-trigger="submit">
+      <section class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
+        {
+          (formStep.type === 'text' || formStep.type === 'email') &&
+          <Input field={formStep} /> ||
+          (formStep.type === 'select') &&
+          <SelectInput field={formStep} />
+        }
+        <button type="submit" hx-post="/form">
+          המשך
+        </button>
+      </section>
+    </form>
+  </div>
+</Layout>
