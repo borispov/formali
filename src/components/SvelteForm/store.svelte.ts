@@ -1,4 +1,4 @@
-type FormStep = {
+export type FormStep = {
   id: string;
   question: string;
   type: string;

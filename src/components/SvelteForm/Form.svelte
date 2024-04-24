@@ -2,6 +2,7 @@
   import { fade } from "svelte/transition";
   import ErrorNotif from "./ErrorNotif.svelte";
   import createFormState from "./formstate.svelte.ts";
+  import Select from "./Select.svelte";
 
   const sampleForm = [
     {
@@ -105,6 +106,11 @@
     const currentBlockType = currentBlock.type;
 
     switch (true) {
+      case currentBlockType === "text":
+        currentBlock.required && currentBlock.value.length < 1
+          ? formState.setError(true, `שדה חובה`)
+          : formState.incStep();
+        break;
       case currentBlockType === "email":
         if (emailValidation()) {
           formState.resetError();
@@ -131,7 +137,7 @@
   id="full-screen"
   class="relative max-h-screen overflow-y-scroll snap snap-y snap-mandatory"
 >
-  <form dir="rtl" onsubmit={onSubmit}>
+  <form dir="rtl" onsubmit={onSubmit} novalidate>
     <!-- Introduction Note -->
     {#each form.formSteps as field, stepIndex}
       {#if formState.currentStep === stepIndex}
@@ -200,7 +206,9 @@
               </div>
             </div>
           {/if}
-          {#if field.type === "select"}{/if}
+          {#if field.type === "select"}
+            <Select {field} error={formState.errorMsg} />
+          {/if}
         </section>
       {/if}
     {/each}}
