@@ -2,20 +2,22 @@
 - [x] Implement SelectInput as a list of cards-like items instead of <select>
 - [x] Implement a validation upon each ```nextStep``` function call, i.e,
 Landing Page:
+- [x] Write a compelling copy section for the landing page
 - [ ] Add More Images mimicking a form builder UI
 - [ ] Add those images to the landing page
-- [x] Write a compelling copy section for the landing page
 - [ ] Add SVGs and art to various sections to augment the experience.
+
 BUILDER:
 - [x] Add TextAreas with basic WYSIWYG elements (Bold, Italic, H2,H3,P for sizings) or maybe enable markdown? nah..
 - [x] Add YouTube Embeds As Fields or Descriptions // added Link
 - [x] DRAG & DROP functionality for side panel
+
 ADD BLOCKS:
 - [x] Create a block/form step creation modal - Settled on avoiding a modal.
-- [ ] Add Phone field
+- [x] Add Phone field
+- [x] Added Next Button for Select and Text input fields
 - [ ] Add Star Rating
 - [ ] Add Multichoice
-- [ ] Added Next Button for Select and Text input fields
 
 # The Stack
 After long contemplation between Svlte, HTMX, Unpoly, AlpineJS, Astro, etc,

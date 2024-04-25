@@ -4,6 +4,7 @@
   import createFormState from "./formstate.svelte.ts";
   import Select from "./Select.svelte";
   import NextButton from "./NextButton.svelte";
+  import Phone from "./Phone.svelte";
 
   const sampleForm = [
     {
@@ -12,6 +13,13 @@
       description:
         "מילוי הטופס יקח רק 5 דקות מזמנכם ויעזור לנו באופן משמעותי בקידום ודיוק המערכת שלנו.",
       buttonText: "התחל",
+    },
+    {
+      type: "tel",
+      question: "הזינו מספר טלפון נייד",
+      description:
+        "אנו צריכים את מספרכם לצורכי הרשמה בלבד, מספרכם לא נכנס לרשימת תפוצה כזו או אחרת",
+      required: true,
     },
     {
       type: "select",
@@ -121,6 +129,9 @@
           formState.setError(true, "הזינו כתובת מייל תקנית");
         }
       case currentBlockType === "tel":
+        currentBlock.isValid &&
+          formState.currentStep < form.formSteps.length - 1 &&
+          formState.incStep();
         break;
       default:
         formState.currentStep < form.formSteps.length - 1 &&
@@ -209,6 +220,9 @@
           {/if}
           {#if field.type === "select"}
             <Select {field} error={formState.errorMsg} />
+          {/if}
+          {#if field.type === "tel"}
+            <Phone handler={nextStep} {field} errorMsg={formState.errorMsg} />
           {/if}
           {#if field.type !== "descriptor"}
             <div class="mt-8 inline-block">
