@@ -1,24 +1,41 @@
 # TODOS:
 - [x] Implement SelectInput as a list of cards-like items instead of <select>
 - [x] Implement a validation upon each ```nextStep``` function call, i.e,
+Landing Page:
 - [ ] Add More Images mimicking a form builder UI
 - [ ] Add those images to the landing page
 - [x] Write a compelling copy section for the landing page
 - [ ] Add SVGs and art to various sections to augment the experience.
+BUILDER:
 - [x] Add TextAreas with basic WYSIWYG elements (Bold, Italic, H2,H3,P for sizings) or maybe enable markdown? nah..
 - [x] Add YouTube Embeds As Fields or Descriptions // added Link
 - [x] DRAG & DROP functionality for side panel
 ADD BLOCKS:
-- [ ] Create a block/form step creation modal
+- [x] Create a block/form step creation modal - Settled on avoiding a modal.
+- [ ] Add Phone field
+- [ ] Add Star Rating
+- [ ] Add Multichoice
+- [ ] Added Next Button for Select and Text input fields
 
-# BUILDER:
-to HTMX or to SVELTE?
-IF HTMX:
-State is managed in the server.
-Every modification means a server trip to update the state.
+# The Stack
+After long contemplation between Svlte, HTMX, Unpoly, AlpineJS, Astro, etc,
+I have decided to use, primarily, Svelte with Astro. However, there are
+some parts that include Unpoly, for example in the landing page, the
+register modal is handled by Unpoly which has built-in support for
+create modals (layers in Unpoly). One area that I found Unpoly more
+challenging is when I needed to send an Input validation to a different
+API Endpoint than the form's action Endpoint. With htmx it's just
+a matter of setting hx-post="/api/input-validation-endpoint". That said,
+I really liked Unpoly. The second con of Unpoly, is the lack of
+community material, which, in contrast, HTMX is flooded with.
+
+## Svelte
+I have built a fairly complex application logic with Svelte before, and
+I liked it a lot. Building the current project with Svelte is much
+easier and convenient for me than using AlpineJS. I struggled with all
+the x-data and the linter giving me hell.
 
 # Welcome
-
 This is a potential spin-off from my forcard project, which is a web
 page builder that has been built too broadly. This project can
 potentially serve as a more specialized purpose while using some of the

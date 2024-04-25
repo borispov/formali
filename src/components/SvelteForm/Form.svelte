@@ -3,6 +3,7 @@
   import ErrorNotif from "./ErrorNotif.svelte";
   import createFormState from "./formstate.svelte.ts";
   import Select from "./Select.svelte";
+  import NextButton from "./NextButton.svelte";
 
   const sampleForm = [
     {
@@ -143,7 +144,7 @@
       {#if formState.currentStep === stepIndex}
         <section
           in:fade
-          class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center"
+          class="flex flex-col items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center"
         >
           {#if field.type === "descriptor"}
             <div class="flex flex-col gap-8 items-center">
@@ -208,6 +209,16 @@
           {/if}
           {#if field.type === "select"}
             <Select {field} error={formState.errorMsg} />
+          {/if}
+          {#if field.type !== "descriptor"}
+            <div class="mt-8 inline-block">
+              <NextButton
+                showPressEnter={true}
+                center={true}
+                handler={nextStep}
+                text="המשך"
+              />
+            </div>
           {/if}
         </section>
       {/if}
