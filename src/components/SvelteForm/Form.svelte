@@ -8,6 +8,13 @@
 
   const sampleForm = [
     {
+      type: "email",
+      question: "לאיזה אימייל תרצו שנשלח לכם הודעה?",
+      description: "שורת תיאור נוספת, ניתן להשאירה ריקה.",
+      placeholder: "name@example.com",
+      required: true,
+    },
+    {
       type: "descriptor",
       question: "ברוכים הבאים, תודה על זמנכם.",
       description:
@@ -17,6 +24,7 @@
     {
       type: "tel",
       question: "הזינו מספר טלפון נייד",
+      placeholder: "050-987-2345",
       description:
         "אנו צריכים את מספרכם לצורכי הרשמה בלבד, מספרכם לא נכנס לרשימת תפוצה כזו או אחרת",
       required: true,
@@ -31,13 +39,6 @@
         "ייעוץ ושירותים פיננסיים",
         "אחר",
       ],
-    },
-    {
-      type: "email",
-      question: "לאיזה אימייל תרצו שנשלח לכם הודעה?",
-      description: "שורת תיאור נוספת, ניתן להשאירה ריקה.",
-      placeholder: "name@example.com",
-      required: true,
     },
     {
       type: "text",
@@ -155,15 +156,16 @@
       {#if formState.currentStep === stepIndex}
         <section
           in:fade
-          class="flex flex-col items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center"
+          class="flex flex-col items-center justify-center h-lvh snap-start bg-orange-100"
         >
+          <div class="w-screen max-w-2xl px-10">
           {#if field.type === "descriptor"}
-            <div class="flex flex-col gap-8 items-center">
+            <div class="flex flex-col gap-8 items-center text-center">
               <h2 class="text-60px max-w-xl font-bold leading-tight">
                 {field.question}
               </h2>
               <p>
-                {field.description}
+                {@html field.description}
               </p>
               {#if formState.currentStep == form.formSteps.length - 1}
                 <a
@@ -186,6 +188,7 @@
           {#if field.type === "text" || field.type === "email"}
             <div data-step={field.type} data-step-index={stepIndex}>
               <label
+                for={field.id}
                 class="text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal"
               >
                 {field.question}
@@ -195,7 +198,7 @@
               </label>
 
               <p class="text-lg font-normal leading-relaxed text-neutral-600">
-                {field.description}
+                {@html field.description}
               </p>
 
               <input
@@ -203,19 +206,19 @@
                 name={field.id}
                 id={field.id}
                 type={field.type}
-                on:keydown={(e) => e.key == "Enter"}
+                onkeydown={(e) => e.key == "Enter" && nextStep()}
                 placeholder={field.placeholder}
                 required={field.required}
-                class={`transition-all bg-transparent border-b-2 border-b-neutral-600 text-gray-800 mt-8 pb-2 question-input__text placeholder:italic placeholder:text-neutral-500 placeholder:text-xl lg:placeholder:text-3xl focus:border-b-neutral-100 outline-0`}
+                class={`
+                [ w-full text-lg md:text-base mt-8 pb-2 transition-all bg-transparent ] 
+                [ placeholder:italic placeholder:text-neutral-500 placeholder:text-xl lg:placeholder:text-3xl ]
+                [ border-0 border-b-2 border-neutral-600 ]
+                [ outline-none focus:outline-none text-gray-800 focus:border-0 focus:ring-none focus:border-b-2 !focus:border-blue-700 ] 
+                `}
               />
               {#if formState.isError}
                 <ErrorNotif msg={formState.errorMsg} />
               {/if}
-              <div class:hidden={true}>
-                <span class="block mt-2 p-1 text-red-600 bg-yellow-200">
-                  יש למלא שדה זה בהתאם להוראות
-                </span>
-              </div>
             </div>
           {/if}
           {#if field.type === "select"}
@@ -234,6 +237,7 @@
               />
             </div>
           {/if}
+          </div>
         </section>
       {/if}
     {/each}}
@@ -241,11 +245,11 @@
     <div
       class="absolute sticky flex gap-4 bottom-[5%] right-[5%] w-60 p-4 rounded-md"
     >
-      <button onclick={nextStep} class="bg-teal-600 py-2 px-2">
-        <span class="i-mdi-arrow-down bg-white text-2xl z-10 block" />
+      <button onclick={nextStep} class="bg-teal-600 py-2 px-2 rounded">
+        <span class="i-mdi-arrow-down bg-white text-xl z-10 block" />
       </button>
-      <button onclick={prevStep} class="bg-teal-600 py-2 px-2">
-        <span class="i-mdi-arrow-up bg-white text-2xl z-10 block" />
+      <button onclick={prevStep} class="bg-teal-600 py-2 px-2 rounded">
+        <span class="i-mdi-arrow-up bg-white text-xl z-10 block" />
       </button>
     </div>
   </form>

@@ -38,12 +38,12 @@ export const checkboxDefaults = {
 }
 
 export const phoneDefaults = {
-    question: 'מס טלפון',
+    question: 'הזינו מספר נייד',
     type: 'tel',
     value: '',
     required: false,
     description: '',
-    placeholder: '',
+    placeholder: '050-987-1234',
     minLength: 10,
     maxLength: 10,
 }

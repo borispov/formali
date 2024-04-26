@@ -1,15 +1,30 @@
 <script>
+  import { flip } from "svelte/animate";
   import ColorPicker from "svelte-awesome-color-picker";
   import ColorInput from "./ColorPicker/ColorInput.svelte";
   import Tiptap from "../Tiptap.svelte";
 
-  let { formStep = $bindable() } = $props();
+  import { dndzone } from "svelte-dnd-action";
 
-  let newOption = $state("");
+  let { formStep = $bindable(), options = $bindable() } = $props();
+
+  let newOption = $state({ value: '', id: formStep.options.length + 1});
 
   function addNewOption() {
-    formStep.options.push(newOption);
-    newOption = "";
+    newOption.value.length > 2 && formStep.options.push(newOption);
+    newOption = {};
+  }
+
+  const flipDurationMs = 300
+
+  // discouraged by svelte, is there another way?
+  function handleConsider(e) {
+    formStep.options = e.detail.items;
+  }
+
+  // dnd specific helper
+  function handleFinalize(e) {
+    formStep.options = e.detail.items;
   }
 </script>
 
@@ -257,14 +272,17 @@
         <label for="add-option" class="block text-sm text-gray-700">שאלה</label>
         <div class="flex items-center grid grid-cols-8">
           <input
-            bind:value={newOption}
+            bind:value={newOption.value}
             onkeyup={(e) => e.key === "Enter" && addNewOption()}
             id="add-option"
             name="add-option"
             class="block col-span-6 w-full border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm rounded-sm"
             type="text"
           />
-          <button class="flex items-center justify-center button-tiny button-secondary col-span-2 h-full" onclick={addNewOption}>הוסף</button>
+          <button class={`
+          [ flex items-center justify-center ]
+          [ bg-teal-200 col-span-2 w-4/5 text-xl h-full border-4 border-teal-500 ]
+          `} onclick={addNewOption}>+</button>
         </div>
       </div>
     </div>
@@ -272,15 +290,26 @@
       <!-- Display Options -->
       <ul
         class="pt-4 grid grid-cols-1 gap-2  mt-4 flex flex-col list-none p-0 m-0"
+        onconsider={handleConsider}
+        onfinalize={handleFinalize}
+        use:dndzone={{
+          items: formStep.options,
+          flipDurationMs: 100
+        }}
       >
-        {#each formStep.options as option, optionIndex}
-          <li class="w-full py-2 px-3 text-center flex-wrap flex items-center justify-between bg-slate-200 rounded-2xl">
-            {option}
+        {#each formStep.options as option, optionIndex(option.id) }
+          <li 
+            animate:flip={{duration: flipDurationMs}}
+            class="w-full text-xs py-2 px-3 text-center flex-wrap flex items-center justify-between bg-slate-200 rounded-2xl">
+            <div
+              class="i-mdi:menu cursor-pointer w-6 h-6 me-4 bg-neutral-800 hover:bg-neutral-400"
+            ></div>
+            {option.value}
             <span
               tabindex="0"
               role="button"
               onclick={() => {
-                formStep.options = formStep.options.filter(
+                options = options.filter(
                   (fs, fsIndex) => optionIndex !== fsIndex,
                 );
               }}

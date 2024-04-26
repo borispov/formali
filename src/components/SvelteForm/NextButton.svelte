@@ -9,10 +9,14 @@
     bgColor?: string;
     handler?: MouseEventHandler<HTMLButtonElement>;
     center?: boolean;
+    disabled: boolean;
+    attrs: any;
   }
 
   let {
-    text = "המשךj",
+    attrs,
+    disabled = false,
+    text = "המשך",
     center = false,
     showPressEnter = true,
     className,
@@ -21,7 +25,7 @@
     handler,
   }: Props = $props();
 
-  const buttonClass = `inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500 custom-button-background-color custom-button-text-color`;
+  const buttonClass = `button-xl inline-flex items-center px-6 py-2 border border-transparent text-lg font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500 custom-button-background-color custom-button-text-color`;
 </script>
 
 <div
@@ -29,11 +33,26 @@
   style="--bg: {bgColor ?? 'var(--default-form-btn-bg)'}; --text: {textColor ??
     'var(--default-form-btn-text)'}; --center: {center ? 'auto' : '100%'}"
 >
-  <button onclick={handler ?? null} class={buttonClass}>
-    {text}
+  <button
+    {disabled}
+    onclick={handler ?? null}
+    class={`
+      [ inline-flex justify-between items-center ]
+      [ bg- border-[rgba(0, 0, 0, 0.1) 0px 3px 12px 0px] ]
+      [ px-4 py-2 rounded-md ]
+      [ bg-gray-700 hover:bg-gray-800 text-white ]
+      !custom-button-background-color !custom-button-text-color
+      `}
+  >
+    המשך
+    <div class="i-mdi:arrow-left-bold h-5 w-5 mr3"></div>
   </button>
-  {#if showPressEnter && !navigator?.userAgent.toLowerCase().includes("mobile")}
-    <span> press <strong>Enter ↵</strong> </span>
+
+  <!-- <button onclick={handler ?? null} class={buttonClass}>
+    {text}
+  </button> -->
+  {#if showPressEnter && window && window.navigator && !window.navigator?.userAgent.toLowerCase().includes("mobile")}
+    <span> לחץ <strong>Enter ↵</strong> </span>
   {/if}
 </div>
 
@@ -50,13 +69,12 @@
     align-items: center;
     display: flex;
     gap: 12.5px;
-    margin-top: 32px;
     width: var(--center);
   }
 
   .btn-container > span {
     color: var(--btn-text-color);
-    font-size: 1.25rem;
+    font-size: 0.825rem;
   }
 
   .btn-container > span strong {
@@ -72,7 +90,7 @@
     }
 
     .btn-container > span {
-      font-size: 1.5rem;
+      font-size: 1.125rem;
     }
   }
 </style>

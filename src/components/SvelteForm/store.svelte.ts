@@ -42,9 +42,9 @@ export const formData = {
       description: '',
       placeholder: '',
       options: [
-        'שיווק ופרסום דיגיטלי',
-        'ייעוץ',
-        'פרילאנסר בתחום ה web'
+        { id: '1', value: 'שיווק ופרסום דיגיטלי'},
+        { id: '2', value: 'ייעוץ'},
+        { id: '3', value: 'פרילאנס'},
       ],
       design: {
         ...defaultDesign

@@ -9,6 +9,10 @@
 
   import SingleInput from "../Builder/SingleInput.svelte";
 
+  import Select from "./Select.svelte";
+  import NextButton from "./NextButton.svelte";
+  import Phone from "./Phone.svelte"
+
   import { createInput } from "../../utils/formDefaults.js";
   import { dndzone } from "svelte-dnd-action";
 
@@ -111,37 +115,52 @@
         >
           {#if formCurrentStep}
             <form
-              style={`color: ${formCurrentStep.design.textColor}`}
+              style={`color: ${formCurrentStep.design.textColor}; --textColor: {formCurrentStep.design.textColor};`}
               class={"w-8/12 transition transition-all"}
             >
-              <label class="block" for="question">
-                <span>
-                  {formCurrentStep.question}
-                  {#if formCurrentStep.required}
-                    <sup class="text-red-700 font-bold"> * </sup>
-                  {/if}
-                </span>
+            {#if formCurrentStep.type === 'select'}
+              <Select field={formCurrentStep} />
+            {/if}
+            {#if formCurrentStep.type === 'tel'}
+              <Phone field={formCurrentStep} />
+            {/if}
+            {#if formCurrentStep.type === 'email' || formCurrentStep.type === 'text'}
+            <div>
+              <label
+                for={formCurrentStep.id}
+                class="text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal"
+                style={`color: var(--textColor);`}
+              >
+                {formCurrentStep.question}
+                {#if formCurrentStep.required}
+                  <sup class="text-red-600">
+                    *
+                  </sup>
+                {/if}
               </label>
-              <div class="text-gray-400 text-sm">
-                {@html formCurrentStep.description}
-              </div>
+
+              <p class="text-lg font-normal leading-relaxed text-neutral-600">
+                {formCurrentStep.description}
+              </p>
+
               <input
-                class="mt-0 block w-full px-0.5 border-0 border-b-2 border-gray-500 focus:ring-0 focus:border-black bg-transparent"
                 bind:value={formCurrentStep.value}
+                name={formCurrentStep.id}
+                id={formCurrentStep.id}
+                type={formCurrentStep.type}
                 placeholder={formCurrentStep.placeholder}
-                {...{ type: formCurrentStep.type }}
+                required={formCurrentStep.required}
+                class={`
+                [ w-full text-lg md:text-base mt-8 pb-2 transition-all bg-transparent ] 
+                [ placeholder:italic placeholder:text-neutral-500 placeholder:text-lg lg:placeholder:text-xl ]
+                [ border-0 border-b-2 border-neutral-600 ]
+                [ outline-none focus:outline-none text-gray-800 focus:border-0 focus:ring-none focus:border-b-2 !focus:border-blue-700 ] 
+                `}
               />
+            </div>
+            {/if}
               <div class="mt-8">
-                <button
-                  style={`color: ${formCurrentStep.design.btnTextColor}; background: ${formCurrentStep.design.btnBg}`}
-                  class={`
-                    [ inline-flex justify-between items-center ]
-                    [ bg- border-[rgba(0, 0, 0, 0.1) 0px 3px 12px 0px] ]
-                    [ px-4 py-1 rounded-sm ]`}
-                >
-                  המשך
-                  <div class="i-mdi:arrow-left h-6 w-6 mr3"></div>
-                </button>
+                <NextButton text='המשך' icon="thin" disabled />
               </div>
             </form>
           {/if}
@@ -210,7 +229,7 @@
         {/each}
       </section>
       <!-- ADD BLOCK  -->
-      <div class="mt-4 border-0 border-top-2 border-top border-gray-300">
+      <div class="mt-4 mx-auto border-0 border-top-2 border-top border-gray-300">
         <button
           onclick={() => (showAddMenu = !showAddMenu)}
           class="[ button-xl button-secondary ] [ flex mx-auto items-center justify-evenly gap-2 ] !text-white py-1 px-4"

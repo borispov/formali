@@ -3,7 +3,7 @@
 </script>
 
 <div
-  class="error flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100 dark:bg-gray-800 dark:text-red-400"
+  class="error mt-4 flex items-center py-2 px-4 text-sm text-red-800 rounded-lg bg-red-200 dark:bg-gray-800 dark:text-red-400 w-3/5 rounded-2xl"
   role="alert"
 >
   <svg

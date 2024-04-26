@@ -1,6 +1,7 @@
 <script>
   import { imask } from "@imask/svelte";
   import ErrorNotif from "./ErrorNotif.svelte";
+  import FieldLabel from "./FieldLabel.svelte";
 
   let { errorMsg = "", field = $bindable(), stepIndex, handler } = $props();
 
@@ -19,25 +20,23 @@
     console.log("complete", maskRef.unmaskedValue);
     field.isValid = true;
   }
+
+  const txt = $derived(field.design.textColor.startsWith('text-') ? field.design.textColor : `text-[${field.design.textColor}]`)
+  const bg = $derived(field.design.bg.startsWith('bg-') ? field.design.bg : `bg-[${field.design.textColor}]`)
+
 </script>
 
-<div data-step={field.type} data-step-index={stepIndex}>
-  <label
-    for={field.id}
-    class="text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal"
-  >
+<div data-step={field.type} data-step-index={stepIndex ?? null}>
+  <FieldLabel {...field} textColor={txt}>
     {field.question}
-    {#if field.required}
-      <sup class="text-red-600"> * </sup>
-    {/if}
-  </label>
+  </FieldLabel>
 
-  <p class="text-lg font-normal leading-relaxed text-neutral-600">
-    {field.description}
+  <p class={"text-lg font-normal leading-relaxed " + txt + '/10' }>
+    {@html field.description}
   </p>
 
   <input
-    bind:value={field.value}
+    value={field.value}
     use:imask={options}
     onaccept={accept}
     oncomplete={complete}
@@ -49,7 +48,4 @@
     required={field.required}
     class={`transition-all bg-transparent border-b-2 border-b-neutral-600 text-gray-800 mt-8 pb-2 question-input__text placeholder:italic placeholder:text-neutral-500 placeholder:text-xl lg:placeholder:text-3xl focus:border-b-neutral-100 outline-0 decoration-none`}
   />
-  {#if errorMsg}
-    <ErrorNotif msg={errorMsg} />
-  {/if}
 </div>
