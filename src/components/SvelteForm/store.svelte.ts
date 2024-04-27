@@ -7,6 +7,7 @@ export type FormStep = {
   description: string;
   placeholder?: string;
   design: FormStepDesign;
+  img?: string;
 }
 
 type FormStepDesign = {

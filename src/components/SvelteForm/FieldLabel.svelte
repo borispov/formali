@@ -1,7 +1,8 @@
 <script lang="ts">
-  type Label = {
-    id: string;
-    question: string;
+
+  interface Label {
+    id?: string;
+    question?: string;
     textColor: string;
     required?: boolean;
     children: any;

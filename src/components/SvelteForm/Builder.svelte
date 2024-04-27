@@ -9,9 +9,10 @@
 
   import SingleInput from "../Builder/SingleInput.svelte";
 
+  import Descriptor from "./Field/Descriptor.svelte";
   import Select from "./Select.svelte";
   import NextButton from "./NextButton.svelte";
-  import Phone from "./Phone.svelte"
+  import Phone from "./Phone.svelte";
 
   import { createInput } from "../../utils/formDefaults.js";
   import { dndzone } from "svelte-dnd-action";
@@ -43,6 +44,7 @@
   }
 
   const hebrewFieldTypes = {
+    descriptor: "תיאור",
     text: "טקסט",
     email: "אימייל",
     phone: "טלפון",
@@ -118,49 +120,52 @@
               style={`color: ${formCurrentStep.design.textColor}; --textColor: {formCurrentStep.design.textColor};`}
               class={"w-8/12 transition transition-all"}
             >
-            {#if formCurrentStep.type === 'select'}
-              <Select field={formCurrentStep} />
-            {/if}
-            {#if formCurrentStep.type === 'tel'}
-              <Phone field={formCurrentStep} />
-            {/if}
-            {#if formCurrentStep.type === 'email' || formCurrentStep.type === 'text'}
-            <div>
-              <label
-                for={formCurrentStep.id}
-                class="text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal"
-                style={`color: var(--textColor);`}
-              >
-                {formCurrentStep.question}
-                {#if formCurrentStep.required}
-                  <sup class="text-red-600">
-                    *
-                  </sup>
-                {/if}
-              </label>
+              {#if formCurrentStep.type === "select"}
+                <Select field={formCurrentStep} />
+              {/if}
+              {#if formCurrentStep.type === "descriptor"}
+                <Descriptor {...formCurrentStep} {...formCurrentStep.design} />
+              {/if}
+              {#if formCurrentStep.type === "tel"}
+                <Phone field={formCurrentStep} />
+              {/if}
+              {#if formCurrentStep.type === "email" || formCurrentStep.type === "text"}
+                <div>
+                  <label
+                    for={formCurrentStep.id}
+                    class="text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal"
+                    style={`color: var(--textColor);`}
+                  >
+                    {formCurrentStep.question}
+                    {#if formCurrentStep.required}
+                      <sup class="text-red-600"> * </sup>
+                    {/if}
+                  </label>
 
-              <p class="text-lg font-normal leading-relaxed text-neutral-600">
-                {formCurrentStep.description}
-              </p>
+                  <p
+                    class="text-lg font-normal leading-relaxed text-neutral-600"
+                  >
+                    {formCurrentStep.description}
+                  </p>
 
-              <input
-                bind:value={formCurrentStep.value}
-                name={formCurrentStep.id}
-                id={formCurrentStep.id}
-                type={formCurrentStep.type}
-                placeholder={formCurrentStep.placeholder}
-                required={formCurrentStep.required}
-                class={`
+                  <input
+                    bind:value={formCurrentStep.value}
+                    name={formCurrentStep.id}
+                    id={formCurrentStep.id}
+                    type={formCurrentStep.type}
+                    placeholder={formCurrentStep.placeholder}
+                    required={formCurrentStep.required}
+                    class={`
                 [ w-full text-lg md:text-base mt-8 pb-2 transition-all bg-transparent ] 
                 [ placeholder:italic placeholder:text-neutral-500 placeholder:text-lg lg:placeholder:text-xl ]
                 [ border-0 border-b-2 border-neutral-600 ]
                 [ outline-none focus:outline-none text-gray-800 focus:border-0 focus:ring-none focus:border-b-2 !focus:border-blue-700 ] 
                 `}
-              />
-            </div>
-            {/if}
+                  />
+                </div>
+              {/if}
               <div class="mt-8">
-                <NextButton text='המשך' icon="thin" disabled />
+                <NextButton text="המשך" icon="thin" disabled />
               </div>
             </form>
           {/if}
@@ -229,7 +234,9 @@
         {/each}
       </section>
       <!-- ADD BLOCK  -->
-      <div class="mt-4 mx-auto border-0 border-top-2 border-top border-gray-300">
+      <div
+        class="mt-4 mx-auto border-0 border-top-2 border-top border-gray-300"
+      >
         <button
           onclick={() => (showAddMenu = !showAddMenu)}
           class="[ button-xl button-secondary ] [ flex mx-auto items-center justify-evenly gap-2 ] !text-white py-1 px-4"
@@ -240,31 +247,31 @@
         {#if showAddMenu}
           <div class="flex flex-col mt-8 transition">
             <h3 class="text-base mt-4 leading-6">בלוקים:</h3>
-            <div class="grid grid-cols-2 gap-2 mt-2">
+            <div class="grid grid-cols-1 gap-2 mt-2">
               <button
-                onclick={() => addNewStep("text")}
-                class="cursor-pointer bg-gray-50 border hover:bg-gray-100 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+                onclick={() => addNewStep("descriptor")}
+                class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
               >
                 <div class="mx-auto i-mdi:layers-outline"></div>
                 <span class="text-sm mx-auto"> תיאור </span>
               </button>
               <button
                 onclick={() => addNewStep("text")}
-                class="cursor-pointer bg-gray-50 border hover:bg-gray-100 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+                class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
               >
                 <div class="mx-auto i-mdi:format-text"></div>
                 <span class="text-sm mx-auto"> טקסט </span>
               </button>
               <button
                 onclick={() => addNewStep("email")}
-                class="cursor-pointer bg-gray-50 border hover:bg-gray-100 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+                class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
               >
                 <div class="mx-auto i-mdi:email-outline"></div>
                 <span class="text-sm mx-auto"> אימייל </span>
               </button>
               <button
                 onclick={() => addNewStep("select")}
-                class="cursor-pointer bg-gray-50 border hover:bg-gray-100 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+                class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
               >
                 <div class="mx-auto i-mdi:checkbox-marked-outline"></div>
                 <span class="text-sm mx-auto"> בחירה </span>
@@ -272,9 +279,9 @@
 
               <button
                 onclick={() => addNewStep("tel")}
-                class="cursor-pointer bg-gray-50 border hover:bg-gray-100 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+                class="cursor-pointer bg-gray-100 border hover:bg-gray-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
               >
-                <div class="mx-auto i-mdi:tel"></div>
+                <div class="mx-auto i-mdi:phone"></div>
                 <span class="text-sm mx-auto">טלפון</span>
               </button>
             </div>
