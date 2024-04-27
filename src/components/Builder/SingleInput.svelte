@@ -90,7 +90,7 @@
   
 {/snippet}
 
-{#if (formStep && formStep.type == "text") || formStep?.type === "email"}
+{#if (formStep && formStep.type == "text") || formStep?.type === "email" || formStep?.type === 'signature'}
   <div
     class="my-8 lg:px-6 md:px-4 px-2 divide-y-1 divide-teal-700 divide-dashed"
   >
@@ -315,9 +315,88 @@
               }}
               class="i-mdi:trash w-4 h-4 mr-auto bg-teal-400 hover:bg-teal-700"
             ></span>
-</li>
+          </li>
         {/each}
       </ul>
     </div>
+  </div>
+{/if}
+
+{#if formStep && formStep.type == "descriptor"}
+  <div
+    class="my-8 lg:px-6 md:px-4 px-2 divide-y-1 divide-teal-700 divide-dashed"
+  >
+    <div class="flex flex-col w-full">
+      <div class="mt-4">
+        <label for="title" class="block text-sm text-gray-700">כותרת</label>
+        <input
+          bind:value={formStep.question}
+          id="question"
+          name="question"
+          class="block w-full border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm rounded-sm"
+          type="text"
+        />
+      </div>
+
+      <div class="mt-4 mb-6 border-1 border-gray-200">
+        <div
+          classs="overflow-auto text-sm md:text-base text-gray-700 focus:border-gray-100"
+        >
+          <Tiptap bind:value={formStep.description} />
+        </div>
+
+        <input
+          bind:value={formStep.description}
+          id="description"
+          name="description"
+          class="hidden block w-full border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm rounded-sm"
+          type="text"
+        />
+      </div>
+    </div>
+
+    {@render colorPickers(formStep.design)}
+
+    <div class="mt-8">
+      <div class="relative mt-2 flex items-start w-full">
+        <div class="flex h-6 items-center">
+          <input
+            bind:checked={formStep.required}
+            type="checkbox"
+            name="required"
+            id="required"
+            class="h-4 w-4 rounded border-neutral-300 focus:ring-blue-600 text-blue-600"
+          />
+        </div>
+        <div class="mr-3 text-sm leading-6">
+          <label for="required">שדה חובה</label>
+          <p id="description" class="text-gray-500">
+            משתמשים יהיו מחויבים למלא שדה חובה בכדי להשלים את הטופס במלואו.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- File Img Upload -->
+    <div class="mt-8">
+      <h3 class="pt-4 text-neutral-700 text-base font-bold">תמונת קאבר</h3>
+      <div class="flex items-center">
+        <label for="file" class="flex items-center mt-2 justify-center border border-gray-200 rounded-md p-6 hover:bg-gray-50 cursor-pointer">
+          <span class="text-gray-500 mx-auto text-center pt-2">
+            העלה תמונה כחלק מפתיח או סיום של מילוי טופס
+          </span>
+          <input
+            bind:value={formStep.img}
+            accept="image/png, image/jpeg"
+            type="file"
+            name="file"
+            id="file"
+            class="hidden"
+          />
+        </label>
+      </div>
+    </div>
+
+
   </div>
 {/if}

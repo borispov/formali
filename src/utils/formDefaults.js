@@ -5,6 +5,23 @@ let n = Date.now();
 return start + '-' + (++n).toString(36);
 }
 
+export const ratingDefaults = {
+    question: 'מה דעתכם על המוצר שלנו?',
+    description: 'השקענו מאמצים רבים עד כה והדרך עוד ארוכה, לא נוכל לעשות זאת ללא חוות דעת החשובה שלכם.',
+    rating: 0,
+    value: '',
+    required: true,
+    placeholder: '',
+}
+
+export const signatureDefaults = {
+    question: 'אנא חתמו כאן',
+    description: '',
+    value: '',
+    required: true,
+    placeholder: '',
+}
+
 export const textDefaults = {
     question: 'שם מלא',
     type: 'text',
@@ -13,6 +30,16 @@ export const textDefaults = {
     description: 'מלאו שם פרטי ושם משפחה',
     placeholder: 'שם הפרטי שלכם...'
 }
+
+export const descriptorDefaults = {
+    question: 'כותרת תיאור',
+    type: 'descriptor',
+    value: '',
+    required: false,
+    description: 'תארו עבור ממלאי הטופס את מטרת הטופס, כמה זמן תערוך, מה צפוי להיות וכד׳',
+    img: ''
+}
+
 export const emailDefaults = {
     question: 'כתובת דוא״ל',
     type: 'email',
@@ -29,12 +56,9 @@ export const checkboxDefaults = {
     required: false,
     description: '',
     options: [
-        'שיווק ופרסום דיגיטלי',
-        'פיתוח תוכנה ואתרים לעסקים',
-        'קופרייטינג',
-        'עיצוב גרפי',
-        'ייעוץ עסקי ומנטורינג',
-    ]
+        { id: '1', value: 'אפשרות מספר 1', },
+        { id: '2', value: 'אפשרות מספר 2', },
+     ]
 }
 
 export const phoneDefaults = {
@@ -59,6 +83,13 @@ export const designDefaults = {
 
 export function createInput(type, data) {
     switch (true) {
+        case type === 'descriptor':
+            return  {
+                id: generateId('descriptor'),
+                ...descriptorDefaults,
+                ...designDefaults,
+                ...data
+            }
         case type === 'text':
             return  {
                 id: generateId('text'),
@@ -84,6 +115,20 @@ export function createInput(type, data) {
             return {
                 id: generateId('select-'),
                 ...checkboxDefaults,
+                ...designDefaults,
+                data
+            }
+        case type === 'signature':
+            return {
+                id: generateId('sign-'),
+                ...signatureDefaults,
+                ...designDefaults,
+                data
+            }
+        case type === 'rating':
+            return {
+                id: generateId('rating-'),
+                ...ratingDefaults,
                 ...designDefaults,
                 data
             }

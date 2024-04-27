@@ -10,6 +10,10 @@ export type FormStep = {
   img?: string;
 }
 
+export interface RatingStep extends FormStep {
+  rating: number;
+}
+
 type FormStepDesign = {
   bg: string;
   textColor: string;

@@ -16,6 +16,8 @@
 
   import { createInput } from "../../utils/formDefaults.js";
   import { dndzone } from "svelte-dnd-action";
+  import Rating from "./Rating.svelte";
+  import Signature from "./Field/Signature.svelte";
 
   let showAddMenu = $state(false);
   // variable for side panel DND
@@ -122,6 +124,15 @@
             >
               {#if formCurrentStep.type === "select"}
                 <Select field={formCurrentStep} />
+              {/if}
+              {#if formCurrentStep.type === "rating"}
+                <Rating
+                  rating={formCurrentStep.rating}
+                  field={formCurrentStep}
+                />
+              {/if}
+              {#if formCurrentStep.type === "rating"}
+                <Signature field={formCurrentStep} />
               {/if}
               {#if formCurrentStep.type === "descriptor"}
                 <Descriptor {...formCurrentStep} {...formCurrentStep.design} />
@@ -252,28 +263,34 @@
                 onclick={() => addNewStep("descriptor")}
                 class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
               >
-                <div class="mx-auto i-mdi:layers-outline"></div>
+                <div
+                  class="mx-auto i-mdi:layers-outline w-1.5rem h-1.5rem"
+                ></div>
                 <span class="text-sm mx-auto"> תיאור </span>
               </button>
               <button
                 onclick={() => addNewStep("text")}
                 class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
               >
-                <div class="mx-auto i-mdi:format-text"></div>
+                <div class="mx-auto i-mdi:format-text w-1.5rem h-1.5rem"></div>
                 <span class="text-sm mx-auto"> טקסט </span>
               </button>
               <button
                 onclick={() => addNewStep("email")}
                 class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
               >
-                <div class="mx-auto i-mdi:email-outline"></div>
+                <div
+                  class="mx-auto i-mdi:email-outline w-1.5rem h-1.5rem"
+                ></div>
                 <span class="text-sm mx-auto"> אימייל </span>
               </button>
               <button
                 onclick={() => addNewStep("select")}
                 class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
               >
-                <div class="mx-auto i-mdi:checkbox-marked-outline"></div>
+                <div
+                  class="mx-auto i-mdi:checkbox-marked-outline w-1.5rem h-1.5rem"
+                ></div>
                 <span class="text-sm mx-auto"> בחירה </span>
               </button>
 
@@ -281,8 +298,36 @@
                 onclick={() => addNewStep("tel")}
                 class="cursor-pointer bg-gray-100 border hover:bg-gray-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
               >
-                <div class="mx-auto i-mdi:phone"></div>
+                <div class="mx-auto i-mdi:phone w-1.5rem h-1.5rem"></div>
                 <span class="text-sm mx-auto">טלפון</span>
+              </button>
+
+              <button
+                onclick={() => addNewStep("signature")}
+                class="cursor-pointer bg-gray-100 border hover:bg-gray-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+              >
+                <div class="mx-auto i-mdi:signatre">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="1.5em"
+                    height="1.5em"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M14.075 11.725q1.825-1.35 2.85-2.962T17.95 5.55q0-.8-.262-1.175T16.975 4Q15.8 4 14.9 5.988t-.9 4.487q0 .35.013.663t.062.587M3 21v-2h2v2zm4 0v-2h2v2zm4 0v-2h2v2zm4 0v-2h2v2zm4 0v-2h2v2zM3.4 17L2 15.6L3.6 14L2 12.4L3.4 11L5 12.6L6.6 11L8 12.4L6.4 14L8 15.6L6.6 17L5 15.4zm12.05-1q-.75 0-1.375-.288T13 14.776q-.625.35-1.287.625t-1.363.55l-.7-1.875q.7-.25 1.338-.537t1.237-.613q-.125-.55-.187-1.2t-.063-1.4q0-3.6 1.425-5.962T16.975 2q1.3 0 2.125.963t.825 2.687q0 2.15-1.362 4.25t-3.788 3.775q.175.175.363.263t.387.087q.65 0 1.513-.825t1.562-2.175l1.825.85q-.175.425-.275 1.025t.025 1.05q.25-.125.588-.425t.687-.75L23.025 14q-.65.9-1.5 1.45T19.95 16q-.525 0-.937-.312t-.688-.963q-.7.625-1.425.95T15.45 16"
+                    />
+                  </svg>
+                </div>
+                <span class="text-sm mx-auto">חתימה</span>
+              </button>
+
+              <button
+                onclick={() => addNewStep("rating")}
+                class="cursor-pointer bg-gray-100 border hover:bg-gray-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+              >
+                <div class="mx-auto i-mdi:star w-1.5rem h-1.5rem"></div>
+                <span class="text-sm mx-auto">דירוג</span>
               </button>
             </div>
           </div>

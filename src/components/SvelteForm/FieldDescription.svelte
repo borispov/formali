@@ -1,6 +1,6 @@
 <script lang="ts">
   type Props = {
-    description: string;
+    description?: string;
     textColor: string;
     children: any;
     className?: string;
