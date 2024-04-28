@@ -62,31 +62,7 @@ export const formData = {
       value: '',
       required: true,
       description: '',
-      placeholder: 'tenCEO@gmail.com',
-      design: {
-        ...defaultDesign
-      }
-    },
-    {
-      id: 'text-adc03',
-      question: 'מה שמכם הפרטי?',
-      type: 'text',
-      value: '',
-      required: true,
-      description: 'שם מלא',
-      placeholder: 'בוריס פובולוצקי',
-      design: {
-        ...defaultDesign
-      }
-    },
-    {
-      id: 'text-adc04',
-      question: 'Favorite Band',
-      type: 'text',
-      value: '',
-      required: false,
-      description: '',
-      placeholder: 'Led Zeppelinkkkkkkkkkkkk',
+      placeholder: 'elonmusk@tesla.com',
       design: {
         ...defaultDesign
       }

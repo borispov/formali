@@ -255,7 +255,7 @@
         </div>
         <div class="mr-3 text-sm leading-6">
           <label for="required">שדה חובה</label>
-          <p id="description" class="text-gray-500">
+          <p class="text-gray-500">
             משתמשים יהיו מחויבים למלא שדה חובה בכדי להשלים את הטופס במלואו.
           </p>
         </div>
@@ -308,9 +308,9 @@
             <span
               tabindex="0"
               role="button"
-              onclick={() => {
+              onclick={(_e) => {
                 options = options.filter(
-                  (fs, fsIndex) => optionIndex !== fsIndex,
+                  (_fs, fsIndex) => optionIndex !== fsIndex,
                 );
               }}
               class="i-mdi:trash w-4 h-4 mr-auto bg-teal-400 hover:bg-teal-700"
@@ -324,8 +324,7 @@
 
 {#if formStep && formStep.type == "descriptor"}
   <div
-    class="my-8 lg:px-6 md:px-4 px-2 divide-y-1 divide-teal-700 divide-dashed"
-  >
+    class="my-8 lg:px-6 md:px-4 px-2 divide-y-1 divide-teal-700 divide-dashed" >
     <div class="flex flex-col w-full">
       <div class="mt-4">
         <label for="title" class="block text-sm text-gray-700">כותרת</label>
@@ -396,7 +395,5 @@
         </label>
       </div>
     </div>
-
-
   </div>
 {/if}

@@ -1,19 +1,19 @@
-import type { Form } from "./store.svelte"
+import type { Form, FormStep } from "./store.svelte"
 
-export default function createFormState(form: Form) {
+export default function createFormState(formData: Form) {
   let currentStep = $state(0)
-  let value = $state('')
+  let currentValue = $state('')
   let isError = $state(false)
   let errorMsg = $state('')
 
-  let formData = $state({
-    ...form,
-    formSteps: form.formSteps.map((block, blockIndex) => {
-      return {
-        id: 'input-' + blockIndex,
-        ...block,
-      }
-    })
+  const mapStepsWithId = (block:FormStep, i:number) => ({
+    id: block.type + '-' + i,
+    ...block
+  })
+
+  let form = $state<Form>({
+    ...formData,
+    formSteps: formData.formSteps.map(mapStepsWithId)
   });
 
   return {
@@ -26,11 +26,14 @@ export default function createFormState(form: Form) {
       currentStep += 1
     },
 
-    get formData() { return formData},
+    get form() { return form},
+    get formSteps() { return form.formSteps},
+    get form() { return form},
     get currentStep() { return currentStep},
     get isError() { return isError},
     get errorMsg() { return errorMsg},
 
+    set formSteps(val) { form.formSteps = val},
     set currentStep(val) { currentStep = val },
     set isError(val) { isError = val },
     set errorMsg(val) { errorMsg = val },
@@ -39,7 +42,12 @@ export default function createFormState(form: Form) {
       isError = b;
       errorMsg = msg;
       console.log(`(${currentStep}, ${isError}, ${errorMsg})`)
-    }
+    },
+
+    addStep: (step: FormStep) => {
+      form.formSteps.push(step)
+    },
+
   }
 }
 

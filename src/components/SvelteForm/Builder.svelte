@@ -4,8 +4,10 @@
   const flipDurationMs = 100;
 
   // store
-  import { createForm } from "./store.svelte.ts";
-  const form = createForm();
+  import createFormState from "./formstate.svelte.ts";
+  import { createForm, formData } from "./store.svelte.ts";
+  // const form = createForm();
+  let form = createFormState(formData);
 
   import SingleInput from "../Builder/SingleInput.svelte";
 
@@ -59,7 +61,7 @@
     console.log(jsonFormData);
     try {
       localStorage.setItem("latest_form", jsonFormData);
-      window.location = "/test";
+      window.location = "/demo";
     } catch (error) {
       alert("שגיאה בהצגת הטופס");
     }
@@ -125,14 +127,14 @@
               {#if formCurrentStep.type === "select"}
                 <Select field={formCurrentStep} />
               {/if}
+              {#if formCurrentStep.type === "signature"}
+                <Signature field={formCurrentStep} />
+              {/if}
               {#if formCurrentStep.type === "rating"}
                 <Rating
                   rating={formCurrentStep.rating}
                   field={formCurrentStep}
                 />
-              {/if}
-              {#if formCurrentStep.type === "rating"}
-                <Signature field={formCurrentStep} />
               {/if}
               {#if formCurrentStep.type === "descriptor"}
                 <Descriptor {...formCurrentStep} {...formCurrentStep.design} />

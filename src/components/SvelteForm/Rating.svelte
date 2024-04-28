@@ -51,7 +51,7 @@
   {/if}
 
   <span
-    class="hidden bg-yellow-300 bg-yellow-200 bg-yellow-100 bg-yellow-500 bg-yellow-600 bg-yellow-700"
+    class="hidden bg-yellow-200 bg-yellow-300 bg-yellow-400 bg-yellow-500 bg-yellow-600 bg-yellow-700"
   ></span>
   <div class="flex gap-1 mt-8">
     <div
@@ -64,7 +64,7 @@
     ></div>
     <div
       role="img"
-      class:bg-yellow-400={state.hovered >= 2 || state.rating >= 2}
+      class:bg-yellow-300={state.hovered >= 2 || state.rating >= 2}
       onmouseenter={() => hoverOverStar(2)}
       onmouseleave={() => hoverOverStar(0)}
       onclick={() => selectStar(2)}
@@ -72,7 +72,7 @@
     ></div>
     <div
       role="img"
-      class:bg-yellow-500={state.hovered >= 3 || state.rating >= 3}
+      class:bg-yellow-400={state.hovered >= 3 || state.rating >= 3}
       onmouseenter={() => hoverOverStar(3)}
       onmouseleave={() => hoverOverStar(0)}
       onclick={() => selectStar(3)}
@@ -80,7 +80,7 @@
     ></div>
     <div
       role="img"
-      class:bg-yellow-600={state.hovered >= 4 || state.rating >= 4}
+      class:bg-yellow-500={state.hovered >= 4 || state.rating >= 4}
       onmouseenter={() => hoverOverStar(4)}
       onmouseleave={() => hoverOverStar(0)}
       onclick={() => selectStar(4)}
@@ -88,7 +88,7 @@
     ></div>
     <div
       role="img"
-      class:bg-yellow-700={state.hovered >= 5 || state.rating >= 5}
+      class:bg-yellow-600={state.hovered >= 5 || state.rating >= 5}
       onmouseenter={() => hoverOverStar(5)}
       onmouseleave={() => hoverOverStar(0)}
       onclick={() => selectStar(5)}

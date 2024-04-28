@@ -6,6 +6,7 @@ return start + '-' + (++n).toString(36);
 }
 
 export const ratingDefaults = {
+    type: 'rating',
     question: 'מה דעתכם על המוצר שלנו?',
     description: 'השקענו מאמצים רבים עד כה והדרך עוד ארוכה, לא נוכל לעשות זאת ללא חוות דעת החשובה שלכם.',
     rating: 0,
@@ -15,6 +16,7 @@ export const ratingDefaults = {
 }
 
 export const signatureDefaults = {
+    type: 'signature',
     question: 'אנא חתמו כאן',
     description: '',
     value: '',
@@ -37,7 +39,8 @@ export const descriptorDefaults = {
     value: '',
     required: false,
     description: 'תארו עבור ממלאי הטופס את מטרת הטופס, כמה זמן תערוך, מה צפוי להיות וכד׳',
-    img: ''
+    img: '',
+    buttonText: 'שלח טופס'
 }
 
 export const emailDefaults = {

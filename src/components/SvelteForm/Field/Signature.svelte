@@ -39,7 +39,8 @@
   $effect(() => {
     if (signaturePad && !drawing) {
       console.log(`capturing signature...`);
-      onSignatureInput();
+      let isEmpty = signaturePad.isEmpty();
+      isEmpty || onSignatureInput();
     }
   });
 
@@ -59,6 +60,7 @@
       }
     }
     setCanvas();
+    onClear();
 
     signaturePad.addEventListener("beginStroke", () => {
       drawing = true;
@@ -80,7 +82,7 @@
     </FieldDescription>
   {/if}
 
-  <div class="mt-8">
+  <div class="mt-8 max-w-[500px]">
     <canvas
       width="500"
       height="250"

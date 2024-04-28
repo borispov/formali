@@ -1,10 +1,13 @@
 <script>
+  import { onMount } from "svelte";
   import { fade } from "svelte/transition";
   import ErrorNotif from "./ErrorNotif.svelte";
   import createFormState from "./formstate.svelte.ts";
   import Select from "./Select.svelte";
   import NextButton from "./NextButton.svelte";
   import Phone from "./Phone.svelte";
+  import Signature from "./Field/Signature.svelte";
+  import Rating from "./Rating.svelte";
 
   const sampleForm = [
     {
@@ -69,25 +72,29 @@
 
   let { formSteps = $bindable(sampleForm) } = $props();
 
-  let form = $state({
-    id: "1",
-    title: "form",
-    formSteps: [...formSteps],
+  let form = $state();
+
+  onMount(() => {
+    console.log("MOUNTING!");
+    const jsonPreviewFormData = localStorage.getItem("latest_form");
+    if (jsonPreviewFormData) {
+      form = JSON.parse(jsonPreviewFormData);
+      if (form) {
+        console.log("recreating from localStorage");
+        form = createFormState(form);
+      } else {
+        console.log("from dummy data");
+        var tmp = $state({
+          id: "1",
+          title: "form",
+          formSteps: [...formSteps],
+        });
+        form = createFormState(tmp);
+      }
+    }
   });
 
-  let formState = createFormState(form);
-
-  $effect(() => {
-    $inspect(formState);
-  });
-
-  // $effect(() => {
-  // const jsonPreviewFormData = localStorage.getItem("latest_form");
-  // if (jsonPreviewFormData) {
-  // form = JSON.parse(jsonPreviewFormData);
-  // }
-  // });
-
+  // should live outside - it's too cluttered here in the script tag
   function isValidEmail(value) {
     return (
       (value &&
@@ -98,9 +105,10 @@
     );
   }
 
+  // should extract out the element selector...
   function emailValidation() {
     let stepWrapper = document.querySelector(
-      `[data-step-index="${formState.currentStep}"] input`,
+      `[data-step-index="${form.currentStep}"] input`,
     );
     if (!stepWrapper) return false;
     let email = stepWrapper.value;
@@ -108,35 +116,39 @@
   }
 
   function prevStep() {
-    formState.currentStep > 0 && formState.currentStep--;
+    form.currentStep > 0 && form.currentStep--;
   }
 
   function nextStep() {
-    const currentBlock = form.formSteps[formState.currentStep];
+    const currentBlock = form.formSteps[form.currentStep];
     const currentBlockType = currentBlock.type;
 
     switch (true) {
       case currentBlockType === "text":
         currentBlock.required && currentBlock.value.length < 1
-          ? formState.setError(true, `שדה חובה`)
-          : formState.incStep();
+          ? form.setError(true, `שדה חובה`)
+          : form.incStep();
+        break;
+      case currentBlockType === "signature":
+        console.log(currentBlock.value);
+        currentBlock.required && currentBlock.value.length < 1
+          ? form.setError(true, `שדה חובה`)
+          : form.incStep();
         break;
       case currentBlockType === "email":
         if (emailValidation()) {
-          formState.resetError();
-          formState.currentStep < form.formSteps.length - 1 &&
-            formState.incStep();
+          form.resetError();
+          form.currentStep < form.formSteps.length - 1 && form.incStep();
         } else {
-          formState.setError(true, "הזינו כתובת מייל תקנית");
+          form.setError(true, "הזינו כתובת מייל תקנית");
         }
       case currentBlockType === "tel":
         currentBlock.isValid &&
-          formState.currentStep < form.formSteps.length - 1 &&
-          formState.incStep();
+          form.currentStep < form.formSteps.length - 1 &&
+          form.incStep();
         break;
       default:
-        formState.currentStep < form.formSteps.length - 1 &&
-          formState.incStep();
+        form.currentStep < form.formSteps.length - 1 && form.incStep();
         break;
     }
   }
@@ -146,114 +158,130 @@
   }
 </script>
 
-<div
-  id="full-screen"
-  class="relative max-h-screen overflow-y-scroll snap snap-y snap-mandatory"
->
-  <form dir="rtl" onsubmit={onSubmit} novalidate>
-    <!-- Introduction Note -->
-    {#each form.formSteps as field, stepIndex}
-      {#if formState.currentStep === stepIndex}
-        <section
-          in:fade
-          class="flex flex-col items-center justify-center h-lvh snap-start bg-orange-100"
-        >
-          <div class="w-screen max-w-2xl px-10">
-          {#if field.type === "descriptor"}
-            <div class="flex flex-col gap-8 items-center text-center">
-              <h2 class="text-60px max-w-xl font-bold leading-tight">
-                {field.question}
-              </h2>
-              <p>
-                {@html field.description}
-              </p>
-              {#if formState.currentStep == form.formSteps.length - 1}
-                <a
-                  href="/thanks"
-                  class="w-36 bg-purple-700 font-bold px-6 py-2 rounded-lg text-white"
-                >
-                  {field.buttonText}
-                </a>
+{#if form}
+  <div
+    id="full-screen"
+    class="relative max-h-screen overflow-y-scroll snap snap-y snap-mandatory"
+  >
+    <form dir="rtl" onsubmit={onSubmit} novalidate>
+      <!-- Introduction Note -->
+      {#each form.formSteps as field, stepIndex}
+        {#if form.currentStep === stepIndex}
+          <section
+            in:fade
+            class="flex flex-col items-center justify-center h-lvh snap-start bg-orange-100"
+          >
+            <div class="w-screen max-w-2xl px-10">
+              {#if field.type === "descriptor"}
+                <div class="flex flex-col gap-8 items-center text-center">
+                  <h2 class="text-60px max-w-xl font-bold leading-tight">
+                    {field.question}
+                  </h2>
+                  <p>
+                    {@html field.description}
+                  </p>
+                  {#if form.currentStep == form.formSteps.length - 1}
+                    <a
+                      href="/thanks"
+                      class="w-36 bg-purple-700 font-bold px-6 py-2 rounded-lg text-white"
+                    >
+                      {field.buttonText}
+                    </a>
+                  {/if}
+                  {#if form.currentStep < form.formSteps.length - 1}
+                    <button
+                      onclick={nextStep}
+                      class="w-36 bg-purple-700 font-bold px-6 py-2 rounded-lg text-white"
+                    >
+                      {field.buttonText}
+                    </button>
+                  {/if}
+                </div>
               {/if}
-              {#if formState.currentStep < form.formSteps.length - 1}
-                <button
-                  onclick={nextStep}
-                  class="w-36 bg-purple-700 font-bold px-6 py-2 rounded-lg text-white"
-                >
-                  {field.buttonText}
-                </button>
-              {/if}
-            </div>
-          {/if}
-          {#if field.type === "text" || field.type === "email"}
-            <div data-step={field.type} data-step-index={stepIndex}>
-              <label
-                for={field.id}
-                class="text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal"
-              >
-                {field.question}
-                <sup class:hidden={field.required} class="text-red-600">
-                  *
-                </sup>
-              </label>
+              {#if field.type === "text" || field.type === "email"}
+                <div data-step={field.type} data-step-index={stepIndex}>
+                  <label
+                    for={field.id}
+                    class="text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal"
+                  >
+                    {field.question}
+                    <sup class:hidden={field.required} class="text-red-600">
+                      *
+                    </sup>
+                  </label>
 
-              <p class="text-lg font-normal leading-relaxed text-neutral-600">
-                {@html field.description}
-              </p>
+                  <p
+                    class="text-lg font-normal leading-relaxed text-neutral-600"
+                  >
+                    {@html field.description}
+                  </p>
 
-              <input
-                bind:value={field.value}
-                name={field.id}
-                id={field.id}
-                type={field.type}
-                onkeydown={(e) => e.key == "Enter" && nextStep()}
-                placeholder={field.placeholder}
-                required={field.required}
-                class={`
+                  <input
+                    bind:value={field.value}
+                    name={field.id}
+                    id={field.id}
+                    type={field.type}
+                    onkeydown={(e) => e.key == "Enter" && nextStep()}
+                    placeholder={field.placeholder}
+                    required={field.required}
+                    class={`
                 [ w-full text-lg md:text-base mt-8 pb-2 transition-all bg-transparent ] 
                 [ placeholder:italic placeholder:text-neutral-500 placeholder:text-xl lg:placeholder:text-3xl ]
                 [ border-0 border-b-2 border-neutral-600 ]
                 [ outline-none focus:outline-none text-gray-800 focus:border-0 focus:ring-none focus:border-b-2 !focus:border-blue-700 ] 
                 `}
-              />
-              {#if formState.isError}
-                <ErrorNotif msg={formState.errorMsg} />
+                  />
+                  {#if form.isError}
+                    <ErrorNotif msg={form.errorMsg} />
+                  {/if}
+                </div>
+              {/if}
+              {#if field.type === "select"}
+                <Select {field} error={form.errorMsg} />
+              {/if}
+              {#if field.type === "signature"}
+                <Signature {field} error={form.errorMsg} />
+                {#if form.isError}
+                  <ErrorNotif msg={form.errorMsg} />
+                {/if}
+              {/if}
+              {#if field.type === "rating"}
+                <Rating {field} rating={field.rating} />
+                {#if form.isError}
+                  <ErrorNotif msg={form.errorMsg} />
+                {/if}
+              {/if}
+              {#if field.type === "tel"}
+                <Phone handler={nextStep} {field} errorMsg={form.errorMsg} />
+              {/if}
+              {#if field.type !== "descriptor"}
+                <div class="mt-8 inline-block">
+                  <NextButton
+                    showPressEnter={true}
+                    center={true}
+                    handler={nextStep}
+                    text="המשך"
+                  />
+                </div>
               {/if}
             </div>
-          {/if}
-          {#if field.type === "select"}
-            <Select {field} error={formState.errorMsg} />
-          {/if}
-          {#if field.type === "tel"}
-            <Phone handler={nextStep} {field} errorMsg={formState.errorMsg} />
-          {/if}
-          {#if field.type !== "descriptor"}
-            <div class="mt-8 inline-block">
-              <NextButton
-                showPressEnter={true}
-                center={true}
-                handler={nextStep}
-                text="המשך"
-              />
-            </div>
-          {/if}
-          </div>
-        </section>
-      {/if}
-    {/each}}
-    <!-- Up and Down button-arrows -->
-    <div
-      class="absolute sticky flex gap-4 bottom-[5%] right-[5%] w-60 p-4 rounded-md"
-    >
-      <button onclick={nextStep} class="bg-teal-600 py-2 px-2 rounded">
-        <span class="i-mdi-arrow-down bg-white text-xl z-10 block" />
-      </button>
-      <button onclick={prevStep} class="bg-teal-600 py-2 px-2 rounded">
-        <span class="i-mdi-arrow-up bg-white text-xl z-10 block" />
-      </button>
-    </div>
-  </form>
-</div>
+          </section>
+        {/if}
+      {/each}}
+      <!-- Up and Down button-arrows -->
+      <div
+        class="absolute sticky flex gap-4 bottom-[5%] right-[5%] w-60 p-4 rounded-md"
+      >
+        <button onclick={nextStep} class="bg-teal-600 py-2 px-2 rounded">
+          <span class="i-mdi-arrow-down bg-white text-xl z-10 block" />
+        </button>
+        <button onclick={prevStep} class="bg-teal-600 py-2 px-2 rounded">
+          <span class="i-mdi-arrow-up bg-white text-xl z-10 block" />
+        </button>
+      </div>
+    </form>
+  </div>
+{/if}
 
 <style>
 </style>
