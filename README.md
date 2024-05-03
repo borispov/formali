@@ -16,7 +16,8 @@ ADD BLOCKS:
 - [x] Create a block/form step creation modal - Settled on avoiding a modal.
 - [x] Add Phone field
 - [x] Added Next Button for Select and Text input fields
-- [ ] Add Star Rating
+- [x] Add Star Rating
+- [x] Add Opinion Scale
 - [ ] Add Multichoice
 
 # The Stack
@@ -65,10 +66,8 @@ Use TailwindCSS as early as possible to simplify the whole design
 process. No need to use complex CSS techniques to achieve nicities and
 stuff to be proud of, just get shit done.
 
-Use NeonDB for a postgresql database to store everything.
 
 ### Stack:
-
 Option 1:
 - Astro as the framework
 - Svelte/Alpine for the Builder
@@ -81,17 +80,17 @@ Option 2:
 Option 3:
 - Bun, Hono, JSX, HTMX for all.
 
-Option 4:
-- Clojure
-- ClojureScript / Hiccup
-- HTMX
+## Database 
+Option 1: use NeonDB for a postgresql database to store everything.
+
+Modeling my use case with Relation Datbase is seemingly challenging.
+
+I have to model formSteps which isn't straightforward, becaues each form
+block can be different and there can be way too many types of blocks,
+i.e form field types.
+
+I tried setting up Mongoose to use MongoDB. However, using mongoose
+usually involves writing up a schema which is met with the same problem.
+Therefore, using mongodb node driver is the solution I'm aiming for now.
 
 ### The Chosen Stack
-
-Option 1.
-
-I know and love Astro. 
-I can use whatever, Svelte/Alpine, React, and more.
-I can use the BUN runtime as my server and add everything I need. A big
-question is whether I can plug Hono as easily as I can to benefit from
-middlewares.

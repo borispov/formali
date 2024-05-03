@@ -6,36 +6,28 @@
     showPressEnter?: boolean;
     className?: string;
     textColor?: string;
-    bgColor?: string;
     handler?: MouseEventHandler<HTMLButtonElement>;
     center?: boolean;
-    disabled: boolean;
-    attrs: any;
+    disabled?: boolean;
   }
 
   let {
-    attrs,
     disabled = false,
     text = "המשך",
     center = false,
     showPressEnter = true,
     className,
-    bgColor,
-    textColor,
     handler,
   }: Props = $props();
 
   const buttonClass = `button-xl inline-flex items-center px-6 py-2 border border-transparent text-lg font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500 custom-button-background-color custom-button-text-color`;
 </script>
 
-<div
-  class="btn-container"
-  style="--bg: {bgColor ?? 'var(--default-form-btn-bg)'}; --text: {textColor ??
-    'var(--default-form-btn-text)'}; --center: {center ? 'auto' : '100%'}"
->
+<div class="btn-container" style="--center: {center ? 'auto' : '100%'}">
   <button
     {disabled}
     onclick={handler ?? null}
+    data-el="step-cta"
     class={`
       [ inline-flex justify-between items-center ]
       [ bg- border-[rgba(0, 0, 0, 0.1) 0px 3px 12px 0px] ]
@@ -51,7 +43,9 @@
   <!-- <button onclick={handler ?? null} class={buttonClass}>
     {text}
   </button> -->
-  {#if showPressEnter && window && window.navigator && !window.navigator?.userAgent.toLowerCase().includes("mobile")}
+  {#if showPressEnter && window && window.navigator && !window.navigator?.userAgent
+      .toLowerCase()
+      .includes("mobile")}
     <span> לחץ <strong>Enter ↵</strong> </span>
   {/if}
 </div>

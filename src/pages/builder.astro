@@ -1,6 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro"
 import Builder from "../components/SvelteForm/Builder.svelte"
+
+if (Astro.url.searchParams.get('form')){
+  console.log(Astro.url.searchParams.get('form'))
+} else {
+  Astro.redirect('/dashboard')
+}
+
 ---
 
 <Layout title="builder">

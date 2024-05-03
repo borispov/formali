@@ -1,17 +1,23 @@
 <script lang="ts">
   type Props = {
-    description?: string;
-    textColor: string;
     children: any;
     className?: string;
   }
 
   let {
-    description, textColor, children, className
+    children, className
   }: Props  = $props();
 
 </script>
 
-<p class={"text-lg font-normal leading-relaxed text-opacity-80 " + textColor }>
+<div
+  data-el="description"
+  class={"text-base font-normal leading-relaxed"}>
   {@render children()}
-</p>
+</div>
+
+<style>
+  div {
+    opacity: 0.7;
+  }
+</style>

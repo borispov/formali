@@ -1,15 +1,16 @@
-<script>
+<script lang="ts">
   // TODO: verify line 126 HTML injection is SAFE
   import { flip } from "svelte/animate";
   const flipDurationMs = 100;
 
   // store
-  import createFormState from "./formstate.svelte.ts";
-  import { createForm, formData } from "./store.svelte.ts";
-  // const form = createForm();
-  let form = createFormState(formData);
+  import { FormState } from "./formstate.svelte.ts";
+  import { sampleFormData } from "$lib/lib/dummyData.ts";
+  import FieldDescription from "./FieldDescription.svelte";
+  import FieldLabel from "./FieldLabel.svelte";
 
   import SingleInput from "../Builder/SingleInput.svelte";
+  import DesignConfig from "./Config/DesignConfig.svelte";
 
   import Descriptor from "./Field/Descriptor.svelte";
   import Select from "./Select.svelte";
@@ -21,14 +22,21 @@
   import Rating from "./Rating.svelte";
   import Signature from "./Field/Signature.svelte";
 
-  let showAddMenu = $state(false);
-  // variable for side panel DND
-  let hoveredSideStepId = $state("");
+  // main app state
+  // TODO: load app state according to user's form-id
+  let form = $state<FormState>(new FormState(sampleFormData));
+
+  // config tabs: [ 'build', 'design' ]
+  let configurationTab = $state("build");
+
   let formCurrentIndex = $state(0); // index
   let formCurrentStep = $derived(
     formCurrentIndex !== null && form.formSteps[formCurrentIndex],
   );
 
+  let showAddMenu = $state(false);
+  // variable for side panel DND
+  let hoveredSideStepId = $state("");
   // dnd specific helper
   function handleConsider(e) {
     form.formSteps = e.detail.items;
@@ -39,7 +47,7 @@
     form.formSteps = e.detail.items;
   }
 
-  function addNewStep(inputType, data = {}, position) {
+  function addNewStep(inputType: string, data = {}, position: number) {
     let step = createInput(inputType, data);
 
     if (!position) {
@@ -49,11 +57,14 @@
 
   const hebrewFieldTypes = {
     descriptor: "תיאור",
+    signature: "חתימה",
+    rating: "דירוג",
     text: "טקסט",
     email: "אימייל",
     phone: "טלפון",
     date: "תאריך",
     select: "בחירה",
+    scale: "מדרג",
   };
 
   function previewHandler() {
@@ -75,11 +86,35 @@
       <a href="/" class="text-blue font-bold text-base-600">חזור</a>
     </div>
 
-    <ul class="flex gap-2">
-      <li><a href="/">דף</a></li>
-      <li><a href="/">עיצוב</a></li>
-      <li><a href="/">הגדרות</a></li>
-    </ul>
+    <div class="flex items-center gap-2">
+      <ul class="flex gap-2 items-center justify-center">
+        <a
+          data-state={configurationTab == "design" ? "active" : ""}
+          onclick={(e) => {
+            e.preventDefault();
+            configurationTab = "design";
+          }}
+          class={`nav-item ${configurationTab === "design" && "after:bg-teal-400"}`}
+          type="button"
+          role="tab"
+          aria-selected={configurationTab === "design"}
+          href="/">עיצוב</a
+        >
+        <a
+          data-state={configurationTab === "build" ? "active" : ""}
+          onclick={(e) => {
+            e.preventDefault();
+            configurationTab = "build";
+          }}
+          class={`nav-item ${configurationTab === "design" && "after:bg-teal-400"}`}
+          type="button"
+          role="tab"
+          aria-selected={configurationTab === "build"}
+          href="/">הגדרות</a
+        >
+      </ul>
+    </div>
+
     <div class="flex items-center gap-4 px-12">
       <button
         onclick={previewHandler}
@@ -103,27 +138,40 @@
       class="col-span-3 bg-white overflow-y-scroll border-l border-neutral-300 bg-neutral-200"
     >
       <label for="" class="block mt-4 border-b border-b-2 w-full p-2">
-        הגדרות שדה
+        {configurationTab === "build" ? "הגדרות" : "עיצוב"}
       </label>
-      {#if formCurrentStep}
-        <SingleInput bind:formStep={form.formSteps[formCurrentIndex]} />
+      {#if configurationTab === "build"}
+        {#if formCurrentStep}
+          <SingleInput bind:formStep={form.formSteps[formCurrentIndex]} />
+        {/if}
+      {/if}
+      {#if configurationTab === "design"}
+        <DesignConfig bind:formDesign={form.design} />
       {/if}
     </aside>
 
     <!-- MAIN CANVAS -->
-    <main id="main" class="bg-gray-50 dark:bg-neutral-800 col-span-6">
+    <main
+      style={form?.design &&
+        `
+      --theme-question: ${form.design.colors.question};
+      --theme-answer: ${form.design.colors.answer};
+      --theme-background: ${form.design.colors.backgroundColor};
+      --theme-button: ${form.design.colors.button};
+      --theme-button-text: ${form.design.colors.buttonText};
+    `}
+      id="main"
+      class="bg-gray-50 dark:bg-neutral-800 col-span-6"
+    >
       <div
+        id="form-page"
         class={`relative lg:mx-6 rouded-lg h-[calc(100vh_-_15rem)] mt-[4rem] border border-dashed border-neutral-500 `}
-        style={`background: ${formCurrentStep && formCurrentStep.design.bg}`}
       >
         <div
           class="h-full flex items-center justify-center scrollbar-hide overflow-y-auto mx-auto"
         >
           {#if formCurrentStep}
-            <form
-              style={`color: ${formCurrentStep.design.textColor}; --textColor: {formCurrentStep.design.textColor};`}
-              class={"w-8/12 transition transition-all"}
-            >
+            <form class={"w-8/12 transition transition-all"}>
               {#if formCurrentStep.type === "select"}
                 <Select field={formCurrentStep} />
               {/if}
@@ -144,22 +192,15 @@
               {/if}
               {#if formCurrentStep.type === "email" || formCurrentStep.type === "text"}
                 <div>
-                  <label
-                    for={formCurrentStep.id}
-                    class="text-lg sm:text-xl xl:text-3xl font-medium text-gray-700 leading-[1.35em] lg:leading-normal"
-                    style={`color: var(--textColor);`}
-                  >
+                  <FieldLabel {...formCurrentStep}>
                     {formCurrentStep.question}
-                    {#if formCurrentStep.required}
-                      <sup class="text-red-600"> * </sup>
-                    {/if}
-                  </label>
+                  </FieldLabel>
 
-                  <p
-                    class="text-lg font-normal leading-relaxed text-neutral-600"
-                  >
-                    {formCurrentStep.description}
-                  </p>
+                  {#if formCurrentStep.description}
+                    <FieldDescription>
+                      {@html formCurrentStep.description}
+                    </FieldDescription>
+                  {/if}
 
                   <input
                     bind:value={formCurrentStep.value}
@@ -340,7 +381,67 @@
 </div>
 
 <style>
+  :global(html) {
+    --theme-question-color: var(--theme-question-color);
+    --theme-answer-color: var(--theme-answer-color);
+  }
+
+  :global(label[data-el="question"], p[data-el="description"]) {
+    color: var(--theme-question);
+  }
+
+  :global(#form-page) {
+    background: var(--theme-background);
+  }
+
+  :global(button[data-el="step-cta"]) {
+    background: var(--theme-button);
+    color: var(--theme-button-text);
+  }
+
   a {
     text-decoration: underline !important;
+  }
+
+  .nav-item {
+    align-items: center;
+    -webkit-box-align: center;
+    align-items: center;
+    align-self: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-shrink: 0;
+    font-size: 14px;
+    gap: 8px;
+    height: 32px;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding: 0px 12px;
+    text-decoration: none;
+    transition-property: background-color, color;
+    transition-duration: 0.2s;
+    white-space: nowrap;
+    position: relative;
+    background-color: rgba(25, 25, 25, 0);
+    color: rgb(94, 94, 94);
+  }
+
+  .nav-item[aria-selected="true"]::after {
+    background-color: rgb(60, 60, 60);
+  }
+  .nav-item::after {
+    content: "";
+    background: transparent;
+    border-radius: 9999px;
+    top: calc(-9px);
+    height: 3px;
+    padding: 0px 12px;
+    pointer-events: none;
+    position: absolute;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+    width: calc(100% - 24px);
   }
 </style>

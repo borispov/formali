@@ -1,3 +1,11 @@
 {
-  "extends": "astro/tsconfigs/base"
+   "compilerOptions": {
+      "allowImportingTsExtensions": "true",
+       "module": "esnext",
+       "baseUrl": ".",
+       "paths": {
+           "$lib/*": ["src/*"]
+       }
+   },
+   "extends": "astro/tsconfigs/strict"
 }

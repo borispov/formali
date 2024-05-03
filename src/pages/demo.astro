@@ -1,9 +1,28 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Form from '../components/SvelteForm/Form.svelte';
+import clientPromise from "$lib/db.ts";
+
+const d = await fetch('http://localhost:4321/api/form/create.json', {
+  method: 'POST',
+  body: JSON.stringify({
+    form: {
+      name: 'Suzanne'
+    }
+    }),
+    headers: { "Content-Type": "application/json" }
+})
+
+// console.log(d)
+
+let fetchForm = async () => {
+  const client = await clientPromise
+  await client.db('formali').collection('formali').find({}).toArray()
+}
 
 const title = 'Formali Demo'
 ---
 <Layout title={title}>
-  <Form client:only="svelte" />
+        <h1>HELLO DEMO </h1>
+  <!-- <Form client:only="svelte" /> -->
 </Layout>

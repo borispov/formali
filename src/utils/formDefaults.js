@@ -5,6 +5,22 @@ let n = Date.now();
 return start + '-' + (++n).toString(36);
 }
 
+export const scaleDefaults = {
+    type: 'scale',
+    question: 'דרגו את שביעות רצונכם מהשירות',
+    description: '',
+    from: 1,
+    to: 5,
+    labels: {
+        Left: '',
+        mid: '',
+        right: '',
+    },
+    value: '',
+    required: true,
+    placeholder: '',
+}
+
 export const ratingDefaults = {
     type: 'rating',
     question: 'מה דעתכם על המוצר שלנו?',
@@ -127,6 +143,12 @@ export function createInput(type, data) {
                 ...signatureDefaults,
                 ...designDefaults,
                 data
+            }
+        case type === 'scale':
+            return {
+                id: generateId('scael-'),
+                ...scaleDefaults,
+                ...designDefaults,
             }
         case type === 'rating':
             return {

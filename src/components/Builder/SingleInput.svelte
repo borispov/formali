@@ -8,14 +8,14 @@
 
   let { formStep = $bindable(), options = $bindable() } = $props();
 
-  let newOption = $state({ value: '', id: formStep.options.length + 1});
+  let newOption = $state({ value: "", id: formStep.options.length + 1 });
 
   function addNewOption() {
     newOption.value.length > 2 && formStep.options.push(newOption);
     newOption = {};
   }
 
-  const flipDurationMs = 300
+  const flipDurationMs = 300;
 
   // discouraged by svelte, is there another way?
   function handleConsider(e) {
@@ -28,69 +28,7 @@
   }
 </script>
 
-{#snippet colorPickers(design)}
-    <div class="mt-8">
-      <h3 class="pt-4 text-neutral-700 text-base font-bold">עיצוב</h3>
-      <!-- BG Color Picker -->
-      <div class="mt-2 flex flex-col w-full border-b">
-        <label for="title">רקע</label>
-
-        <ColorPicker
-          label="רקע"
-          isAlpha={false}
-          bind:hex={design.bg}
-          textInputModes={["hex", "rgb"]}
-          components={{
-            input: ColorInput,
-          }}
-        />
-      </div>
-      <!-- Text Color Picker -->
-      <div class="mt-2 flex flex-col w-full border-b">
-        <label for="title">צבע טקסט</label>
-
-        <ColorPicker
-          isAlpha={false}
-          bind:hex={design.textColor}
-          textInputModes={["hex", "rgb"]}
-          components={{
-            input: ColorInput,
-          }}
-        />
-      </div>
-
-      <!-- Button Background Color Picker -->
-      <div class="mt-2 flex flex-col w-full border-b">
-        <label for="title">רקע כפתור</label>
-
-        <ColorPicker
-          isAlpha={false}
-          bind:hex={design.btnBg}
-          textInputModes={["hex", "rgb"]}
-          components={{
-            input: ColorInput,
-          }}
-        />
-      </div>
-
-      <!-- Button Text Color Picker -->
-      <div class="mt-2 flex flex-col w-full border-b">
-        <label for="title">צבע טקסט כפתור</label>
-
-        <ColorPicker
-          isAlpha={false}
-          bind:hex={design.btnTextColor}
-          textInputModes={["hex", "rgb"]}
-          components={{
-            input: ColorInput,
-          }}
-        />
-      </div>
-    </div>
-  
-{/snippet}
-
-{#if (formStep && formStep.type == "text") || formStep?.type === "email" || formStep?.type === 'signature'}
+{#if (formStep && formStep.type == "text") || formStep?.type === "email" || formStep?.type === "signature"}
   <div
     class="my-8 lg:px-6 md:px-4 px-2 divide-y-1 divide-teal-700 divide-dashed"
   >
@@ -122,8 +60,6 @@
         />
       </div>
     </div>
-
-    {@render colorPickers(formStep.design)}
 
     <div class="mt-8">
       <div class="relative mt-2 flex items-start w-full">
@@ -179,8 +115,6 @@
         />
       </div>
     </div>
-
-    {@render colorPickers(formStep.design)}
 
     <div class="mt-8">
       <div class="relative mt-2 flex items-start w-full">
@@ -240,8 +174,6 @@
       </div>
     </div>
 
-    {@render colorPickers(formStep.design)}
-
     <div class="mt-8">
       <div class="relative mt-2 flex items-start w-full">
         <div class="flex h-6 items-center">
@@ -265,42 +197,49 @@
     <div class="mt-8">
       <!-- OPTIONS Configuration -->
       <div class="flex flex-col w-full border-b">
-      <h3 class="pb-2 pt-4 text-neutral-700 text-base font-bold">ערכים לבחירה</h3>
+        <h3 class="pb-2 pt-4 text-neutral-700 text-base font-bold">
+          ערכים לבחירה
+        </h3>
 
-
-      <div class="mt-4">
-        <label for="add-option" class="block text-sm text-gray-700">שאלה</label>
-        <div class="flex items-center grid grid-cols-8">
-          <input
-            bind:value={newOption.value}
-            onkeyup={(e) => e.key === "Enter" && addNewOption()}
-            id="add-option"
-            name="add-option"
-            class="block col-span-6 w-full border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm rounded-sm"
-            type="text"
-          />
-          <button class={`
+        <div class="mt-4">
+          <label for="add-option" class="block text-sm text-gray-700"
+            >שאלה</label
+          >
+          <div class="flex items-center grid grid-cols-8">
+            <input
+              bind:value={newOption.value}
+              onkeyup={(e) => e.key === "Enter" && addNewOption()}
+              id="add-option"
+              name="add-option"
+              class="block col-span-6 w-full border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm rounded-sm"
+              type="text"
+            />
+            <button
+              class={`
           [ flex items-center justify-center ]
           [ bg-teal-200 col-span-2 w-4/5 text-xl h-full border-4 border-teal-500 ]
-          `} onclick={addNewOption}>+</button>
+          `}
+              onclick={addNewOption}>+</button
+            >
+          </div>
         </div>
       </div>
-    </div>
 
       <!-- Display Options -->
       <ul
-        class="pt-4 grid grid-cols-1 gap-2  mt-4 flex flex-col list-none p-0 m-0"
+        class="pt-4 grid grid-cols-1 gap-2 mt-4 flex flex-col list-none p-0 m-0"
         onconsider={handleConsider}
         onfinalize={handleFinalize}
         use:dndzone={{
           items: formStep.options,
-          flipDurationMs: 100
+          flipDurationMs: 100,
         }}
       >
-        {#each formStep.options as option, optionIndex(option.id) }
-          <li 
-            animate:flip={{duration: flipDurationMs}}
-            class="w-full text-xs py-2 px-3 text-center flex-wrap flex items-center justify-between bg-slate-200 rounded-2xl">
+        {#each formStep.options as option, optionIndex (option.id)}
+          <li
+            animate:flip={{ duration: flipDurationMs }}
+            class="w-full text-xs py-2 px-3 text-center flex-wrap flex items-center justify-between bg-slate-200 rounded-2xl"
+          >
             <div
               class="i-mdi:menu cursor-pointer w-6 h-6 me-4 bg-neutral-800 hover:bg-neutral-400"
             ></div>
@@ -324,7 +263,8 @@
 
 {#if formStep && formStep.type == "descriptor"}
   <div
-    class="my-8 lg:px-6 md:px-4 px-2 divide-y-1 divide-teal-700 divide-dashed" >
+    class="my-8 lg:px-6 md:px-4 px-2 divide-y-1 divide-teal-700 divide-dashed"
+  >
     <div class="flex flex-col w-full">
       <div class="mt-4">
         <label for="title" class="block text-sm text-gray-700">כותרת</label>
@@ -354,8 +294,6 @@
       </div>
     </div>
 
-    {@render colorPickers(formStep.design)}
-
     <div class="mt-8">
       <div class="relative mt-2 flex items-start w-full">
         <div class="flex h-6 items-center">
@@ -380,7 +318,10 @@
     <div class="mt-8">
       <h3 class="pt-4 text-neutral-700 text-base font-bold">תמונת קאבר</h3>
       <div class="flex items-center">
-        <label for="file" class="flex items-center mt-2 justify-center border border-gray-200 rounded-md p-6 hover:bg-gray-50 cursor-pointer">
+        <label
+          for="file"
+          class="flex items-center mt-2 justify-center border border-gray-200 rounded-md p-6 hover:bg-gray-50 cursor-pointer"
+        >
           <span class="text-gray-500 mx-auto text-center pt-2">
             העלה תמונה כחלק מפתיח או סיום של מילוי טופס
           </span>

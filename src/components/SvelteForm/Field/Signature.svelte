@@ -52,9 +52,13 @@
     function setCanvas() {
       let width = window.innerWidth > 0 ? window.innerWidth : screen.width;
       if (width > 600) {
+        canvas.width = 500;
+        canvas.height = 250;
         signaturePad.width = 500;
         signaturePad.height = 250;
       } else {
+        canvas.width = 300;
+        canvas.height = 150;
         signaturePad.width = 300;
         signaturePad.height = 150;
       }
@@ -82,11 +86,8 @@
     </FieldDescription>
   {/if}
 
-  <div class="mt-8 max-w-[500px]">
-    <canvas
-      width="500"
-      height="250"
-      class="mt-8 bg-white border border-dashed shadow-lg rounded-lg"
+  <div class="mt-8 max-w-[260px] sm:max-w-[350px] md:max-w-[500px]">
+    <canvas class="mt-8 bg-white border border-dashed shadow-lg rounded-lg"
     ></canvas>
 
     <div class="flex justify-between px-2 text-xs text-neutral-500 mt-2">

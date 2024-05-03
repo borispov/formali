@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro"
 import Rating from "../components/SvelteForm/Rating.svelte"
 import Signature from "../components/SvelteForm/Field/Signature.svelte"
+import Scale from "../components/SvelteForm/Field/Scale.svelte"
 
 const dummy = {
     id: 'select-adc001',
@@ -31,6 +32,20 @@ const dummy = {
       textColor: '#111'
     }
   }
+  const scale ={
+    id: 'scale',
+    question: 'בחרו דירוג',
+    type: 'scale',
+    from: 0,
+    to: 10,
+    value: '',
+    required: true,
+    description: '',
+    design: {
+      bg: '#fff',
+      textColor: '#111'
+    }
+  }
 
 ---
 
@@ -38,7 +53,8 @@ const dummy = {
   <div id="full-screen" class="relative max-h-screen overflow-y-scroll snap snap-y snap-mandatory">
     <form action="/form" dir="rtl" method="POST">
       <section class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
-        <Signature client:only="svelte" field={sign} />
+        <Scale client:only="svelte" field={scale} />
+        <!-- <Signature client:only="svelte" field={sign} /> -->
         <!-- <Rating client:only="svelte" rating={0} field={sign} /> -->
         <button type="submit">
           המשך

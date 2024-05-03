@@ -6,12 +6,24 @@ export type FormStep = {
   required: boolean;
   description: string;
   placeholder?: string;
-  design: FormStepDesign;
+  design?: FormStepDesign;
   img?: string;
 }
 
 export interface RatingStep extends FormStep {
   rating: number;
+}
+
+type ScaleStepLabels = {
+  left: string;
+  center: string;
+  right: string;
+}
+
+export interface ScaleStep extends FormStep {
+  steps: number;
+  zero_index: false;
+  labels: ScaleStepLabels;
 }
 
 type FormStepDesign = {
@@ -21,9 +33,30 @@ type FormStepDesign = {
   btnTextColor: string;
 }
 
+export type DesignColors = {
+  question: string;
+  answer: string;
+  button: string;
+  buttonText: string;
+  backgroundColor: string;
+  backgroundImg: string;
+}
+
+export type FormDesign = {
+  name: string; // theme name
+  fontFamily: string;
+  fieldsFontSize: string;
+  fieldsAlign: string;
+  descriptorsFontSize: string;
+  descriptorsAlign: string;
+  colors: DesignColors;
+  corners: string;
+}
+
 export type Form = {
   id: string;
   name: string;
+  design: FormDesign;
   formSteps: FormStep[];
 }
 
@@ -37,6 +70,19 @@ const defaultDesign = {
 export const formData = {
   id: '',
   name: 'formTest',
+  design: {
+    name: 'Default Blue',
+    fontFamily: 'Arial',
+    colors: {
+      question: '#3d3d3d',
+      answer: '#4FB0AE',
+      button: '#4FB0AE',
+      buttonText: '#FFFFFF',
+      backgroundColor: '#FFFFFF',
+      backgroundImg: '',
+    },
+    corners: 'small',
+  },
   formSteps:  [
     {
       id: 'select-adc001',

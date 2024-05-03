@@ -1,31 +1,22 @@
 <script lang="ts">
-  import { type FormStep } from "./store.svelte.ts";
+  import { type FormStep } from "./store.svelte";
   import FieldLabel from "./FieldLabel.svelte";
   import FieldDescription from "./FieldDescription.svelte";
 
   let checked = $state("");
   let checkedIndex = $state(null);
 
-  let { field = $bindable() }: FormStep = $props();
+  let { field = $bindable() }: { field: FormStep } = $props();
 
-  const options = $derived(
-    field.options.map((opt) => ({ ...opt, isChecked: false })),
-  );
-
-  $effect(() => console.log(checkedIndex, checked));
-
-  const txt = $derived(field.design.textColor.startsWith('text-') ? field.design.textColor : `text-[${field.design.textColor}]`)
-  const bg = $derived(field.design.bg.startsWith('bg-') ? field.design.bg : `bg-[${field.design.textColor}]`)
-
-  const selectClass = "transition-all bg-transparent border-b-2 border-b-neutral-600 mt-8 pb-2 question-input__text placeholder:italic placeholder:text-neutral-500 focus:border-b-neutral-100 outline-0";
+  const selectClass = "transition-all bg-transparent mt-8 pb-2";
 </script>
 
 <div>
-  <FieldLabel {...field} textColor={txt} className={selectClass}>
+  <FieldLabel {...field} className={selectClass}>
     {field.question}
   </FieldLabel>
   {#if field.description}
-    <FieldDescription textColor={txt}>
+    <FieldDescription>
       {@html field.description}
     </FieldDescription>
   {/if}
@@ -35,15 +26,14 @@
       <div class="mt-6 inline-block">
         <label
           aria-checked={checkedIndex === index}
+          data-index={index}
           role="radio"
-          onclick={() => {
-            checkedIndex = index;
-          }}
+          onclick={() => (checkedIndex = index)}
           for={`option-${index}`}
           data-checked={checkedIndex === index}
           class={`
           [ relative max-w-64 flex ]
-          [ cursor-pointer rounded-lg border ${bg} ]
+          [ cursor-pointer rounded-lg border ]
           [ py-2 px-4 shadow-sm ]
           [ focus:outline-none border-indigo-200 ring-2 border-transparent transition duration-75 ease-in-out ]
           ${checkedIndex === index ? "border-neutral-600 ring-indigo-500 shadow-lg" : ""}`}
@@ -56,7 +46,7 @@
             class="sr-only"
             bind:group={checked}
           />
-          <span class="flex flex-1">{option.value}</span>
+          <span data-index={index} class="flex flex-1">{option.value}</span>
           <svg
             class:hidden={checkedIndex !== index}
             class="h-5 w-5 text-indigo-600"
@@ -76,8 +66,3 @@
     {/each}
   </fieldset>
 </div>
-
-
-<style>
-  
-</style>

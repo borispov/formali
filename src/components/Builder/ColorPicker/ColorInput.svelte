@@ -4,7 +4,12 @@
 </script>
 
 <label bind:this={labelElement} class="color-input-wrapper">
-	<input type="text" bind:value={hex} name="text-color" class="color-input" />
+	<input
+		type="text"
+		bind:value={hex}
+		name="text-color"
+		class="color-input !py-2 border-gray-400 rounded-lg"
+	/>
 
 	<div class="color-input__button">
 		<input
@@ -21,12 +26,12 @@
 <style>
 	.indicator__color {
 		background: var(--indicator-color);
-		width: 42px;
+		width: 28px;
 		padding: 0;
-		height: 42px;
+		height: 28px;
 		vertical-align: middle;
 		border-radius: 4px;
-		border: 1px solid white;
+		border: 1px solid rgba(0, 0, 0, 0.3);
 		z-index: 4;
 		margin-inline-start: 8px;
 	}
@@ -43,6 +48,9 @@
 		background: inherit;
 		width: 85%;
 		font-style: italic;
+		height: auto;
+		line-height: 100%;
+		font-size: 14px;
 	}
 
 	.color-input__button {

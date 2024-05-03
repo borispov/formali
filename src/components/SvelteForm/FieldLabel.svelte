@@ -1,8 +1,10 @@
 <script lang="ts">
+  import { getContext } from "svelte";
+  const formDesign = getContext('theme')
+  console.log(formDesign)
 
   interface Label {
     id?: string;
-    question?: string;
     textColor: string;
     required?: boolean;
     children: any;
@@ -10,12 +12,13 @@
   }
 
   let {
-    id, question, textColor, required = false, children, className
+    id, textColor, required = false, children, className
   }: Label  = $props();
 
 </script>
 
 <label
+  data-el="question"
   for={id}
   class={`
   [ text-lg sm:text-xl xl:text-3xl font-medium block ]
@@ -24,6 +27,6 @@
 >
   {@render children()}
   {#if required}
-  <sup class="text-red-600"> * </sup>
+  <sup class="!text-red-600 font-bold"> * </sup>
   {/if}
 </label>
