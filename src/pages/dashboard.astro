@@ -38,13 +38,20 @@ console.log(forms)
   </header>
 
 
-  <div class="border-b mt-10">
+  <div class="border-b mt-10 relative">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 flex items-center justify-between pb-2">
       <h1 class="text-2xl font-bold leading-tight tracking-light text-gray-900">הטפסים שלך</h1>
-      <a href="#" class="inline-flex gap-4 items-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+      <a
+        up-target=".content"
+        up-position="bottom"
+        size="grow"
+        up-align="right"
+        up-layer="new"
+        href="/partials/create-form" class="inline-flex gap-4 items-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
         צור טופס
         <div class="i-mdi:note-plus text-white w-1.5rem h-1.5rem"></div>
       </a>
+      <div class="content"></div>
 
     </div>
   </div>
@@ -54,4 +61,11 @@ console.log(forms)
       <FormsList {forms} />
     </div>
   </div>
+
+  <div class="mt-8 pt-10 borer-t border-dashed border-teal-200">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <h2 class="text-xl font-bold text-gray-800">הגדרות</h2>
+    </div>
+  </div>
+
 </Layout>

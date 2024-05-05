@@ -1,7 +1,5 @@
 import { MongoClient, UUID } from 'mongodb'
 
-import { sampleFormData } from './lib/dummyData';
-
 
 if (!import.meta.env.MONGODB_URI) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
@@ -35,6 +33,8 @@ if (process.env.NODE_ENV === "development") {
   client = new MongoClient(uri, options);
   clientPromise = client.connect();
 }
+
+export clientPromise
 
 
 export const formsCollection = async () => {

@@ -20,6 +20,11 @@ ADD BLOCKS:
 - [x] Add Opinion Scale
 - [ ] Add Multichoice
 
+SETTINGS:
+- [ ] Create a settings page
+- [ ] Create an integration page # or not
+- [ ] Create a hook to send form submissions to user's email.
+
 # The Stack
 After long contemplation between Svlte, HTMX, Unpoly, AlpineJS, Astro, etc,
 I have decided to use, primarily, Svelte with Astro. However, there are

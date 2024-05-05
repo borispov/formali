@@ -1,9 +1,19 @@
 ---
 import Layout from "../layouts/Layout.astro"
 import Builder from "../components/SvelteForm/Builder.svelte"
+import { ObjectId } from "mongodb"
 
-if (Astro.url.searchParams.get('form')){
-  console.log(Astro.url.searchParams.get('form'))
+import { formsCollection } from "$lib/db"
+
+let formId = Astro.url.searchParams.get('form')
+let form
+
+if (formId){
+  const f = await formsCollection()
+  form = await f.findOne({ _id: new ObjectId(formId) })
+  // if form with that form id does not exist, redirect
+  if (!form) Astro.redirect('/dashboard')
+  else form.id = new Object(formId).toString()
 } else {
   Astro.redirect('/dashboard')
 }
@@ -11,5 +21,5 @@ if (Astro.url.searchParams.get('form')){
 ---
 
 <Layout title="builder">
-  <Builder client:only="svelte" />
+  <Builder formData={form} client:only="svelte" />
 </Layout>

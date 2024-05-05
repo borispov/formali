@@ -22,7 +22,6 @@ export class FormState implements FormStateProps {
   errorMsg = $state('');
   isError = $state(false);
   currentValue = $derived(this.getCurrentValue());
-  formSteps = $derived(this.form.formSteps);
   design = $derived(this.getDesignObject());
 
   constructor(form: Form){
@@ -30,6 +29,11 @@ export class FormState implements FormStateProps {
       ...form,
       formSteps: form.formSteps.map(this.mapStepsWithId)
     };
+  }
+
+  get formSteps() { return this.form.formSteps }
+  set formSteps(v: FormStep[]) {
+    this.form.formSteps = v
   }
 
   private getCurrentValue() {
