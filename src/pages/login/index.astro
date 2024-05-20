@@ -1,0 +1,61 @@
+---
+import Layout from "$lib/layouts/Layout.astro"
+
+const locals = Astro.locals
+locals.pb.authStore.isValid && await locals.pb.collection('users').authRefresh();
+
+if (Astro.request.method == 'GET') {
+  if (locals.pb.authStore.isValid) {
+    console.log('valid, redirecting...')
+    return Astro.redirect('/dashboard')
+  }
+}
+---
+
+<Layout>
+		<div class="grid mt40 justify-center items-center">
+			<h1 class="border-b border-neutral-200 text-xl">ביצוע הרשמה למערכת</h1>
+			<button class="button button-xl">Sign Up With Google</button>
+		</div>
+
+	<h1 class="text-4xl text-blue text-center mt40">
+		M - O - U - S - E 
+	</h1>
+</Layout>
+
+<script>
+	import PocketBase from 'pocketbase'
+
+	const pb = new PocketBase('http://localhost:8090/')
+
+  // is this redirect sufficient?
+  if (pb.authStore.isValid) {
+    window.location.href = '/dashboard'
+  }
+
+	async function onLogin() {
+		const authData = await pb.collection('users').authWithOAuth2({provider: 'google'})
+
+		const { meta } = authData
+		console.log('name: ', meta.name)
+
+		if (meta && meta.isNew) {
+			const formData = new FormData();
+			const response = await fetch(meta.avatarUrl);
+			if (response.ok) {
+				const file = await response.blob();
+				formData.append('avatar', file);
+			}
+
+			formData.append('name', meta.name);
+			console.log('appending a whole new pieces of data')
+			await pb.collection('users').update(authData.record.id, formData);
+		}
+
+    const cookieString = pb.authStore.exportToCookie({ httpOnly: false });
+    console.log('setting cookie: ', cookieString)
+    document.cookie = cookieString
+
+	}
+	document.querySelector('button')?.addEventListener('click', onLogin)
+</script>

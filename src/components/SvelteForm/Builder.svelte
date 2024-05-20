@@ -1,4 +1,5 @@
 <script lang="ts">
+	import PocketBase from 'pocketbase';
   // TODO: verify line 126 HTML injection is SAFE
   import { flip } from "svelte/animate";
   const flipDurationMs = 100;
@@ -23,11 +24,28 @@
   import Signature from "./Field/Signature.svelte";
   import { onMount } from "svelte";
 
-  let { formData = $bindable() }: { formData: Form } = $props();
+  let { formData = $bindable(), formId }: { formData: Form | null, formId: string } = $props();
   let form = $state() as FormState;
 
-  onMount(() => {
-    form = new FormState(formData);
+  onMount(async () => {
+    const pb = new PocketBase('http://localhost:8090')
+    if (!pb.authStore.isValid) {
+      globalThis.location.href = '/login'
+      return
+    }
+
+    console.log(`form ID: `, formId)
+    // var tmp = pb.authStore.isValid ? 
+    const f = await pb.collection('forms').getOne(formId)
+    console.log(f)
+    if (f) {
+      form = new FormState(f);
+      return form
+    }
+    return 
+    if (formData) {
+      form = new FormState(formData);
+    }
   });
 
   // main app state
@@ -174,11 +192,11 @@
       <main
         style={form?.design &&
           `
-      --theme-question: ${form.design.colors.question};
-      --theme-answer: ${form.design.colors.answer};
-      --theme-background: ${form.design.colors.backgroundColor};
-      --theme-button: ${form.design.colors.button};
-      --theme-button-text: ${form.design.colors.buttonText};
+      --theme-question: ${form.design.question};
+      --theme-answer: ${form.design.answer};
+      --theme-background: ${form.design.backgroundColor};
+      --theme-button: ${form.design.button};
+      --theme-button-text: ${form.design.buttonText};
     `}
         id="main"
         class="bg-gray-50 dark:bg-neutral-800 col-span-6"

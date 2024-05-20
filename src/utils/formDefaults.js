@@ -100,6 +100,22 @@ export const designDefaults = {
     }
 }
 
+export const formThemeDefaults = {
+  name: "Default Teal",
+  fontFamily: 'Arial',
+  fieldsFontSize: 'md',
+  fieldsAlign: 'right',
+  descriptorsFontSize: 'sm',
+  descriptorsAlign: 'center',
+  corners: 'sm',
+  question: '#3d3d3d',
+  answer: '#4FB0AE',
+  button: '#4FB0AE',
+  buttonText: '#ffffff',
+  backgroundColor: '#ffffff',
+  backgroundImg: '',
+}
+
 export function createInput(type, data) {
     switch (true) {
         case type === 'descriptor':

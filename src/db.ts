@@ -34,16 +34,10 @@ if (process.env.NODE_ENV === "development") {
   clientPromise = client.connect();
 }
 
-export clientPromise
-
-
 export const formsCollection = async () => {
   const client = await clientPromise;
   const db = client.db('formali')
-
   // db.dropCollection('forms')
-
   // db.collection('forms').insertOne({ ...sampleFormData })
-
   return db.collection("forms");
 };

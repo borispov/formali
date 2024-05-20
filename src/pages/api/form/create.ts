@@ -1,17 +1,22 @@
 import type { APIRoute } from "astro";
 import type { Form } from "$lib/components/SvelteForm/store.svelte";
 import { formsCollection } from "$lib/db";
+import { formThemeDefaults } from "$lib/utils/formDefaults";
 
 const createForm = async (form:Form, template:string) => {
 
-  // find the user hwo's creating the form and append the form onto his
+  // find the user who's creating the form and append the form onto his
   // record.
+
+  if (template == 'default') {
+    let f = await formsCollection();
+  }
 
   if (template === 'default') {
     let f = await formsCollection()
     let response = await f.insertOne({
       name: form,
-      design: {},
+      design: formThemeDefaults,
       formSteps: [],
     })
     return response
@@ -21,7 +26,7 @@ const createForm = async (form:Form, template:string) => {
 
 
 export const POST: APIRoute = async ({ request }) => {
-  console.log(`PARSING POST REQUEST on /api/form/create.json`)
+  console.log(`PARSING POST REQUEST on /api/form/create`)
   const resp = await request.formData()
   const newFormName = resp.get('formName')
   if (newFormName && newFormName.length < 1) {

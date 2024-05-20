@@ -17,7 +17,7 @@
     <ColorPicker
       label="questions"
       isAlpha={false}
-      bind:hex={formDesign.colors.question}
+      bind:hex={formDesign.question}
       textInputModes={["hex", "rgb"]}
       components={{
         input: ColorInput,
@@ -29,7 +29,7 @@
     <ColorPicker
       label="תשובות"
       isAlpha={false}
-      bind:hex={formDesign.colors.answer}
+      bind:hex={formDesign.answer}
       textInputModes={["hex", "rgb"]}
       components={{
         input: ColorInput,
@@ -41,7 +41,7 @@
     <ColorPicker
       label="questions"
       isAlpha={false}
-      bind:hex={formDesign.colors.button}
+      bind:hex={formDesign.button}
       textInputModes={["hex", "rgb"]}
       components={{
         input: ColorInput,
@@ -53,7 +53,7 @@
     <ColorPicker
       label="טקסט כפתור"
       isAlpha={false}
-      bind:hex={formDesign.colors.buttonText}
+      bind:hex={formDesign.buttonText}
       textInputModes={["hex", "rgb"]}
       components={{
         input: ColorInput,

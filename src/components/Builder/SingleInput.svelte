@@ -8,7 +8,7 @@
 
   let { formStep = $bindable(), options = $bindable() } = $props();
 
-  let newOption = $state({ value: "", id: formStep.options.length + 1 });
+  let newOption = $state({ value: "", id: formStep.options?.length + 1 });
 
   function addNewOption() {
     newOption.value.length > 2 && formStep.options.push(newOption);

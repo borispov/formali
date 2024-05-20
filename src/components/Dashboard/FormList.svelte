@@ -1,12 +1,14 @@
 <script>
   let { forms } = $props();
+  console.log(forms)
 </script>
 
 <div class="cards">
   {#each forms as form}
+  <h1>{form.id}</h1>
     <div class="flex flex-col w-full">
       <a
-        href={`/builder?form=${form._id}`}
+        href={`/builder?form=${form.id}`}
         class="text-center h-40 flex items-center justify-center"
       >
         <h3 class="text-lg font-light px-2 line-clamp-4">{form.name}</h3>

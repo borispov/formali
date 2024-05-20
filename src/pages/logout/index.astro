@@ -1,0 +1,31 @@
+---
+import Layout from '../../layouts/Layout.astro'
+
+if (Astro.request.method == 'GET') {
+  const locals = Astro.locals
+  locals.pb.authStore.clear();
+}
+
+
+---
+
+
+<Layout>
+  <div transition:animate="fade" class="grid mt40 justify-center items-center">
+    <h1 class="border-b border-neutral-200 text-xl">ביצוע הרשמה למערכת</h1>
+    <button class="button button-xl">מתנתק ...</button>
+  </div>
+</Layout>
+
+<script is:inline>
+
+	import PocketBase from 'pocketbase'
+	const pb = new PocketBase('http://localhost:8090/')
+  pb.authStore.clear();
+
+  localStorage.clear()
+  localStorage.removeItem('pocketbase_auth')
+  setTimeout(() => {
+    window.location.href = '/login'
+  }, 1000)
+</script>

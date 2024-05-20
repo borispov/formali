@@ -1,16 +1,26 @@
 ---
+import Dash from "../components/Dashboard/Dash.svelte";
 import Layout from "../layouts/Layout.astro"
 import FormsList from '$lib/components/Dashboard/FormList.svelte'
+
+// const dataForms = await locals.pb.collection('forms').getFullList({ sort: '-created' })
+
+import PocketBase from 'pocketbase';
+
+const pb = new PocketBase('http://localhost:8090/')
 
 import {formsCollection} from '../db'
 
 // fetch all user's forms
 const f  = await formsCollection()
 const forms = await f.find({}).toArray()
-console.log(forms)
+// console.log(forms)
 
 ---
 <Layout>
+  {
+    true ?
+      <Dash client:only="svelte" /> : (
   <header>
     <nav class="w-full border-b p-2 flex items-center flex justify-between">
       <div class="flex items-center gap-8">
@@ -50,9 +60,8 @@ console.log(forms)
         href="/partials/create-form" class="inline-flex gap-4 items-center rounded-md border border-transparent bg-blue-400 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
         צור טופס
         <div class="i-mdi:note-plus text-white w-1.5rem h-1.5rem"></div>
+        <div class="content"></div>
       </a>
-      <div class="content"></div>
-
     </div>
   </div>
 
@@ -67,5 +76,7 @@ console.log(forms)
       <h2 class="text-xl font-bold text-gray-800">הגדרות</h2>
     </div>
   </div>
+  )
+}
 
 </Layout>
