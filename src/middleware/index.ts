@@ -8,6 +8,7 @@ export const onRequest = defineMiddleware(async ({locals, request}, next: () => 
   locals.pb.authStore.loadFromCookie(request.headers.get('cookie') || '');
 
   if (request.url.includes('logout')) {
+    console.log("PATH /LOGOUT HIT:: LOGGING OUT USER")
     locals.pb.authStore.clear();
     const response = await next();
     response.headers.append('set-cookie', locals.pb.authStore.exportToCookie());

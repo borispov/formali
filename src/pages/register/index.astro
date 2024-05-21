@@ -1,0 +1,14 @@
+---
+if (Astro.request.method === 'GET') {
+  const locals = Astro.locals
+  let isValid = locals.pb?.isValid || ''
+  if (isValid) {
+    return Astro.redirect('/dashboard')
+  }
+}
+
+---
+
+<h1>
+  דף זה נמצא תחת פיתוח
+</h1>

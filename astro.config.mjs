@@ -1,20 +1,34 @@
 import { defineConfig } from 'astro/config';
-import UnoCSS from 'unocss/astro';
-import presetIcons from '@unocss/preset-icons';
+
+import unocss from 'unocss/astro'
 import { presetUno } from 'unocss';
-import svelte from "@astrojs/svelte";
 import { presetForms } from '@julr/unocss-preset-forms';
+// import {presetDaisy} from 'unocss-preset-daisy'
+import { presetDaisy } from '@unscatty/unocss-preset-daisy'
 import presetMini from '@unocss/preset-mini';
+import presetIcons from '@unocss/preset-icons';
+
+// import UnoCSS from 'unocss/astro';
+import svelte from "@astrojs/svelte";
 import alpine from '@astrojs/alpinejs';
 import netlify from "@astrojs/netlify";
+
 
 // https://astro.build/config
 export default defineConfig({
   adapter: netlify(),
   output: "server",
   base: "/",
-  integrations: [UnoCSS({
-    presets: [presetUno(), presetMini(), presetIcons(), presetForms()],
-    injectReset: true
-  }), svelte(), alpine()]
+  integrations: [
+    unocss({
+      presets: [
+        presetUno(), 
+        presetDaisy(),
+        presetMini(), 
+        presetIcons(), 
+        presetForms(),
+      ],
+      injectReset: true
+    }), 
+    svelte(), alpine()]
 });

@@ -49,8 +49,14 @@ export type FormDesign = {
   fieldsAlign: string;
   descriptorsFontSize: string;
   descriptorsAlign: string;
-  colors: DesignColors;
+  colors?: DesignColors;
   corners: string;
+  question: string;
+  answer: string;
+  button: string;
+  buttonText: string;
+  backgroundColor: string;
+  backgroundImg: string;
 }
 
 export type Form = {

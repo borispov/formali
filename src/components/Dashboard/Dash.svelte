@@ -8,6 +8,8 @@
   let userId = $state({})
   let forms = $state([])
 
+  let userData = $state({})
+
   onMount(async () => {
     console.log('on mount...')
     const pb = new PocketBase('http://localhost:8090/')
@@ -19,6 +21,7 @@
       const dataForms = await pb.collection('forms').getFullList({ sort: '-created' })
       forms = dataForms.map(({ name, design, formSteps, id }) => ({ name, design, formSteps, id}))
       console.log(dataForms)
+      userData = pb.authStore.model
     } else {
       console.error("USER IS NOT LOGGED IN")
       // window.location.href = '/login'
@@ -59,6 +62,17 @@
         שדרג
           <div class="i-mdi:arrow-up w-4 h-4"></div>
         </button>
+
+        <div class={`avatar ${'placeholder'} w-8`}>
+          <div class="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+            {#if userData.avatarURL}
+            <img src={userData.avatar} alt="avatar" />
+            {:else}
+            <span class="text-xl">{userData?.name && userData.name[0]}</span>
+            {/if}
+          </div>
+        </div>
+
       </div>
     </nav>
   </header>
