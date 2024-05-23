@@ -5,22 +5,27 @@
   import { onMount } from 'svelte';
   import CreateForm from './CreateForm.svelte';
 
+  const pb = new PocketBase('http://localhost:8090/')
+
   let userId = $state({})
   let forms = $state([])
-
+  let error = $state('')
   let userData = $state({})
+
+  async function fetchForms(f) {
+      const dataForms = await pb.collection('forms').getFullList({ sort: '-created' })
+      console.log("RE_FILLING_FORMS ...")
+      error = ''
+      return dataForms.map(({ name, design, formSteps, id }) => ({ name, design, formSteps, id}))
+  }
 
   onMount(async () => {
     console.log('on mount...')
-    const pb = new PocketBase('http://localhost:8090/')
     if (pb.authStore.isValid ) {
       await pb.collection('users').authRefresh()
       // set user id
       userId = pb.authStore.model.id
-
-      const dataForms = await pb.collection('forms').getFullList({ sort: '-created' })
-      forms = dataForms.map(({ name, design, formSteps, id }) => ({ name, design, formSteps, id}))
-      console.log(dataForms)
+      forms = await fetchForms(forms)
       userData = pb.authStore.model
     } else {
       console.error("USER IS NOT LOGGED IN")
@@ -30,9 +35,9 @@
 
   async function onCreateForm() {
     const data = $state({ userId })
-    console.log('filling form/modal...')
     const res = await showModal(formCreator, data)
-    console.log(`res: ${res}`)
+    // re-fetch forms again
+    forms = await fetchForms(forms)
   }
 
 
@@ -63,14 +68,17 @@
           <div class="i-mdi:arrow-up w-4 h-4"></div>
         </button>
 
-        <div class={`avatar ${'placeholder'} w-8`}>
-          <div class="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+        <div class={`avatar ${'placeholder'} w-8 dropdown`}>
+          <div tabindex="0" role="button" class="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
             {#if userData.avatarURL}
             <img src={userData.avatar} alt="avatar" />
             {:else}
             <span class="text-xl">{userData?.name && userData.name[0]}</span>
             {/if}
           </div>
+          <ul tabindex="0" class="menu dropdown-content z-[1] shadow-sm bg-base-100 rounded-box mt-12 ml-12">
+            <li><a href='/logout'>התנתק</a></li>
+          </ul>
         </div>
 
       </div>
@@ -96,7 +104,9 @@
 
   <div class="mt-6">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      {#key forms}
       <FormsList {forms} />
+      {/key}
     </div>
   </div>
 

@@ -1,3 +1,7 @@
+type Option = {
+  id: string;
+  value: string;
+}
 export type FormStep = {
   id: string;
   question: string;
@@ -8,6 +12,7 @@ export type FormStep = {
   placeholder?: string;
   design?: FormStepDesign;
   img?: string;
+  options?: Option[];
 }
 
 export interface RatingStep extends FormStep {

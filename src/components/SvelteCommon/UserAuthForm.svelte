@@ -56,7 +56,6 @@
       window.location.href = '/dashboard'
     }
 
-
   }
 
   async function onSubmit(event: SubmitEvent) {
@@ -74,7 +73,7 @@
 	<p class="font-semibold text-center">שלום, התחבר באמצעות</p>
 	<div class="flex flex-wrap space-y-4 space-x-0 md:flex-wrap md:space-x-4 md:space-y-0">
 		<button onclick={onGoogleLogin} class="btn btn-circled variant-ringed-surface w-full gap-2">
-      <span class="i-mdi:google h-6 w-6"></span>Google
+      <span class="i-mdi:google bg-indigo-500 h-6 w-6"></span>Google
     </button>
 		<!-- <button class="btn btn-circled text-white w-full gap-2" style="background-color: #4267B2;">
       <span class="i-mdi:facebook h-6 w-6"></span>Facebook
@@ -87,23 +86,23 @@
 	<form onsubmit={onSubmit} class="space-y-4">
 		<label class="label" for="email">
 			<span>אימייל</span>
-			<input name="email" type="email" placeholder="name@example.com" class="input grow ms-2" />
+			<input disabled name="email" type="email" placeholder="name@example.com" class="input grow ms-2" />
 		</label>
 		<label class="label" for='password'>
 			<span>סיסמא</span>
-			<input name="password" type="password" value="password" class="input grow ms-2" />
+			<input disabled name="password" type="password" value="password" class="input grow ms-2" />
 		</label>
-    <button disabled={true} class="btn btn-wide glakkkkkkkkss w-full">
+    <button disabled={true} class="btn btn-wide btn-sm glakkkkkkkkss w-full">
       התחבר באמצעות אימייל
       {#if isLoading}
       <span class="loading loading-infinity loading-sm"></span>
       {/if}
     </button>
 	</form>
-	<div class="flex justify-between flex-wrap">
+	<!-- <div class="flex justify-between flex-wrap">
 		<p class="text-sm unstyled py-2 text-slate-500">
 			אין חשבון עדיין? <a href="/" class="font-bold underline underline-offset-2">הרשם עכשיו</a>
 		</p>
-	</div>
+	</div> -->
 </div>
 

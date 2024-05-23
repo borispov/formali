@@ -49,7 +49,8 @@
   });
 
   // main app state
-  let configurationTab = $state("build"); // config tabs: [ 'build', 'design' ]
+  let configurationTab = $state("build"); // config tabs: [ 'build', 'design', 'submissions' ]
+  let showSubmissions = $state(false);
 
   let formCurrentIndex = $state(0); // chosen step index
   let formCurrentStep = $derived(form.formSteps[formCurrentIndex]);
@@ -115,7 +116,7 @@
     <nav class="w-full border-b p-2 flex items-center flex justify-between">
       <div class="flex items-center gap-2">
         <div class="i-mdi:arrow-right w-1.2em h-1.2em text-blue-600"></div>
-        <a href="/" class="text-blue font-bold text-base-600">חזור</a>
+        <a href="/dashboard" class="text-blue font-bold text-base-600">חזור</a>
       </div>
 
       <div class="flex items-center gap-2">
@@ -143,6 +144,18 @@
             role="tab"
             aria-selected={configurationTab === "build"}
             href="/">הגדרות</a
+          >
+          <a
+            data-state={configurationTab === "submissions" ? "active" : ""}
+            onclick={(e) => {
+              e.preventDefault();
+              showSubmissions = true;
+            }}
+            class={`nav-item ${configurationTab === "submissions" && "after:bg-teal-400"}`}
+            type="button"
+            role="tab"
+            aria-selected={configurationTab === "submissions"}
+            href="/">תוצאות</a
           >
         </ul>
       </div>
@@ -189,6 +202,40 @@
       </aside>
 
       <!-- MAIN CANVAS -->
+      {#if true}
+      <!-- TODO: Extract this out into a component -->
+      <main 
+        id="main"
+        class="bg-gray-50 dark:bg-neutral-800 col-span-6">
+        <div class="p-10">
+          <h1 class="font-bold p-10">תוצאות ותגובות עבור הטופס</h1>
+          <div class="my-2 overflow-auto">
+            <div class="inline-block min-w-full py-2 align-middle">
+              <div class="overflow-auto shadow mx-1 ring-1 ring-black ring-opacity-5 md:rounded-lg relative">
+                <table class="table table-zebra min-w-full divide-y divide-gray-300 break-words">
+                  <thead class="bg-gray-100">
+                    <tr class="divide-x divide-gray-200">
+                      <th class="py-3 5 pr-4 text-right text-sm font-semibold text-gray-900">
+                        שם פרטי
+                      </th>
+                      <th class="py-3 5 pr-4 text-right text-sm font-semibold text-gray-900">
+                        שאלה #2
+                      </th>
+                      <th class="py-3 5 pr-4 text-right text-sm font-semibold text-gray-900">
+                        שאלה #3
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody class="divide-y divide-gray-200 bg-white"></tbody>
+
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      {:else}
       <main
         style={form?.design &&
           `
@@ -267,6 +314,7 @@
           </div>
         </div>
       </main>
+      {/if}
 
       <!-- SIDE PANEL -->
       <div

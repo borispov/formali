@@ -2,8 +2,7 @@
 	import PocketBase from 'pocketbase';
   import { formThemeDefaults } from "$lib/utils/formDefaults";
 
-
-  let { data } = $props();
+  let { data = $bindable() } = $props();
 
   let error = $state('')
 

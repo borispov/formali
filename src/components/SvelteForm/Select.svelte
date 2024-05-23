@@ -6,7 +6,15 @@
   let checked = $state("");
   let checkedIndex = $state(null);
 
-  let { field = $bindable() }: { field: FormStep } = $props();
+  let { setVal, field = $bindable() }: { setVal: Function, field: FormStep } = $props();
+
+  function selectOption() {
+    if (field && field.options && checkedIndex) {
+      console.log('setting val to: ', field.options[checkedIndex].value)
+      const v = field.options[checkedIndex].value
+      setVal(field, v)
+    }
+  }
 
   const selectClass = "transition-all bg-transparent mt-8 pb-2";
 </script>
@@ -28,7 +36,7 @@
           aria-checked={checkedIndex === index}
           data-index={index}
           role="radio"
-          onclick={() => (checkedIndex = index)}
+          onclick={() => {checkedIndex = index; selectOption()}}
           for={`option-${index}`}
           data-checked={checkedIndex === index}
           class={`

@@ -2,6 +2,7 @@
   import { onMount, setContext } from "svelte";
   import { fade } from "svelte/transition";
 
+  import type { FormStep } from "./store.svelte";
   import { sampleFormData } from "$lib/lib/dummyData.ts";
 
   import ErrorNotif from "./ErrorNotif.svelte";
@@ -32,6 +33,12 @@
     }
     setContext("theme", form.getDesignObject());
   });
+
+  // make svelte stop complaining for mutating the form state from within the components
+  function setVal(fs: FormStep, v: string|number) {
+    fs.value = v
+    console.log('setting form type of ', fs.type, ' to: ', v)
+  }
 
   function prevStep() {
     form.currentStep > 0 && form.currentStep--;
@@ -79,6 +86,8 @@
 
   function onSubmit(e) {
     e?.preventDefault();
+    const f = form.formSteps
+    console.log(f)
   }
 </script>
 
@@ -95,7 +104,7 @@
     id="full-screen"
     class="relative max-h-screen overflow-y-scroll snap snap-y snap-mandatory"
   >
-    <form dir="rtl" onsubmit={onSubmit} novalidate>
+    <form dir="rtl" onsubmit={onSubmit}>
       <!-- Introduction Note -->
       {#each form.formSteps as field, stepIndex}
         {#if form.currentStep === stepIndex}
@@ -164,7 +173,7 @@
                 </div>
               {/if}
               {#if field.type === "select"}
-                <Select {field} />
+                <Select {field} setVal={setVal} />
               {/if}
               {#if field.type === "signature"}
                 <Signature {field} />
