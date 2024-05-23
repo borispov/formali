@@ -25,6 +25,11 @@ SETTINGS:
 - [ ] Create an integration page # or not
 - [ ] Create a hook to send form submissions to user's email.
 
+SUBMISSIONS:
+- [ ] Send Submissions To An Endpoint / 
+- [ ] Configure Submissions in Pocketbaase
+- [ ] Display Submissions under Form's Settings
+
 # The Stack
 After long contemplation between Svlte, HTMX, Unpoly, AlpineJS, Astro, etc,
 I have decided to use, primarily, Svelte with Astro. However, there are
