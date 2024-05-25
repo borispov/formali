@@ -35,9 +35,9 @@
   });
 
   // make svelte stop complaining for mutating the form state from within the components
-  function setVal(fs: FormStep, v: string|number) {
-    fs.value = v
-    console.log('setting form type of ', fs.type, ' to: ', v)
+  function setVal(fs: FormStep, v: string | number) {
+    fs.value = v;
+    console.log("setting form type of ", fs.type, " to: ", v);
   }
 
   function prevStep() {
@@ -84,10 +84,30 @@
     }
   }
 
-  function onSubmit(e) {
+  async function onSubmit(e) {
     e?.preventDefault();
-    const f = form.formSteps
-    console.log(f)
+    const f = form.formSteps;
+    let questionAndValueList = [];
+
+    // TODO: transform this into a Form's Class Method
+    for (let i = 0; i < f.length; i++) {
+      const formElement = f[i];
+      questionAndValueList.push({
+        question: formElement.question,
+        value: formElement.value
+      })
+    }
+
+    const submissionRecord = {
+      formId: form.form.id,
+      submissions: questionAndValueList
+    }
+
+    const response = await fetch('/api/form/submission', {
+      method: "POST",
+      body: JSON.stringify(submissionRecord),
+    })
+    console.log(f);
   }
 </script>
 
@@ -173,16 +193,16 @@
                 </div>
               {/if}
               {#if field.type === "select"}
-                <Select {field} setVal={setVal} />
+                <Select {field} {setVal} />
               {/if}
               {#if field.type === "signature"}
-                <Signature {field} />
+                <Signature {field} {setVal} />
                 {#if form.isError}
                   <ErrorNotif msg={form.errorMsg} />
                 {/if}
               {/if}
               {#if field.type === "rating"}
-                <Rating {field} rating={field.rating} />
+                <Rating {field} rating={field.rating} {setVal} />
                 {#if form.isError}
                   <ErrorNotif msg={form.errorMsg} />
                 {/if}

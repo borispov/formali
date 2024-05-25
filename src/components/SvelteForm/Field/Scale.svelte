@@ -5,7 +5,8 @@
 
   import { toCssBg, toCssTextColor } from "../../../utils/objToCss.ts";
 
-  let { field = $bindable() }: ScaleStep = $props();
+  let { setVal, field = $bindable() }: { field: ScaleStep; setVal: Function } =
+    $props();
 
   let checked = $state();
   let checkedIndex = $state();
@@ -13,7 +14,7 @@
   const txt = $derived(toCssTextColor(field.design.textColor));
   const bg = $derived(toCssBg(field.design.bg));
 
-  const rangeLength = $derived(field.from - field.to);
+  const rangeLength = $derived(field.steps - (field.zero_index ? 0 : 1));
 
   const selectClass = "transition-all bg-transparent mt-8 pb-2";
 </script>
@@ -29,14 +30,15 @@
   {/if}
 
   <fieldset class="flex gap-2" role="radiogroup">
-    {#each { length: field.to } as _, index}
+    {#each { length: rangeLength } as _, index}
       <div class="mt-6 inline-block">
+        <!-- svelte-ignore a11y_click_events_have_key_events -->
         <div
           data-index={index}
+          onclick={() => setVal(field.value, index)}
           tabindex={checkedIndex === index ? 0 : -1}
           data-step="scale-step"
           aria-checked={checkedIndex === index}
-          type="radio"
           role="radio"
           class={`
           [ flex items-center shadow-sm outline-none justify-center text-center select-none ]

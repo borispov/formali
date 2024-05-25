@@ -7,8 +7,11 @@
     target: HTMLInputElement;
   }
 
-  let { rating = $bindable(), field }: { field: FormStep; rating: any } =
-    $props();
+  let {
+    setVal,
+    rating = $bindable(),
+    field,
+  }: { setVal: Function; field: FormStep; rating: any } = $props();
 
   const txt = $derived(
     field.design.textColor.startsWith("text-")
@@ -37,6 +40,7 @@
   function selectStar(starIndex: number) {
     state.rating = starIndex;
     field.rating = starIndex;
+    setVal(field.value, starIndex);
   }
 </script>
 

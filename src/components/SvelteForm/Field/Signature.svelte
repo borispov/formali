@@ -5,17 +5,20 @@
   import SignaturePad from "signature_pad";
   import { onMount } from "svelte";
 
-  let { field }: { field: FormStep } = $props();
+  let { setVal, field }: { setVal: Function; field: FormStep } = $props();
 
   const helperMessage = "חתום באמצעות אצבע אחת";
 
   // Styling & CSS
   const fieldClass = "transition-all mt-8 outline-0";
   const txt = $derived(
+    field.design === 'undefined'
+      ? ''
+      : (
     field.design.textColor.startsWith("text-")
       ? field.design.textColor
       : `text-[${field.design.textColor}]`,
-  );
+  ));
 
   let signatureList = $state();
   let signaturePad = $state(null);
@@ -24,7 +27,8 @@
   function onSignatureInput() {
     signatureList = signaturePad.toDataURL();
     if (typeof signatureList === "string") {
-      field.value = signatureList;
+      setVal(field.value, signatureList);
+      // field.value = signatureList;
     }
   }
 
