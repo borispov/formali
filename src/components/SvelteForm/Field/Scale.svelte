@@ -35,7 +35,7 @@
         <!-- svelte-ignore a11y_click_events_have_key_events -->
         <div
           data-index={index}
-          onclick={() => setVal(field.value, index)}
+          onclick={() => setVal(field, index)}
           tabindex={checkedIndex === index ? 0 : -1}
           data-step="scale-step"
           aria-checked={checkedIndex === index}

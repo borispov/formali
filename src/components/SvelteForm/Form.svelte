@@ -23,8 +23,9 @@
 
     if (jsonPreviewFormData) {
       var tmp: any = JSON.parse(jsonPreviewFormData);
+      console.log('form details: ', tmp)
 
-      if (form) {
+      if (tmp.formSteps) {
         form = new FormState(tmp);
         console.log("we r here");
       } else {
@@ -32,6 +33,7 @@
       }
     }
     setContext("theme", form.getDesignObject());
+
   });
 
   // make svelte stop complaining for mutating the form state from within the components
@@ -44,13 +46,17 @@
     form.currentStep > 0 && form.currentStep--;
   }
 
-  // Can pass the whole function to the class Component
+  // Can pass the whole function to the class Component -- 25/5/2024: Not Sure What This Means
   // Need to get rid of DOM dependency in email validation...
+  // TODO: if (submitted) ...
   function nextStep() {
-    console.log(form);
 
     const currentBlock = form.formSteps[form.currentStep];
     const currentBlockType = currentBlock.type;
+
+    if (form.isLastStep()) {
+      console.log("This is the last step...")
+    }
 
     switch (true) {
       case currentBlockType === "text":
@@ -84,7 +90,7 @@
     }
   }
 
-  async function onSubmit(e) {
+  async function onSubmit(e: FormDataEvent) {
     e?.preventDefault();
     const f = form.formSteps;
     let questionAndValueList = [];
@@ -100,14 +106,14 @@
 
     const submissionRecord = {
       formId: form.form.id,
-      submissions: questionAndValueList
+      submissionData: questionAndValueList
     }
 
     const response = await fetch('/api/form/submission', {
       method: "POST",
       body: JSON.stringify(submissionRecord),
     })
-    console.log(f);
+    console.log('submission: ', response);
   }
 </script>
 
@@ -115,11 +121,11 @@
   <div
     style={form?.design &&
       `
-      --theme-question: ${form.design.colors.question};
-      --theme-answer: ${form.design.colors.answer};
-      --theme-background: ${form.design.colors.backgroundColor};
-      --theme-button: ${form.design.colors.button};
-      --theme-button-text: ${form.design.colors.buttonText};
+      --theme-question: ${form.design.question};
+      --theme-answer: ${form.design.answer};
+      --theme-background: ${form.design.backgroundColor};
+      --theme-button: ${form.design.button};
+      --theme-button-text: ${form.design.buttonText};
     `}
     id="full-screen"
     class="relative max-h-screen overflow-y-scroll snap snap-y snap-mandatory"
@@ -178,11 +184,11 @@
                     id={field.id}
                     type={field.type}
                     onkeydown={(e) => e.key == "Enter" && nextStep()}
-                    placeholder={field.placeholder}
+                    placeholder={field.placeholder || 'name@example.com'}
                     required={field.required}
                     class={`
-                      [ w-full text-lg md:text-base mt-8 pb-2 transition-all bg-transparent ] 
-                      [ placeholder:italic placeholder:text-neutral-500 placeholder:text-xl lg:placeholder:text-3xl ]
+                      [ w-full text-lg md:text-base lg:text-xl mt-6 pb-2 transition-all bg-transparent ] 
+                      [ placeholder:italic placeholder:text-neutral-500 placeholder:text-lg lg:placeholder:text-xl ]
                       [ border-0 border-b-2 border-neutral-600 ]
                       [ outline-none focus:outline-none text-gray-800 focus:border-0 focus:ring-none focus:border-b-2 !focus:border-blue-700 ] 
                     `}
@@ -216,7 +222,7 @@
                     showPressEnter={true}
                     center={true}
                     handler={nextStep}
-                    text="המשך"
+                    text={form.isLastStep() ? 'שלח' : 'המשך'}
                   />
                 </div>
               {/if}

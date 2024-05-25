@@ -9,7 +9,7 @@
   let { setVal, field = $bindable() }: { setVal: Function, field: FormStep } = $props();
 
   function selectOption() {
-    if (field && field.options && checkedIndex) {
+    if (field && field.options && checkedIndex !== null) {
       console.log('setting val to: ', field.options[checkedIndex].value)
       const v = field.options[checkedIndex].value
       setVal(field, v)
@@ -31,7 +31,10 @@
 
   <fieldset class="flex flex-col gap-2">
     {#each field.options as option, index}
+      <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
       <div class="mt-6 inline-block">
+        <!-- svelte-ignore a11y_click_events_have_key_events -->
+        <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
         <label
           aria-checked={checkedIndex === index}
           data-index={index}
@@ -54,6 +57,7 @@
             class="sr-only"
             bind:group={checked}
           />
+          <!-- svelte-ignore a11y_no_static_element_interactions -->
           <span data-index={index} class="flex flex-1">{option.value}</span>
           <svg
             class:hidden={checkedIndex !== index}

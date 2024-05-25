@@ -13,7 +13,8 @@ export interface FormStateProps {
   incStep: () => void;
   resetError: () => void;
   setError: () => void;
-  addStep: () => void;
+  addStep: (step: FormStep) => void;
+  isLastStep: () => boolean;
 }
 
 export class FormState implements FormStateProps {
@@ -35,6 +36,9 @@ export class FormState implements FormStateProps {
   set formSteps(v: FormStep[]) {
     this.form.formSteps = v
   }
+
+  get id() { return this.form.id }
+  get name() { return this.form.name }
 
   private getCurrentValue() {
     return this.form.formSteps[this.currentStep].value
@@ -62,6 +66,11 @@ export class FormState implements FormStateProps {
 
   incStep() {
     this.currentStep += 1
+  }
+
+  isLastStep() {
+    const len = this.formSteps.length
+    return this.currentStep === len - 1
   }
 
   setError(b: boolean, msg: string) {

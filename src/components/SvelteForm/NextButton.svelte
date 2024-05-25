@@ -20,7 +20,7 @@
     handler,
   }: Props = $props();
 
-  const buttonClass = `button-xl inline-flex items-center px-6 py-2 border border-transparent text-lg font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-indigo-500 custom-button-background-color custom-button-text-color`;
+  const btnC = `btn btn-primary`;
 </script>
 
 <div class="btn-container" style="--center: {center ? 'auto' : '100%'}">
@@ -28,7 +28,7 @@
     {disabled}
     onclick={handler ?? null}
     data-el="step-cta"
-    class={`
+    class={false && btnC || `
       [ inline-flex justify-between items-center ]
       [ bg- border-[rgba(0, 0, 0, 0.1) 0px 3px 12px 0px] ]
       [ px-4 py-2 rounded-md ]
@@ -36,7 +36,7 @@
       !custom-button-background-color !custom-button-text-color
       `}
   >
-    המשך
+    {text}
     <div class="i-mdi:arrow-left-bold h-5 w-5 mr3"></div>
   </button>
 

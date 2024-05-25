@@ -40,7 +40,7 @@
   function selectStar(starIndex: number) {
     state.rating = starIndex;
     field.rating = starIndex;
-    setVal(field.value, starIndex);
+    setVal(field, starIndex);
   }
 </script>
 

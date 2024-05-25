@@ -65,7 +65,7 @@ export const emailDefaults = {
     value: '',
     required: false,
     description: 'השאירו כתובת מייל כדי שנוכל לחזור אליכם',
-    placeholder: 'כתובת מייל'
+    placeholder: 'name@example.com'
 }
 
 export const checkboxDefaults = {

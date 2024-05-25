@@ -13,6 +13,7 @@ export type FormStep = {
   design?: FormStepDesign;
   img?: string;
   options?: Option[];
+  rating?: number|string;
 }
 
 export interface RatingStep extends FormStep {

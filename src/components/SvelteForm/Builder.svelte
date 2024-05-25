@@ -37,15 +37,12 @@
     console.log(`form ID: `, formId)
     // var tmp = pb.authStore.isValid ? 
     const f = await pb.collection('forms').getOne(formId)
-    console.log(f)
     if (f) {
       form = new FormState(f);
+      console.log(form)
       return form
-    }
+    } 
     return 
-    if (formData) {
-      form = new FormState(formData);
-    }
   });
 
   // main app state
@@ -89,11 +86,12 @@
   };
 
   function previewHandler() {
-    let jsonFormData = JSON.stringify(form);
-    console.log(jsonFormData);
+    let jsonFormData = JSON.stringify(form.form);
+    console.log('FORM before Stringify: ', form)
+    console.log('FORM after Stringify: ', jsonFormData)
     try {
       localStorage.setItem("latest_form", jsonFormData);
-      window.location = "/demo";
+      window.location.href = "/demo";
     } catch (error) {
       alert("שגיאה בהצגת הטופס");
     }
