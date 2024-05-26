@@ -77,19 +77,43 @@
 
   <ConfigItem label="הגדרות בלוק תיאור">
     <ConfigSetting label="גודל גפן">
-      <div class="flex gap-2 items-center px-2">
-        <div
-          class="i-mdi:size-extra-small h-2rem w-2rem border rounded-md border-neutral-200"
-        ></div>
-        <div class="i-mdi:size-m h-2rem w-2rem"></div>
-        <div class="i-mdi:size-l h-2rem w-2rem"></div>
+      <div class="flex gap-2 items-center px-2 join">
+
+        <div class="join-item has-[:checked]:bg-gray-100 p-2">
+          <input 
+            bind:group={d.descriptorsFontSize}
+            value="sm"
+            id="descFontSm" class="peer hidden sr-only" type="radio" name="descriptorsAlign" aria-label="ימין" />
+          <label
+            for="descFontSm"
+            class="peer-checked:bg-orange-600 block i-mdi:size-extra-small h-2rem w-2rem checked:bg-black checked:color-white cursor-pointer"
+          ></label>
+        </div>
+
+        <div class="join-item has-[:checked]:bg-gray-100 p-2">
+          <input 
+            bind:group={d.descriptorsFontSize}
+            value="md"
+            id="descFontMd"
+           class="peer hidden sr-only" type="radio" name="descriptorsAlign" aria-label="אמצע" />
+          <label for="descFontMd" class="peer-checked:bg-orange-600 block i-mdi:size-m h-2rem w-2rem cursor-pointer"></label>
+        </div>
+
+        <div class="join-item has-[:checked]:bg-gray-100 p-2">
+          <input 
+            id="descFontLg"
+            bind:group={d.descriptorsFontSize}
+            value="lg"
+            class="peer hidden" type="radio" name="descriptorsAlign" aria-label="שמאל" />
+          <label for="descFontLg" class="peer-checked:bg-orange-600  block i-mdi:size-l h-2rem w-2rem cursor-pointer"></label>
+        </div>
       </div>
     </ConfigSetting>
 
     <ConfigSetting label="יישור">
       <div class="flex gap-2 items-center px-2 join">
 
-        <div class="join-item">
+        <div class="join-item has-[:checked]:bg-gray-100 p-2">
           <input 
             bind:group={d.descriptorsAlign}
             value="start"
@@ -100,7 +124,7 @@
           ></label>
         </div>
 
-        <div class="join-item">
+        <div class="join-item has-[:checked]:bg-gray-100 p-2">
           <input 
             bind:group={d.descriptorsAlign}
             value="center"
@@ -109,7 +133,7 @@
           <label for="descAlignCenter" class="peer-checked:bg-blue-600 block i-mdi:format-align-center h-1.5rem w-1.5rem cursor-pointer"></label>
         </div>
 
-        <div class="join-item">
+        <div class="join-item has-[:checked]:bg-gray-100 p-2">
           <input 
             id="descAlignEnd"
             bind:group={d.descriptorsAlign}
@@ -119,10 +143,6 @@
         </div>
       </div>
     </ConfigSetting>
-    <span>
-      Selected Alignment: 
-      {d.descriptorsAlign}
-    </span>
   </ConfigItem>
 </ConfigWrapper>
 
