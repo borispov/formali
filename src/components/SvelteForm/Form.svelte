@@ -2,38 +2,48 @@
   import { onMount, setContext } from "svelte";
   import { fade } from "svelte/transition";
 
-  import type { FormStep } from "./store.svelte";
-  import { sampleFormData } from "$lib/lib/dummyData.ts";
+  import type { FormStep, Form } from "./store.svelte";
+  import { sampleFormData } from "$lib/dummyData";
 
   import ErrorNotif from "./ErrorNotif.svelte";
-  import { FormState } from "./formstate.svelte.ts";
+  import { FormState } from "./formstate.svelte";
   import Select from "./Select.svelte";
   import NextButton from "./NextButton.svelte";
   import Phone from "./Phone.svelte";
   import Signature from "./Field/Signature.svelte";
   import Rating from "./Rating.svelte";
-  import { emailValidation } from "$lib/utils/validators.ts";
+  import { emailValidation } from "$lib/utils/validators";
   import FieldLabel from "./FieldLabel.svelte";
   import FieldDescription from "./FieldDescription.svelte";
+
+  let {
+    isDemo = false,
+    formFromParams = null
+  }: {isDemo: boolean, formFromParams: Form | null} = $props();
 
   let form = $state() as FormState;
 
   onMount(async () => {
-    const jsonPreviewFormData = localStorage.getItem("latest_form");
 
-    if (jsonPreviewFormData) {
-      var tmp: any = JSON.parse(jsonPreviewFormData);
-      console.log('form details: ', tmp)
-
-      if (tmp.formSteps) {
-        form = new FormState(tmp);
-        console.log("we r here");
-      } else {
-        form = new FormState(sampleFormData);
+    if (isDemo) {
+      const jsonPreviewFormData = localStorage.getItem("latest_form");
+      
+      if (jsonPreviewFormData) {
+        var tmp: any = JSON.parse(jsonPreviewFormData);
+        console.log('form details: ', tmp)
+        
+        if (tmp.formSteps) {
+          form = new FormState(tmp);
+          console.log("we r here");
+        } else {
+          form = new FormState(sampleFormData);
+        }
       }
+      setContext("theme", form.getDesignObject());
+    } else if (formFromParams) {
+      console.log(`formFromParams mode: `, formFromParams)
+      form = new FormState(formFromParams)
     }
-    setContext("theme", form.getDesignObject());
-
   });
 
   // make svelte stop complaining for mutating the form state from within the components

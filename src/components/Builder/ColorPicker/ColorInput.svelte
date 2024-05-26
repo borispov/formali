@@ -1,20 +1,22 @@
 <script lang="ts">
+  import { throttle } from "@github/mini-throttle";
 	export let labelElement: HTMLLabelElement;
 	export let hex: string | undefined;
+
 </script>
 
 <label bind:this={labelElement} class="color-input-wrapper">
 	<input
 		type="text"
-		bind:value={hex}
+    bind:value={hex}
 		name="text-color"
 		class="color-input !py-2 border-gray-400 rounded-lg"
 	/>
 
 	<div class="color-input__button">
 		<input
-			on:click|preventDefault={() => {}}
-			on:mousedown|preventDefault={() => {}}
+			onclick={() => {}}
+			onmousedown={() => {}}
 			aria-haspopup="dialog"
 			type="color"
 			bind:value={hex}

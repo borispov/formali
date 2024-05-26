@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import type { Form } from "$lib/components/SvelteForm/store.svelte";
 import { formsCollection } from "$lib/db";
-import { formThemeDefaults } from "$lib/utils/formDefaults";
+import { formThemeDefaults } from "$lib/lib/utils/formDefaults";
 
 const createForm = async (form:Form, template:string) => {
 

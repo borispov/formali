@@ -1,6 +1,6 @@
 <script>
-	import { showModal } from './../SvelteCommon/Modal.svelte';
-  import FormsList from '$lib/components/Dashboard/FormList.svelte'
+	import { showModal } from '$components/SvelteCommon/Modal.svelte';
+  import FormsList from '$components/Dashboard/FormList.svelte'
   import PocketBase from 'pocketbase';
   import { onMount } from 'svelte';
   import CreateForm from './CreateForm.svelte';
@@ -12,11 +12,16 @@
   let error = $state('')
   let userData = $state({})
 
-  async function fetchForms(f) {
+  async function fetchForms() {
       const dataForms = await pb.collection('forms').getFullList({ sort: '-created' })
       console.log("RE_FILLING_FORMS ...")
       error = ''
       return dataForms.map(({ name, design, formSteps, id }) => ({ name, design, formSteps, id}))
+  }
+
+  async function deleteForm(formId) {
+    await pb.collection('forms').delete(formId)
+    forms = await fetchForms()
   }
 
   onMount(async () => {
@@ -105,7 +110,7 @@
   <div class="mt-6">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 flex items-center justify-between">
       {#key forms}
-      <FormsList {forms} />
+        <FormsList {forms} removeHandler={deleteForm} />
       {/key}
     </div>
   </div>

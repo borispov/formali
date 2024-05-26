@@ -1,11 +1,12 @@
 <script lang="ts">
 	import PocketBase from 'pocketbase';
+  import {throttle, debounce} from '@github/mini-throttle'
   // TODO: verify line 126 HTML injection is SAFE
   import { flip } from "svelte/animate";
   const flipDurationMs = 100;
 
   // store
-  import { FormState } from "./formstate.svelte.ts";
+  import { FormState } from "./formstate.svelte";
   import type { Form } from "./store.svelte.js";
   import FieldDescription from "./FieldDescription.svelte";
   import FieldLabel from "./FieldLabel.svelte";
@@ -18,14 +19,16 @@
   import NextButton from "./NextButton.svelte";
   import Phone from "./Phone.svelte";
 
-  import { createInput } from "../../utils/formDefaults.js";
+  import { createInput } from "$lib/utils/formDefaults.js";
   import { dndzone } from "svelte-dnd-action";
   import Rating from "./Rating.svelte";
   import Signature from "./Field/Signature.svelte";
   import { onMount } from "svelte";
 
   let { formData = $bindable(), formId }: { formData: Form | null, formId: string } = $props();
+
   let form = $state() as FormState;
+  let design = $derived(form && form.design);
 
   onMount(async () => {
     const pb = new PocketBase('http://localhost:8090')
@@ -61,16 +64,23 @@
   }
 
   // dnd specific helper
-  function handleFinalize(e) {
+  async function handleFinalize(e) {
     form.formSteps = e.detail.items;
+    await updateFormToDB()
   }
 
-  function addNewStep(inputType: string, data = {}, position: number) {
+  async function addNewStep(inputType: string, data = {}, position: number) {
     let step = createInput(inputType, data);
 
     if (!position) {
       form.addStep(step);
     }
+    await updateFormToDB()
+  }
+
+  function editDesign(designProp, newVal) {
+    form.editDesignSetting(designProp, newVal)
+    autoSaveToLocalStorage()
   }
 
   const hebrewFieldTypes = {
@@ -85,12 +95,32 @@
     scale: "מדרג",
   };
 
-  function previewHandler() {
+  // save form to local storage
+  function saveToLocalStorage() {
     let jsonFormData = JSON.stringify(form.form);
-    console.log('FORM before Stringify: ', form)
-    console.log('FORM after Stringify: ', jsonFormData)
+    const now = Date.now();
     try {
+      console.log('SAVING FORM TO LOCAL STORAGE')
       localStorage.setItem("latest_form", jsonFormData);
+      localStorage.setItem("latest_save", now);
+    } catch (_) {
+      console.error('form was not saved to localStorage')
+    }
+  }
+
+  function autoSaveToLocalStorage(wait=true) {
+    const time = localStorage.getItem("latest_save");
+    const now = Date.now();
+    if (wait && now - time > 5000) {
+      saveToLocalStorage()
+    } else if (!wait) {
+      saveToLocalStorage()
+    }
+  }
+
+  function previewHandler() {
+    try {
+      saveToLocalStorage()
       window.location.href = "/demo";
     } catch (error) {
       alert("שגיאה בהצגת הטופס");
@@ -98,6 +128,7 @@
   }
 
   async function updateFormToDB() {
+    autoSaveToLocalStorage(false) // false to disable throttling...
     const resp = await fetch("/api/form/update", {
       method: "POST",
       headers: {
@@ -189,7 +220,7 @@
           {/if}
         {/if}
         {#if configurationTab === "design"}
-          <DesignConfig bind:formDesign={form.design} />
+          <DesignConfig bind:formDesign={form.design} onDesignEdit={editDesign} />
         {/if}
         <button
           class="absolute bg-teal-400 text-white font-thin bottom-10 left-0 right-0 w-full px-4 py-2 rounded-sm"
@@ -200,7 +231,7 @@
       </aside>
 
       <!-- MAIN CANVAS -->
-      {#if true}
+      {#if showSubmissions}
       <!-- TODO: Extract this out into a component -->
       <main 
         id="main"
@@ -308,6 +339,16 @@
                   <NextButton text="המשך" icon="thin" disabled />
                 </div>
               </form>
+            {/if}
+            {#if form.formSteps.length === 0}
+              <div class="flex flex-col h-full gap-2 justify-center bg-white dark:bg-gray-900 text-center lg:px-8 px-4 ">
+                <h2 class="mb-4 text-7xl tracking-tight font-extrabold lg:text-7xl text-primary-600 dark:text-primary-500">
+                  הוסף שדה
+                </h2>
+                <p class="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white">התחל לבנות את הטופס שלך ע״י הוספת שדות למילוי</p>
+                <p class="text-lg font-light text-gray-500 dark:text-gray-400">מצד ימין של הדף, יוצגו הגדרות עבור שדה הנבחר. מצד שמאל, יוצגו כלל שדות הטופס, כמו כן, באפשרותך לערוך ולסדר כרצונך.</p>
+                <p class="text-lg font-light text-gray-500 dark:text-gray-400">בכל עת, ניתן ללחוץ על כפתור תצוגה מקדימה למעלה על-מנת לראות את הטופס כפי שיראו אותו הקהל שלך.</p>
+              </div>
             {/if}
           </div>
         </div>

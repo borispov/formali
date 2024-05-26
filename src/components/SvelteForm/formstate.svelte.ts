@@ -1,6 +1,7 @@
 import type { FormDesign } from "$lib/types";
 import type { Form, FormStep } from "./store.svelte"
 
+
 export interface FormStateProps {
   formSteps: FormStep[];
   currentStep: number;
@@ -15,6 +16,7 @@ export interface FormStateProps {
   setError: () => void;
   addStep: (step: FormStep) => void;
   isLastStep: () => boolean;
+  editDesignSetting: (field:string, val:string) => void;
 }
 
 export class FormState implements FormStateProps {
@@ -55,6 +57,11 @@ export class FormState implements FormStateProps {
     }
   }
 
+  // maybe save the old val? for undo changes...
+  editDesignSetting(designField:string, val:string) {
+    this.form.design[designField] = val
+  }
+
   resetError() {
     this.isError = false;
     this.errorMsg = "";
@@ -82,7 +89,6 @@ export class FormState implements FormStateProps {
   addStep(step: FormStep) {
     this.form.formSteps.push(step)
   }
-
 
 }
 

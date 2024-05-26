@@ -1,27 +1,10 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import Builder from "../components/SvelteForm/Builder.svelte"
-import { ObjectId } from "mongodb"
-
-import { formsCollection } from "$lib/db"
+import Layout from "$src/layouts/Layout.astro";
+import Builder from "$components/SvelteForm/Builder.svelte";
 
 let form = null
 let formId = Astro.url.searchParams.get('form')
 console.log('formid url params: ', formId)
-
-const locals = Astro.locals
-console.log(locals.pb.authStore.isVaild)
-
-// substitute with PocketBase collections
-// if (formId){
-//   const f = await formsCollection()
-//   form = await f.findOne({ _id: new ObjectId(formId) })
-//   // if form with that form id does not exist, redirect
-//   if (!form) Astro.redirect('/dashboard')
-//   else form.id = new Object(formId).toString()
-// } else {
-//   Astro.redirect('/dashboard')
-// }
 
 ---
 

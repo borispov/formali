@@ -1,65 +1,41 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import Rating from "../components/SvelteForm/Rating.svelte"
-import Signature from "../components/SvelteForm/Field/Signature.svelte"
-import Scale from "../components/SvelteForm/Field/Scale.svelte"
+import Layout from "$src/layouts/Layout.astro";
+import Form from "$components/SvelteForm/Form.svelte";
+import { authorizePB } from "$lib/utils/pb";
 
-const dummy = {
-    id: 'select-adc001',
-    question: 'מה משקף את עיסוקכם הכי טוב',
-    type: 'rating',
-    value: '',
-    required: true,
-    description: '',
-    placeholder: '',
-    design: {
-      bg: '#fff',
-      textColor: '#111'
-    }
-  }
+let f;
 
-  const sign = {
-    id: 'select-adc002',
-    question: 'אנא חתמו כאן',
-    type: 'signature',
-    value: '',
-    signatureList: [],
-    required: true,
-    description: '',
-    placeholder: '',
-    design: {
-      bg: '#fff',
-      textColor: '#111'
-    }
-  }
-  const scale ={
-    id: 'scale',
-    question: 'בחרו דירוג',
-    type: 'scale',
-    from: 0,
-    to: 10,
-    value: '',
-    required: true,
-    description: '',
-    design: {
-      bg: '#fff',
-      textColor: '#111'
-    }
-  }
+const pb = await authorizePB();
+const formId = Astro.url.searchParams.get('formId') || ''
 
+try {
+  f = await pb.collection('forms').getOne(formId)
+  console.log('found ID: ', formId)
+} catch (error) {
+  f = null
+}
+
+const title = f ? `Formali - מילוי טופס` : 'Formali 404 Not Found'
+console.log(title)
 ---
-
-<Layout title="builder">
-  <div id="full-screen" class="relative max-h-screen overflow-y-scroll snap snap-y snap-mandatory">
-    <form action="/form" dir="rtl" method="POST">
-      <section class="flex items-center justify-center h-lvh snap-start w-full p-16 border-box bg-orange-100 text-center">
-        <Scale client:only="svelte" field={scale} />
-        <!-- <Signature client:only="svelte" field={sign} /> -->
-        <!-- <Rating client:only="svelte" rating={0} field={sign} /> -->
-        <button type="submit">
-          המשך
-        </button>
-      </section>
-    </form>
-  </div>
+<Layout title={title}>
+  {
+    f 
+    && <Form formFromParams={f} client:load />
+    || (
+      <div>
+        <h1 class="text-3xl text-center">{title}</h1>
+        <section class="bg-white dark:bg-gray-900 min-h-screen flex-col justify-center items-center flex">
+          <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+            <div class="mx-auto max-w-screen-sm text-center">
+                <h1 class="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 dark:text-primary-500">404</h1>
+                <p class="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white">מה שאתה מחפש לא נמצא כאן.</p>
+                <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">אנא ודא כי הקישור שהזנת תקין. במידה וזהו טופס שקיבלת לשם מילוי, ודא כי לא מחקת בטעות אף תו מהקישור.</p>
+                <a href="#" class="inline-flex text-white bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4">Back to Homepage</a>
+            </div>   
+          </div>
+        </section>
+      </div>
+    )
+  }
 </Layout>
