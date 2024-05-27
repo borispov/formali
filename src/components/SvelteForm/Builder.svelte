@@ -220,7 +220,7 @@
           {/if}
         {/if}
         {#if configurationTab === "design"}
-          <DesignConfig bind:formDesign={form.design} onDesignEdit={editDesign} />
+          <DesignConfig setTheme={(v) => {form.setTheme(v)}} bind:formDesign={form.design} onDesignEdit={editDesign} />
         {/if}
         <button
           class="absolute bg-teal-400 text-white font-thin bottom-10 left-0 right-0 w-full px-4 py-2 rounded-sm"

@@ -1,0 +1,6 @@
+- [x] added alignment and fontsize settings for blocks.
+- [x] send submissions to an endpoint
+- [x] add design palettes/ themes. Added 4 themes
+- [ ] FUNC: user can now select themes.
+- [ ] add a theme with an image/bg-img.
+- [ ] add thank you/ ending block type

@@ -1,4 +1,4 @@
-import type { FormDesign } from "$lib/types";
+import type { FormDesign } from "$src/types";
 import type { Form, FormStep } from "./store.svelte"
 
 
@@ -55,6 +55,15 @@ export class FormState implements FormStateProps {
       ...block,
       id: block.type + '-' + i,
     }
+  }
+
+  setTheme(newTheme: FormDesign) {
+    this.form = {
+      ...this.form,
+      design: newTheme
+    }
+
+    console.log(this.form.design.answer)
   }
 
   // maybe save the old val? for undo changes...
