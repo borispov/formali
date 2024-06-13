@@ -1,12 +1,14 @@
 <script>
   import { flip } from "svelte/animate";
-  import ColorPicker from "svelte-awesome-color-picker";
-  import ColorInput from "./ColorPicker/ColorInput.svelte";
   import Tiptap from "../Tiptap.svelte";
 
   import { dndzone } from "svelte-dnd-action";
 
   let { formStep = $bindable(), options = $bindable() } = $props();
+
+  $effect(() => {
+    console.log(`formStep: ${JSON.stringify(formStep)}`)
+  })
 
   let newOption = $state({ value: "", id: formStep.options?.length + 1 });
 
@@ -261,7 +263,7 @@
   </div>
 {/if}
 
-{#if formStep && formStep.type == "descriptor"}
+{#if formStep && formStep.type == "descriptor" || formStep.type == 'ending' }
   <div
     class="my-8 lg:px-6 md:px-4 px-2 divide-y-1 divide-teal-700 divide-dashed"
   >
@@ -294,6 +296,7 @@
       </div>
     </div>
 
+    {#if formStep.type != 'ending'}
     <div class="mt-8">
       <div class="relative mt-2 flex items-start w-full">
         <div class="flex h-6 items-center">
@@ -313,6 +316,26 @@
         </div>
       </div>
     </div>
+    {/if}
+
+    {#if formStep.type == 'ending'}
+      <div class="mt-8">
+        <div class="relative mt-2 flex items-start w-full">
+          <h3>Redirect (בקרוב)</h3>
+          <input
+            bind:value={formStep.redirect}
+            disabled
+            id="redirect"
+            name="redirect"
+            class="hidden block w-full border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm rounded-sm"
+            type="text"
+          />
+            <p id="description" class="text-gray-500">
+              בסיום מילוי הטופס, תוכלו להפנות את המשתמשים שלכם לכתובת לפי רצונכם
+            </p>
+        </div>
+      </div>
+    {/if}
 
     <!-- File Img Upload -->
     <div class="mt-8">

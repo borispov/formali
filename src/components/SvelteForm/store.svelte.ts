@@ -70,6 +70,7 @@ export type Form = {
   name: string;
   design: FormDesign;
   formSteps: FormStep[];
+  endings: FormStep[];
 }
 
 const defaultDesign = {

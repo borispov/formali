@@ -2,27 +2,27 @@
   import type { FormStep } from "../store.svelte";
 
   interface Props extends FormStep {
-    textColor: string;
-    bg: string;
+    type: string;
+    bg?: string;
     img?: string;
   }
 
   import FieldLabel from "../FieldLabel.svelte";
   import FieldDescription from "../FieldDescription.svelte";
 
-  let { id, question, description, img, design, textColor, bg }: Props =
+  let { id, question, description, img, bg, type }: Props =
     $props();
 
   const fieldClass =
     "transition-all bg-transparent border-b-2 border-b-neutral-600 mt-8 pb-2 question-input__text placeholder:italic placeholder:text-neutral-500 focus:border-b-neutral-100 outline-0";
 </script>
 
-<div>
-  <FieldLabel {id} {textColor} className={fieldClass}>
+<div data-el={type}>
+  <FieldLabel {id} className={fieldClass}>
     {question}
   </FieldLabel>
   {#if description}
-    <FieldDescription {textColor}>
+    <FieldDescription>
       {@html description}
     </FieldDescription>
   {/if}

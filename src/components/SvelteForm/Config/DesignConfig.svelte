@@ -20,7 +20,12 @@
   const activeClass = `bg-neutral-400 rounded-md`
 
   const LABELS = {
-    THEMES_CONFIG_TITLE: "ערכות נושא",
+    THEMES_TITLE: "ערכות נושא",
+    DESIGN_TITLE: "הגדרות עיצוב",
+    DESC_TITLE: "הגדרות בלוק תיאור",
+    FIELDS_TITLE: "הגדרות בלוק שדות",
+    FONTSIZE: "גודל גפן",
+    ALIGN: "יישור",
   }
 
 // Create Design Schemas...
@@ -36,7 +41,8 @@
     <div
       role="button"
       onclick={() => setTheme(theme)}
-      style="background-color: {theme.backgroundColor};" class={`gap-2 mt-2 p-2 card max-w-[100px] card-compact card-bordered cursor-pointer`}>
+      style="background-color: {theme.backgroundColor}; border-color: {theme.button}22; box-shadow: 3px 3px 0 {theme.button};" 
+      class="gap-2 mt-2 p-2 max-w-[100px] card card-compact card-bordered cursor-pointer !hover:border-indigo-500 transition">
         <h3 style="color: {theme.question};" class={`text-sm text-[${theme.question}]`}>{theme.name}</h3>
         <button style="background-color: {theme.button}; color: {theme.buttonText};" class={`w-12 rounded-md btn text-[10px] btn-xs`}>המשך</button>
     </div>
@@ -93,15 +99,15 @@
     />
   </ConfigItem>
 
-  <ConfigItem label="הגדרות בלוק תיאור">
-    <ConfigSetting label="גודל גפן">
+  <ConfigItem label={LABELS.DESC_TITLE}>
+    <ConfigSetting label={LABELS.FONTSIZE}>
       <div class="flex gap-2 items-center px-2 join">
 
         <div class="join-item has-[:checked]:bg-gray-100 p-2">
           <input 
             bind:group={d.descriptorsFontSize}
             value="sm"
-            id="descFontSm" class="peer hidden sr-only" type="radio" name="descriptorsAlign" aria-label="ימין" />
+            id="descFontSm" class="peer hidden sr-only" type="radio" name="descriptorsFontSize" aria-label="ימין" />
           <label
             for="descFontSm"
             class="peer-checked:bg-orange-600 block i-mdi:size-extra-small h-2rem w-2rem checked:bg-black checked:color-white cursor-pointer"
@@ -110,10 +116,10 @@
 
         <div class="join-item has-[:checked]:bg-gray-100 p-2">
           <input 
+            id="descFontMd"
             bind:group={d.descriptorsFontSize}
             value="md"
-            id="descFontMd"
-           class="peer hidden sr-only" type="radio" name="descriptorsAlign" aria-label="אמצע" />
+           class="peer hidden sr-only" type="radio" name="descriptorsFontSize" aria-label="אמצע" />
           <label for="descFontMd" class="peer-checked:bg-orange-600 block i-mdi:size-m h-2rem w-2rem cursor-pointer"></label>
         </div>
 
@@ -122,13 +128,13 @@
             id="descFontLg"
             bind:group={d.descriptorsFontSize}
             value="lg"
-            class="peer hidden" type="radio" name="descriptorsAlign" aria-label="שמאל" />
+            class="peer hidden" type="radio" name="descriptorsFontSize" aria-label="שמאל" />
           <label for="descFontLg" class="peer-checked:bg-orange-600  block i-mdi:size-l h-2rem w-2rem cursor-pointer"></label>
         </div>
       </div>
     </ConfigSetting>
 
-    <ConfigSetting label="יישור">
+    <ConfigSetting label={LABELS.ALIGN}>
       <div class="flex gap-2 items-center px-2 join">
 
         <div class="join-item has-[:checked]:bg-gray-100 p-2">
@@ -164,17 +170,17 @@
   </ConfigItem>
 
 
-  <ConfigItem label="הגדרות בלוק שדות">
-    <ConfigSetting label="גודל גפן">
+  <ConfigItem label={LABELS.FIELDS_TITLE}>
+    <ConfigSetting label={LABELS.FONTSIZE}>
       <div class="flex gap-2 items-center px-2 join">
 
         <div class="join-item has-[:checked]:bg-gray-100 p-2">
           <input 
             bind:group={d.fieldsFontSize}
             value="sm"
-            id="descFontSm" class="peer hidden sr-only" type="radio" name="descriptorsAlign" aria-label="ימין" />
+            id="fieldsFontSm" class="peer hidden sr-only" type="radio" name="fieldsFontSize" aria-label="ימין" />
           <label
-            for="descFontSm"
+            for="fieldsFontSm"
             class="peer-checked:bg-orange-600 block i-mdi:size-extra-small h-2rem w-2rem checked:bg-black checked:color-white cursor-pointer"
           ></label>
         </div>
@@ -183,32 +189,32 @@
           <input 
             bind:group={d.fieldsFontSize}
             value="md"
-            id="descFontMd"
-           class="peer hidden sr-only" type="radio" name="descriptorsAlign" aria-label="אמצע" />
-          <label for="descFontMd" class="peer-checked:bg-orange-600 block i-mdi:size-m h-2rem w-2rem cursor-pointer"></label>
+            id="fieldsFontMd"
+           class="peer hidden sr-only" type="radio" name="fieldsFontSize" aria-label="אמצע" />
+          <label for="fieldsFontMd" class="peer-checked:bg-orange-600 block i-mdi:size-m h-2rem w-2rem cursor-pointer"></label>
         </div>
 
         <div class="join-item has-[:checked]:bg-gray-100 p-2">
           <input 
-            id="descFontLg"
+            id="fieldsFontLg"
             bind:group={d.fieldsFontSize}
             value="lg"
-            class="peer hidden" type="radio" name="descriptorsAlign" aria-label="שמאל" />
-          <label for="descFontLg" class="peer-checked:bg-orange-600  block i-mdi:size-l h-2rem w-2rem cursor-pointer"></label>
+            class="peer hidden" type="radio" name="fieldsFontSize" aria-label="שמאל" />
+          <label for="fieldsFontLg" class="peer-checked:bg-orange-600  block i-mdi:size-l h-2rem w-2rem cursor-pointer"></label>
         </div>
       </div>
     </ConfigSetting>
 
-    <ConfigSetting label="יישור">
+    <ConfigSetting label={LABELS.ALIGN}>
       <div class="flex gap-2 items-center px-2 join">
 
         <div class="join-item has-[:checked]:bg-gray-100 p-2">
           <input 
             bind:group={d.fieldsAlign}
             value="start"
-            id="descAlignRight" class="peer hidden sr-only" type="radio" name="descriptorsAlign" aria-label="ימין" />
+            id="fieldsAlignRight" class="peer hidden sr-only" type="radio" name="fieldsAlign" aria-label="ימין" />
           <label
-            for="descAlignRight"
+            for="fieldsAlignRight"
             class="peer-checked:bg-blue-600 block i-mdi:format-align-right h-1.5rem w-1.5rem checked:bg-black checked:color-white cursor-pointer"
           ></label>
         </div>
@@ -217,18 +223,18 @@
           <input 
             bind:group={d.fieldsAlign}
             value="center"
-            id="descAlignCenter"
-           class="peer hidden sr-only" type="radio" name="descriptorsAlign" aria-label="אמצע" />
-          <label for="descAlignCenter" class="peer-checked:bg-blue-600 block i-mdi:format-align-center h-1.5rem w-1.5rem cursor-pointer"></label>
+            id="fieldsAlignCenter"
+           class="peer hidden sr-only" type="radio" name="fieldsAlign" aria-label="אמצע" />
+          <label for="fieldsAlignCenter" class="peer-checked:bg-blue-600 block i-mdi:format-align-center h-1.5rem w-1.5rem cursor-pointer"></label>
         </div>
 
         <div class="join-item has-[:checked]:bg-gray-100 p-2">
           <input 
-            id="descAlignEnd"
+            id="fieldsAlignEnd"
             bind:group={d.fieldsAlign}
             value="end"
-            class="peer hidden" type="radio" name="descriptorsAlign" aria-label="שמאל" />
-          <label for="descAlignEnd" class="peer-checked:bg-blue-600  block i-mdi:format-align-left h-1.5rem w-1.5rem cursor-pointer"></label>
+            class="peer hidden" type="radio" name="fieldsAlign" aria-label="שמאל" />
+          <label for="fieldsAlignEnd" class="peer-checked:bg-blue-600  block i-mdi:format-align-left h-1.5rem w-1.5rem cursor-pointer"></label>
         </div>
       </div>
     </ConfigSetting>

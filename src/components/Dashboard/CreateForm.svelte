@@ -19,6 +19,8 @@
 
     const pb = new PocketBase('http://localhost:8090')
 
+
+    // TODO: Is This Enough? Probably not. Maybe worry about it later...
     if (!formName || !userId) {
       error = 'לא ניתן ליצור טופס ללא שם'
       return
@@ -29,6 +31,7 @@
         name: formName,
         design: formThemeDefaults,
         formSteps: [],
+        endings: [],
         user: userId,
       })
 

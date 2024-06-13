@@ -30,6 +30,7 @@
     "astro": "^4.8.2",
     "daisyui": "^3.9.4",
     "mongodb": "^6.5.0",
+    "nanostores": "^0.10.3",
     "pocketbase": "^0.21.2",
     "resend": "^3.2.0",
     "signature_pad": "^4.2.0",

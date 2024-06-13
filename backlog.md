@@ -1,6 +1,12 @@
 - [x] added alignment and fontsize settings for blocks.
 - [x] send submissions to an endpoint
 - [x] add design palettes/ themes. Added 4 themes
-- [ ] FUNC: user can now select themes.
+- [x] Themes: user can now select themes.
+- [x] Themes: selected theme is now saved to DB
 - [ ] add a theme with an image/bg-img.
-- [ ] add thank you/ ending block type
+- [ ] add thank you/ ending block type  - ON IT. NEXT!
+- [ ] add submissions page/component and LOAD the submissions from pocketbase!
+- [x] added nanostores to preserve form's design sttate.
+- [x] Understand why I needed nanostores!!! EDIT: I wanted to set dynamic tailwind classes for font-size, to address different viewports. BUT...
+- [x] solve dynamic font-sizes with Utopia's step-scale system.
+- [ ] deleting form steps UPDATING the form in the DB

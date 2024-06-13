@@ -46,7 +46,7 @@
   {#if showPressEnter && window && window.navigator && !window.navigator?.userAgent
       .toLowerCase()
       .includes("mobile")}
-    <span> לחץ <strong>Enter ↵</strong> </span>
+    <span data-el="show-enter"> לחץ <strong>Enter ↵</strong> </span>
   {/if}
 </div>
 
@@ -67,12 +67,11 @@
   }
 
   .btn-container > span {
-    color: var(--btn-text-color);
     font-size: 0.825rem;
   }
 
   .btn-container > span strong {
-    font-weight: bolder;
+    font-weight: bold;
     letter-spacing: 0.04em;
   }
 

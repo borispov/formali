@@ -1,18 +1,37 @@
 <script lang="ts">
-  import { getContext } from "svelte";
-  const formDesign = getContext('theme')
-  console.log(formDesign)
+
+  // still need to decide whether to use this sort of 
+  // class builder or use utopia's way with auto scale stuff
+  function getFontSize(val: string) {
+    return val == 'lg' ?
+      'sm:text-lg text-2xl xl:text-4xl'
+      : val == 'md' ?
+      'sm:text-base text-lg xl:text-2xl'
+      : 'sm:text-small text-base xl:text-lg'
+  }
+
+  import { designStore2 } from "$lib/store/design";
+  let design = $state(designStore2);
+
+  let fontSize = $state()
+
+  $effect(() => {
+    let tmp = designStore2.get()
+    fontSize = tmp?.fieldsFontSize
+    console.log(tmp?.descriptorsFontSize)
+  })
 
   interface Label {
     id?: string;
-    textColor: string;
     required?: boolean;
     children: any;
     className?: string;
   }
 
   let {
-    id, textColor, required = false, children, className
+    id, 
+    required = false, 
+    children
   }: Label  = $props();
 
 </script>
@@ -21,8 +40,7 @@
   data-el="question"
   for={id}
   class={`
-  [ text-lg sm:text-xl xl:text-3xl font-medium block ]
-  [ ${textColor} ${className ?? ''} ]
+  [ font-medium block ]
   [ leading-[1.35em] lg:leading-normal ]`}
 >
   {@render children()}

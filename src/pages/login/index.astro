@@ -1,6 +1,6 @@
 ---
-import UserAuthForm from "$lib/components/SvelteCommon/UserAuthForm.svelte";
-import Layout from "$lib/layouts/Layout.astro"
+import UserAuthForm from "$src/components/SvelteCommon/UserAuthForm.svelte";
+import Layout from "$src/layouts/Layout.astro";
 
 const locals = Astro.locals
 locals.pb.authStore.isValid && await locals.pb.collection('users').authRefresh();

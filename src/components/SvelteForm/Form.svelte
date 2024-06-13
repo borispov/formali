@@ -261,9 +261,18 @@
     --theme-answer-color: var(--theme-answer-color);
   }
 
-  :global(label[data-el="question"], p[data-el="description"]) {
+  :global(label[data-el="question"], [data-el="description"], [data-el="show-enter"]) {
     color: var(--theme-question);
   }
+
+  :global(label[data-el="question"]) {
+    font-size: var(--theme-font-size);
+  }
+
+  :global(label[data-el="description"]) {
+    font-size: var(--theme-font-size);
+  }
+
 
   :global(#form-page) {
     background: var(--theme-background);

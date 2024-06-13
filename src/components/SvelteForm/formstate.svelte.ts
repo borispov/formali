@@ -1,9 +1,13 @@
 import type { FormDesign } from "$src/types";
 import type { Form, FormStep } from "./store.svelte"
 
+import { setDesignStore } from "$lib/store/design";
+import { setForm } from "$lib/store/form";
+
 
 export interface FormStateProps {
   formSteps: FormStep[];
+  store?: any;
   currentStep: number;
   errorMsg: string;
   isError: boolean;
@@ -15,6 +19,7 @@ export interface FormStateProps {
   resetError: () => void;
   setError: () => void;
   addStep: (step: FormStep) => void;
+  addEnding: (ending: FormStep) => void;
   isLastStep: () => boolean;
   editDesignSetting: (field:string, val:string) => void;
 }
@@ -30,8 +35,16 @@ export class FormState implements FormStateProps {
   constructor(form: Form){
     this.form = {
       ...form,
-      formSteps: form.formSteps.map(this.mapStepsWithId)
+      formSteps: form.formSteps.map(this.mapStepsWithId),
+      endings: form?.endings?.map(this.mapStepsWithId) || [] // Old forms did not include endings[] prop, so add it on construction when entering a Builder/Form component
     };
+    setDesignStore(this.form.design)
+  }
+
+
+  get endings() { return this.form.endings }
+  set endings(v) {
+    this.form.endings = v
   }
 
   get formSteps() { return this.form.formSteps }
@@ -62,7 +75,7 @@ export class FormState implements FormStateProps {
       ...this.form,
       design: newTheme
     }
-
+    setDesignStore(this.form.design)
     console.log(this.form.design.answer)
   }
 
@@ -97,6 +110,10 @@ export class FormState implements FormStateProps {
 
   addStep(step: FormStep) {
     this.form.formSteps.push(step)
+  }
+
+  addEnding(ending: FormStep) {
+    this.form.endings.push(ending)
   }
 
 }

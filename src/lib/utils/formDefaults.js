@@ -49,6 +49,16 @@ export const textDefaults = {
     placeholder: 'שם הפרטי שלכם...'
 }
 
+export const endingDefault = {
+  type: 'ending',
+  question: 'תודה רבה!',
+  description: 'תודה רבה על השתתפות ומילוי הטופס. כל שיתוף פעולה כזה עוזר לנו בדרך להשגת המטרה שלנו. בלעדיכם זה לא היה מתאפשר. תודה ענקית.',
+  required: false,
+  value: '',
+  required: false,
+  img: '',
+}
+
 export const descriptorDefaults = {
     question: 'כותרת תיאור',
     type: 'descriptor',
@@ -118,6 +128,12 @@ export const formThemeDefaults = {
 
 export function createInput(type, data) {
     switch (true) {
+        case type === 'ending':
+          return {
+            id: generateId('ending'),
+            ...endingDefault,
+            data,
+          }
         case type === 'descriptor':
             return  {
                 id: generateId('descriptor'),

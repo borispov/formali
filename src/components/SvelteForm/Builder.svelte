@@ -1,4 +1,7 @@
 <script lang="ts">
+
+ import { setForm } from '$lib/store/form';
+
 	import PocketBase from 'pocketbase';
   import {throttle, debounce} from '@github/mini-throttle'
   // TODO: verify line 126 HTML injection is SAFE
@@ -24,6 +27,7 @@
   import Rating from "./Rating.svelte";
   import Signature from "./Field/Signature.svelte";
   import { onMount } from "svelte";
+  import SidePanelStep from '$components/Builder/SidePanelStep.svelte';
 
   let { formData = $bindable(), formId }: { formData: Form | null, formId: string } = $props();
 
@@ -42,7 +46,8 @@
     const f = await pb.collection('forms').getOne(formId)
     if (f) {
       form = new FormState(f);
-      console.log(form)
+      console.log('this is form, form BUILDER: ', form.endings)
+      setForm(form)
       return form
     } 
     return 
@@ -53,7 +58,8 @@
   let showSubmissions = $state(false);
 
   let formCurrentIndex = $state(0); // chosen step index
-  let formCurrentStep = $derived(form.formSteps[formCurrentIndex]);
+  let formCurrentType = $state('formSteps') // can be step | ending
+  let formCurrentStep = $derived(formCurrentType === 'endings' ? form.endings[formCurrentIndex] : form.formSteps[formCurrentIndex]);
 
   let showAddMenu = $state(false);
   // variable for side panel DND
@@ -67,6 +73,12 @@
   async function handleFinalize(e) {
     form.formSteps = e.detail.items;
     await updateFormToDB()
+  }
+
+  async function addEnding() {
+    let step = createInput('ending', {})
+    form.addEnding(step) // add ending in the UI and state
+    await updateFormToDB(); // save to DB
   }
 
   async function addNewStep(inputType: string, data = {}, position: number) {
@@ -83,6 +95,11 @@
     autoSaveToLocalStorage()
   }
 
+  function setTheme(theme) {
+    form.setTheme(theme)
+    updateFormToDB()
+  }
+
   const hebrewFieldTypes = {
     descriptor: "תיאור",
     signature: "חתימה",
@@ -93,6 +110,8 @@
     date: "תאריך",
     select: "בחירה",
     scale: "מדרג",
+    welcome: 'התחלה',
+    ending: 'סיום'
   };
 
   // save form to local storage
@@ -216,11 +235,11 @@
         </label>
         {#if configurationTab === "build"}
           {#if formCurrentStep}
-            <SingleInput bind:formStep={form.formSteps[formCurrentIndex]} />
+            <SingleInput bind:formStep={form[formCurrentType][formCurrentIndex]} />
           {/if}
         {/if}
         {#if configurationTab === "design"}
-          <DesignConfig setTheme={(v) => {form.setTheme(v)}} bind:formDesign={form.design} onDesignEdit={editDesign} />
+          <DesignConfig setTheme={setTheme} bind:formDesign={form.design} onDesignEdit={editDesign} />
         {/if}
         <button
           class="absolute bg-teal-400 text-white font-thin bottom-10 left-0 right-0 w-full px-4 py-2 rounded-sm"
@@ -273,6 +292,13 @@
       --theme-background: ${form.design.backgroundColor};
       --theme-button: ${form.design.button};
       --theme-button-text: ${form.design.buttonText};
+
+      --theme-question-fs: ${form.design.fieldsFontSize === 'sm' ? 'var(--type-sm)' : form.design.fieldsFontSize === 'md' ? 'var(--type-md)' : 'var(--type-lg)'};
+      --theme-desc-fs: ${form.design.descriptorsFontSize === 'sm' ? 'var(--type-sm)' : form.design.descriptorsFontSize === 'md' ? 'var(--type-md)' : 'var(--type-lg)'};
+
+      --theme-fields-align: ${form.design.fieldsAlign};
+      --theme-next-button: ${form.design.fieldsAlign === 'center' ? '0 auto' : 'auto'};
+      --theme-desc-align: ${form.design.descriptorsAlign};
     `}
         id="main"
         class="bg-gray-50 dark:bg-neutral-800 col-span-6"
@@ -298,7 +324,7 @@
                     field={formCurrentStep}
                   />
                 {/if}
-                {#if formCurrentStep.type === "descriptor"}
+                {#if formCurrentStep.type === "descriptor" || formCurrentStep.type == 'ending'}
                   <Descriptor
                     {...formCurrentStep}
                     {...formCurrentStep.design}
@@ -335,9 +361,12 @@
                     />
                   </div>
                 {/if}
-                <div class="mt-8">
-                  <NextButton text="המשך" icon="thin" disabled />
-                </div>
+
+                {#if formCurrentStep.type !== 'ending'}
+                  <div class="mt-8" data-el="next-button">
+                    <NextButton text="המשך" icon="thin" disabled />
+                  </div>
+                {/if}
               </form>
             {/if}
             {#if form.formSteps.length === 0}
@@ -384,10 +413,11 @@
               class={`
               [ flex items-center justify-start ]
               [ py-1 px-4 ]
-              [ ${formCurrentIndex === stepIndex ? "bg-slate-200" : "bg-slate-100"} ]
+              [ ${formCurrentType == 'formSteps' && formCurrentIndex === stepIndex ? "bg-slate-200" : "bg-slate-100"} ]
               [ hover:bg-slate-200 shadow-sm hover:shadow-md transition ]
             `}
               onclick={() => {
+                formCurrentType = 'formSteps'
                 formCurrentIndex = stepIndex;
               }}
             >
@@ -405,15 +435,53 @@
               <span
                 tabindex="0"
                 role="button"
-                onclick={() => {
+                onclick={async () => {
                   form.formSteps = form.formSteps.filter(
                     (fs) => step.id !== fs.id,
                   );
+                  await updateFormToDB()
                 }}
                 class="del i-mdi:trash w-4 h-4 mr-auto bg-teal-400 hidden hover:bg-teal-700"
               ></span>
             </button>
           {/each}
+          <hr />
+          <section
+            data-el="endings"
+            id="endings"
+            class="flex flex-col gap-4"
+          >
+          <button onclick={addEnding} class="btn btn-full w-full btn-small btn-primary">
+            הוסף סיומת +
+          </button>
+          {#each form.endings as ending, endingIndex}
+            <SidePanelStep 
+              className={`border-dash ${formCurrentType == 'endings' && formCurrentIndex === endingIndex ? "bg-green-300 border-dotted border-indigo border-2" : "bg-green-200"}`}
+              mouseenter={(e) => {
+                hoveredSideStepId = ending.id;
+                let el = e.target.querySelector(".del");
+                el.classList.remove("hidden");
+              }}
+              mouseleave={(e) => {
+                hoveredSideStepId = "";
+                let el = e.target.querySelector(".del");
+                el.classList.add("hidden");
+              }}
+              step={ending} 
+              selectStepHandler={() => {
+                formCurrentType = 'endings'
+                formCurrentIndex = endingIndex;
+              }}
+              stepIndex={endingIndex} 
+              onRemoveHandler={async () => {
+                  form.endings = form.endings.filter(
+                    (e) => ending.id !== e.id
+                  );
+                  await updateFormToDB()
+                }}
+              {formCurrentIndex} />
+          {/each}
+          </section>
         </section>
         <!-- ADD BLOCK  -->
         <div
@@ -517,12 +585,41 @@
     --theme-answer-color: var(--theme-answer-color);
   }
 
-  :global(label[data-el="question"], p[data-el="description"]) {
+  :global(label[data-el="question"], [data-el="description"], [data-el="show-enter"]) {
     color: var(--theme-question);
+    text-align: var(--theme-fields-align);
+  }
+
+  :global(label[data-el="next-button"]) {
+    /* text-align: var(--theme-fields-align); */
+    margin: var(--theme-next-button, 'auto');
   }
 
   :global(#form-page) {
     background: var(--theme-background);
+  }
+
+  :global([data-el="descriptor"] > [data-el="question"] ) {
+    font-size: var(--theme-question-fs, --type-md) !important; 
+  }
+  :global([data-el="descriptor"] > [data-el="question"], [data-el="descriptor"] > [data-el="description"] ) {
+    text-align: var(--theme-fields-align) !important;
+  }
+
+  :global([data-el="ending"] > [data-el="question"] ) {
+    font-size: var(--theme-desc-fs, --type-md) !important;
+  }
+  :global([data-el="ending"] > [data-el="question"], [data-el="ending"] > [data-el="description"] ) {
+    text-align: var(--theme-desc-align) !important;
+  }
+
+  :global(label[data-el="question"]) {
+    /* font-size: var(--theme-font-size); */
+    font-size: var(--theme-question-fs, --type-md);
+  }
+
+  :global(label[data-el="description"]) {
+    font-size: var(--theme-font-size);
   }
 
   :global(button[data-el="step-cta"]) {
