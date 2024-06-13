@@ -1,35 +1,39 @@
 <script lang="ts">
-  import type { FormStep } from "../store.svelte";
+    import type { FormStep } from "../store.svelte";
 
-  interface Props extends FormStep {
-    type: string;
-    bg?: string;
-    img?: string;
-  }
+    interface Props extends FormStep {
+        type: string;
+        bg?: string;
+        img?: string;
+    }
 
-  import FieldLabel from "../FieldLabel.svelte";
-  import FieldDescription from "../FieldDescription.svelte";
+    import FieldLabel from "../FieldLabel.svelte";
+    import FieldDescription from "../FieldDescription.svelte";
 
-  let { id, question, description, img, bg, type }: Props =
-    $props();
+    let { id, question, description, img, bg, type }: Props = $props();
 
-  const fieldClass =
-    "transition-all bg-transparent border-b-2 border-b-neutral-600 mt-8 pb-2 question-input__text placeholder:italic placeholder:text-neutral-500 focus:border-b-neutral-100 outline-0";
+    const fieldClass =
+        "transition-all bg-transparent border-b-2 border-b-neutral-600 mt-8 pb-2 question-input__text placeholder:italic placeholder:text-neutral-500 focus:border-b-neutral-100 outline-0";
 </script>
 
 <div data-el={type}>
-  <FieldLabel {id} className={fieldClass}>
-    {question}
-  </FieldLabel>
-  {#if description}
-    <FieldDescription>
-      {@html description}
-    </FieldDescription>
-  {/if}
+    <FieldLabel {id} className={fieldClass}>
+        {question}
+    </FieldLabel>
+    {#if description}
+        <FieldDescription>
+            {@html description}
+        </FieldDescription>
+    {/if}
 
-  {#if img}
-    <div class="mt-8">
-      <img src={img} alt={question} class="max-h-60 w-auto mx-auto" />
-    </div>
-  {/if}
+    {#if img}
+        <div class="mt-8">
+            <img
+                data-el="desc-img"
+                src={img}
+                alt={question}
+                class="max-h-60 w-auto"
+            />
+        </div>
+    {/if}
 </div>
