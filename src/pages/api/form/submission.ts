@@ -6,8 +6,18 @@ const pb = new PocketBase('http://localhost:8090/')
 export const POST: APIRoute = async ({ locals, request }) => {
   console.log(`PARSING POST REQUEST on /api/form/submission`)
   const resp = await request.json()
-  await pb.admins.authWithPassword('boristofu@gmail.com', 'MayaBoris2206')
+  // TODO: Eliminate Credentials!
+  //
+  await pb.admins.authWithPassword(
+    import.meta.env.PB_EMAIL,
+    import.meta.env.PB_PASSWORD,
+   )
+
   try {
+
+    console.log(`POST: /api/form/submission.ts, request details: `)
+    console.log(`form id: ${resp.formId}`)
+
     await pb.collection('submissions').create({
       form: resp.formId,
       submissionData: JSON.stringify(resp.submissionData)

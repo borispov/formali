@@ -11,4 +11,4 @@
 - [x] add thank you/ ending block type - Done, but you can add several endings now.
 - [ ] Add Conditional Logic for ending blocks
 - [ ] add submissions page/component and LOAD the submissions from pocketbase
-- [ ] Align descriptor's image according to the Descriptor's alignment setting
+- [x] Align descriptor's image according to the Descriptor's alignment setting

@@ -29,6 +29,7 @@
     import { createInput } from "$lib/utils/formDefaults.js";
     import { dndzone } from "svelte-dnd-action";
     import { onMount } from "svelte";
+    import Submissions from "./Submissions.svelte";
 
     let {
         formData = $bindable(),
@@ -36,6 +37,7 @@
     }: { formData: Form | null; formId: string } = $props();
 
     let form = $state() as FormState;
+    let submissions = $state([]);
     let design = $derived(form && form.design);
 
     onMount(async () => {
@@ -49,6 +51,10 @@
         // var tmp = pb.authStore.isValid ?
         const f = await pb.collection("forms").getOne(formId);
         if (f) {
+            submissions =
+                (await pb.collection("submissions").getList(1, 20, {
+                    filter: pb.filter("form = {:f}", { f: formId }),
+                })) || [];
             form = new FormState(f);
             console.log("this is form, form BUILDER: ", form.endings);
             setForm(form);
@@ -287,45 +293,7 @@
                         <h1 class="font-bold p-10">
                             תוצאות ותגובות עבור הטופס
                         </h1>
-                        <div class="my-2 overflow-auto">
-                            <div
-                                class="inline-block min-w-full py-2 align-middle"
-                            >
-                                <div
-                                    class="overflow-auto shadow mx-1 ring-1 ring-black ring-opacity-5 md:rounded-lg relative"
-                                >
-                                    <table
-                                        class="table table-zebra min-w-full divide-y divide-gray-300 break-words"
-                                    >
-                                        <thead class="bg-gray-100">
-                                            <tr
-                                                class="divide-x divide-gray-200"
-                                            >
-                                                <th
-                                                    class="py-3 5 pr-4 text-right text-sm font-semibold text-gray-900"
-                                                >
-                                                    שם פרטי
-                                                </th>
-                                                <th
-                                                    class="py-3 5 pr-4 text-right text-sm font-semibold text-gray-900"
-                                                >
-                                                    שאלה #2
-                                                </th>
-                                                <th
-                                                    class="py-3 5 pr-4 text-right text-sm font-semibold text-gray-900"
-                                                >
-                                                    שאלה #3
-                                                </th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody
-                                            class="divide-y divide-gray-200 bg-white"
-                                        ></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        <Submissions data={submissions} />
                     </div>
                 </main>
             {:else}
