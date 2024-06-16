@@ -8,10 +8,11 @@
         for (const sub of entry.submissionData) {
             tmp.push(sub.value);
         }
+        tmp.push(entry.created.split(" ")[0]);
         values.push(tmp);
     }
 
-    const head = data[0].submissionData.map((a) => a.question);
+    const head = data && data[0].submissionData.map((a) => a.question);
 
     const QUESTIONS = {
         signature: "חתימה",
@@ -35,6 +36,10 @@
                                 {question}
                             </th>
                         {/each}
+                        <th
+                            class="py-3 5 pr-4 text-right text-sm font-semibold text-gray-900"
+                            >נוצר ב</th
+                        >
                     </tr>
                 </thead>
 
@@ -42,7 +47,8 @@
                     {#each values as submission}
                         <tr>
                             {#each submission as answer}
-                                <th class="text-neutral-600 text-right"
+                                <th
+                                    class="text-neutral-600 text-right font-thin"
                                     >{answer}</th
                                 >
                             {/each}

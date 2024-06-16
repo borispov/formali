@@ -33,6 +33,7 @@
     </p>
 
     <input
+        data-el="answer"
         value={field.value}
         use:imask={options}
         onaccept={accept}

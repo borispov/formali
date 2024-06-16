@@ -2,6 +2,8 @@
     import { flip } from "svelte/animate";
     import Tiptap from "../Tiptap.svelte";
 
+    import CheckboxSetting from "$components/SvelteForm/Config/CheckboxSetting.svelte";
+
     import { dndzone } from "svelte-dnd-action";
 
     let { formStep = $bindable(), options = $bindable() } = $props();
@@ -69,7 +71,7 @@
                     bind:value={formStep.question}
                     id="question"
                     name="question"
-                    class="block w-full border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm rounded-sm"
+                    class="block w-full border-gray-300 shadow-sm text-gray-600 focus:border-teal-500 focus:ring-teal-500 sm:text-sm rounded-sm"
                     type="text"
                 />
             </div>
@@ -91,26 +93,7 @@
             </div>
         </div>
 
-        <div class="mt-8">
-            <div class="relative mt-2 flex items-start w-full">
-                <div class="flex h-6 items-center">
-                    <input
-                        bind:checked={formStep.required}
-                        type="checkbox"
-                        name="required"
-                        id="required"
-                        class="h-4 w-4 rounded border-neutral-300 focus:ring-blue-600 text-blue-600"
-                    />
-                </div>
-                <div class="mr-3 text-sm leading-6">
-                    <label for="required">שדה חובה</label>
-                    <p id="description" class="text-gray-500">
-                        משתמשים יהיו מחויבים למלא שדה חובה בכדי להשלים את הטופס
-                        במלואו.
-                    </p>
-                </div>
-            </div>
-        </div>
+        <CheckboxSetting type="required" bind:setting={formStep.required} />
     </div>
 {/if}
 
@@ -149,29 +132,11 @@
             </div>
         </div>
 
-        <div class="mt-8">
-            <div class="relative mt-2 flex items-start w-full">
-                <div class="flex h-6 items-center">
-                    <input
-                        bind:checked={formStep.allowInternational}
-                        type="checkbox"
-                        name="required"
-                        id="required"
-                        class="h-4 w-4 rounded border-neutral-300 focus:ring-blue-600 text-blue-600"
-                    />
-                </div>
-
-                <!-- International Phones too? Field -->
-                <div class="mr-3 text-sm leading-6">
-                    <label for="required">מספרים בינלאומיים</label>
-                    <p id="description" class="text-gray-500">
-                        לאפשר למספרי טלפון בינלאומיים להזין את מספרם באמצעות
-                        בחירת קידומת. ברירת המחדל הינה עבור מספרי טלפון מקומיים
-                        בלבד.
-                    </p>
-                </div>
-            </div>
-        </div>
+        <CheckboxSetting type="required" bind:setting={formStep.required} />
+        <CheckboxSetting
+            type="allowInternational"
+            bind:setting={formStep.allowInternational}
+        />
     </div>
 {/if}
 
@@ -332,29 +297,6 @@
                 />
             </div>
         </div>
-
-        {#if formStep.type != "ending"}
-            <div class="mt-8">
-                <div class="relative mt-2 flex items-start w-full">
-                    <div class="flex h-6 items-center">
-                        <input
-                            bind:checked={formStep.required}
-                            type="checkbox"
-                            name="required"
-                            id="required"
-                            class="h-4 w-4 rounded border-neutral-300 focus:ring-blue-600 text-blue-600"
-                        />
-                    </div>
-                    <div class="mr-3 text-sm leading-6">
-                        <label for="required">שדה חובה</label>
-                        <p id="description" class="text-gray-500">
-                            משתמשים יהיו מחויבים למלא שדה חובה בכדי להשלים את
-                            הטופס במלואו.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        {/if}
 
         {#if formStep.type == "ending"}
             <div class="mt-8">

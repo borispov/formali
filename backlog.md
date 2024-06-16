@@ -7,13 +7,18 @@
 - [x] Understand why I needed nanostores!!! EDIT: I wanted to set dynamic tailwind classes for font-size, to address different viewports. BUT...
 - [x] solve dynamic font-sizes with Utopia's step-scale system.
 - [x] deleting form steps UPDATING the form in the DB
-- [ ] add a theme with an image/bg-img.
 - [x] add thank you/ ending block type - Done, but you can add several endings now.
 - [ ] Add Conditional Logic for ending blocks
 - [x] add submissions page/component and LOAD the submissions from pocketbase
 - [x] Align descriptor's image according to the Descriptor's alignment setting
+- [x] Sanitize the form submission from Descriptor Fields!!
+- [x] Stop showing 'required' setting for descriptors
+- [x] Align Save Changes Button in SingleInput.svelte
+- [x] FIX: Design Config now edits the answer's color as well.
+- [x] Add a Create_At to submissions table (FRONT-END)
+- [x] Change styling of addEnding button
 - [ ] Add a Trademark at the end of a ```submitted``` form. Related: Form.svelte
-- [ ] Sanitize the form submission from Descriptor Fields!!
+- [ ] add a theme with an image/bg-img.
 
 
 # This is from a README.md file.
@@ -45,6 +50,6 @@ SETTINGS:
 - [ ] Create a hook to send form submissions to user's email.
 
 SUBMISSIONS:
-- [ ] Send Submissions To An Endpoint /
-- [ ] Configure Submissions in Pocketbaase
-- [ ] Display Submissions under Form's Settings
+- [x] Send Submissions To An Endpoint /
+- [x] Configure Submissions in Pocketbaase
+- [x] Display Submissions under Form's Settings

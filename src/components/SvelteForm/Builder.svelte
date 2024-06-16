@@ -96,7 +96,7 @@
         await updateFormToDB(); // save to DB
     }
 
-    async function addNewStep(inputType: string, data = {}, position: number) {
+    async function addNewStep(inputType: string, data = {}, position?: number) {
         let step = createInput(inputType, data);
 
         if (!position) {
@@ -176,7 +176,9 @@
 
 {#if form}
     <div>
-        <nav class="w-full border-b p-2 flex items-center flex justify-between">
+        <nav
+            class="navbar w-full border-b p-2 flex items-center flex justify-between h-5vh"
+        >
             <div class="flex items-center gap-2">
                 <div
                     class="i-mdi:arrow-right w-1.2em h-1.2em text-blue-600"
@@ -251,32 +253,37 @@
             </div>
         </nav>
 
-        <div class="grid grid-cols-12 h-screen bg-gray-50">
+        <div class="grid grid-cols-12 h-95vh bg-gray-50">
             <!-- CONFIGURATION PANEL -->
             <aside
                 class="relative col-span-3 bg-white overflow-y-scroll border-l border-neutral-300 bg-neutral-200"
             >
-                <label for="" class="block mt-4 border-b border-b-2 w-full p-2">
-                    {configurationTab === "build" ? "הגדרות" : "עיצוב"}
-                </label>
-                {#if configurationTab === "build"}
-                    {#if formCurrentStep}
-                        <SingleInput
-                            bind:formStep={form[formCurrentType][
-                                formCurrentIndex
-                            ]}
+                <div class="relative">
+                    <label
+                        for=""
+                        class="block mt-4 border-b border-b-2 w-full p-2"
+                    >
+                        {configurationTab === "build" ? "הגדרות" : "עיצוב"}
+                    </label>
+                    {#if configurationTab === "build"}
+                        {#if formCurrentStep}
+                            <SingleInput
+                                bind:formStep={form[formCurrentType][
+                                    formCurrentIndex
+                                ]}
+                            />
+                        {/if}
+                    {/if}
+                    {#if configurationTab === "design"}
+                        <DesignConfig
+                            {setTheme}
+                            bind:formDesign={form.design}
+                            onDesignEdit={editDesign}
                         />
                     {/if}
-                {/if}
-                {#if configurationTab === "design"}
-                    <DesignConfig
-                        {setTheme}
-                        bind:formDesign={form.design}
-                        onDesignEdit={editDesign}
-                    />
-                {/if}
+                </div>
                 <button
-                    class="absolute bg-teal-400 text-white font-thin bottom-10 left-0 right-0 w-full px-4 py-2 rounded-sm"
+                    class="absolute bg-teal-400 text-white font-thin bottom-0 left-0 right-0 w-full px-4 py-2 rounded-sm"
                     onclick={updateFormToDB}
                 >
                     שמור שינויים
@@ -288,9 +295,9 @@
                 <!-- TODO: Extract this out into a component -->
                 <main
                     id="main"
-                    class="bg-gray-50 dark:bg-neutral-800 col-span-6"
+                    class="bg-gray-50 dark:bg-neutral-800 col-span-6 pt-40"
                 >
-                    <div class="p-10">
+                    <div>
                         <h1 class="font-bold p-10">
                             תוצאות ותגובות עבור הטופס
                         </h1>
@@ -367,6 +374,7 @@
                                             {/if}
 
                                             <input
+                                                data-el="answer"
                                                 bind:value={formCurrentStep.value}
                                                 name={formCurrentStep.id}
                                                 id={formCurrentStep.id}
@@ -377,7 +385,7 @@
                 [ w-full text-lg md:text-base mt-8 pb-2 transition-all bg-transparent ]
                 [ placeholder:italic placeholder:text-neutral-500 placeholder:text-lg lg:placeholder:text-xl ]
                 [ border-0 border-b-2 border-neutral-600 ]
-                [ outline-none focus:outline-none text-gray-800 focus:border-0 focus:ring-none focus:border-b-2 !focus:border-blue-700 ]
+                [ outline-none focus:outline-none focus:border-0 focus:ring-none focus:border-b-2 !focus:border-blue-700 ]
                 `}
                                             />
                                         </div>
@@ -501,9 +509,12 @@
                     >
                         <button
                             onclick={addEnding}
-                            class="btn btn-full w-full btn-small btn-primary"
+                            class="btn btn-neutral !bg-[var(--tw-secondary)] btn-sm border-2 border-black text-white"
                         >
-                            הוסף סיומת +
+                            הוסף סיומת
+                            <div
+                                class="inline-block i-mdi:plus w-6 h-6 me-4"
+                            ></div>
                         </button>
                         {#each form.endings as ending, endingIndex}
                             <SidePanelStep
@@ -541,11 +552,15 @@
                 >
                     <button
                         onclick={() => (showAddMenu = !showAddMenu)}
-                        class="[ button-xl button-secondary ] [ flex mx-auto items-center justify-evenly gap-2 ] !text-white py-1 px-4"
+                        class="
+                        [ button-xl button-secondary ]
+                        [ flex mx-auto items-center justify-evenly gap-2 ]
+                        !text-white py-1 px-4"
                     >
                         הוסף שדה
                         <div
-                            class="inline-block i-mdi:plus w-6 h-6 me-4 bg-white"
+                            class={`transition ${!showAddMenu ? "i-mdi:arrow-down" : "i-mdi-arrow-up"}
+                            inline-block w-6 h-6 me-4 bg-white`}
                         ></div>
                     </button>
                     {#if showAddMenu}
@@ -672,6 +687,10 @@
             [data-el="descriptor"] > [data-el="description"]
         ) {
         text-align: var(--theme-fields-align) !important;
+    }
+
+    :global([data-el="answer"]) {
+        color: var(--theme-answer);
     }
 
     :global([data-el="desc-img"]) {
