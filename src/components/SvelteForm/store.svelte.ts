@@ -1,19 +1,24 @@
 type Option = {
   id: string;
   value: string;
-}
+};
 export type FormStep = {
   id: string;
   question: string;
   type: string;
-  value: string|number;
+  value: string | number;
   required: boolean;
   description: string;
   placeholder?: string;
   design?: FormStepDesign;
   img?: string;
   options?: Option[];
-  rating?: number|string;
+  rating?: number | string;
+  isValid?: boolean;
+};
+
+export interface PhoneStep {
+  isValid: boolean;
 }
 
 export interface WelcomeEndingStep {
@@ -32,7 +37,7 @@ type ScaleStepLabels = {
   left: string;
   center: string;
   right: string;
-}
+};
 
 export interface ScaleStep extends FormStep {
   steps: number;
@@ -45,7 +50,7 @@ type FormStepDesign = {
   textColor: string;
   btnBg: string;
   btnTextColor: string;
-}
+};
 
 export type DesignColors = {
   question: string;
@@ -54,7 +59,7 @@ export type DesignColors = {
   buttonText: string;
   backgroundColor: string;
   backgroundImg: string;
-}
+};
 
 export type FormDesign = {
   name: string; // theme name
@@ -71,7 +76,7 @@ export type FormDesign = {
   buttonText: string;
   backgroundColor: string;
   backgroundImg: string;
-}
+};
 
 export type Form = {
   id: string;
@@ -79,63 +84,63 @@ export type Form = {
   design: FormDesign;
   formSteps: FormStep[];
   endings: FormStep[];
-}
+};
 
 const defaultDesign = {
-  bg: '#543636',
-  textColor: '#e80e0e',
-  btnBg: '#0445af',
-  btnTextColor: '#fff',
-}
+  bg: "#543636",
+  textColor: "#e80e0e",
+  btnBg: "#0445af",
+  btnTextColor: "#fff",
+};
 
 export const formData = {
-  id: '',
-  name: 'formTest',
+  id: "",
+  name: "formTest",
   design: {
-    name: 'Default Blue',
-    fontFamily: 'Arial',
+    name: "Default Blue",
+    fontFamily: "Arial",
     colors: {
-      question: '#3d3d3d',
-      answer: '#4FB0AE',
-      button: '#4FB0AE',
-      buttonText: '#FFFFFF',
-      backgroundColor: '#FFFFFF',
-      backgroundImg: '',
+      question: "#3d3d3d",
+      answer: "#4FB0AE",
+      button: "#4FB0AE",
+      buttonText: "#FFFFFF",
+      backgroundColor: "#FFFFFF",
+      backgroundImg: "",
     },
-    corners: 'small',
+    corners: "small",
   },
-  formSteps:  [
+  formSteps: [
     {
-      id: 'select-adc001',
-      question: 'מה משקף את עיסוקכם הכי טוב',
-      type: 'select',
-      value: '',
+      id: "select-adc001",
+      question: "מה משקף את עיסוקכם הכי טוב",
+      type: "select",
+      value: "",
       required: true,
-      description: '',
-      placeholder: '',
+      description: "",
+      placeholder: "",
       options: [
-        { id: '1', value: 'שיווק ופרסום דיגיטלי'},
-        { id: '2', value: 'ייעוץ'},
-        { id: '3', value: 'פרילאנס'},
+        { id: "1", value: "שיווק ופרסום דיגיטלי" },
+        { id: "2", value: "ייעוץ" },
+        { id: "3", value: "פרילאנס" },
       ],
       design: {
-        ...defaultDesign
-      }
+        ...defaultDesign,
+      },
     },
     {
-      id: 'text-adc02',
-      question: 'אנא ציינו את כתובת הדוא״ל שלכם',
-      type: 'email',
-      value: '',
+      id: "text-adc02",
+      question: "אנא ציינו את כתובת הדוא״ל שלכם",
+      type: "email",
+      value: "",
       required: true,
-      description: '',
-      placeholder: 'elonmusk@tesla.com',
+      description: "",
+      placeholder: "elonmusk@tesla.com",
       design: {
-        ...defaultDesign
-      }
+        ...defaultDesign,
+      },
     },
-  ]
-}
+  ],
+};
 
 export function createForm() {
   let form = $state<Form>(formData);
@@ -143,7 +148,7 @@ export function createForm() {
 
   return {
     get form() {
-      return form
+      return form;
     },
 
     set formSteps(newFormSteps) {
@@ -151,30 +156,29 @@ export function createForm() {
     },
 
     get formSteps() {
-      return form.formSteps
+      return form.formSteps;
     },
 
     get currentStep() {
-      return currentStep
+      return currentStep;
     },
 
     incStep: () => {
-      currentStep++
+      currentStep++;
     },
 
     decStep: () => {
-      currentStep--
+      currentStep--;
     },
 
     get getNextStep() {
       if (form.formSteps.length - 1 > currentStep) {
-        return form.formSteps[currentStep + 1]
+        return form.formSteps[currentStep + 1];
       }
     },
 
     addStep: (step: FormStep) => {
-      form.formSteps.push(step)
+      form.formSteps.push(step);
     },
-
-  }
+  };
 }

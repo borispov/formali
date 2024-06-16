@@ -14,3 +14,14 @@ export function emailValidation(sel: HTMLInputElement | null) {
   let email = sel.value;
   return isValidEmail(email);
 }
+
+const israelPhoneRegex = /^0\d([\d]{0,1})([-]{0,1})\d{7}$/;
+export function isValidIsraeliPhone(phoneNumber: string) {
+  return israelPhoneRegex.test(phoneNumber);
+}
+
+export function phoneValidation(phoneNumber: string, _type: string = "il") {
+  console.log("inside validator: phoneValidation");
+  console.log(isValidIsraeliPhone(phoneNumber));
+  return isValidIsraeliPhone(phoneNumber);
+}

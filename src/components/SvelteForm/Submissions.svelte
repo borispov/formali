@@ -1,6 +1,18 @@
 <script lang="ts">
     let { data } = $props();
 
+    let values = $state([]);
+
+    for (const entry of data) {
+        var tmp = [];
+        for (const sub of entry.submissionData) {
+            tmp.push(sub.value);
+        }
+        values.push(tmp);
+    }
+
+    const head = data[0].submissionData.map((a) => a.question);
+
     const QUESTIONS = {
         signature: "חתימה",
     };
@@ -12,23 +24,29 @@
             class="overflow-auto shadow mx-1 ring-1 ring-black ring-opacity-5 md:rounded-lg relative"
         >
             <table
-                class="table table-zebra min-w-full divide-y divide-gray-300 break-words"
+                class="table min-w-full divide-y divide-gray-300 break-words"
             >
                 <thead class="bg-gray-100">
                     <tr class="divide-x divide-gray-200">
-                        {#each data.submissionData as sub}
+                        {#each head as question}
                             <th
                                 class="py-3 5 pr-4 text-right text-sm font-semibold text-gray-900"
                             >
-                                {sub.question}
+                                {question}
                             </th>
                         {/each}
                     </tr>
                 </thead>
 
-                <tbody class="divide-y divide-gray-200 bg-white">
-                    {#each data.submissionData as sub}
-                        <tr><th class="text-neutral-600">{sub.value}</th></tr>
+                <tbody class="divide-y divide-gray-200 bg-white" dir="ltr">
+                    {#each values as submission}
+                        <tr>
+                            {#each submission as answer}
+                                <th class="text-neutral-600 text-right"
+                                    >{answer}</th
+                                >
+                            {/each}
+                        </tr>
                     {/each}
                 </tbody>
             </table>

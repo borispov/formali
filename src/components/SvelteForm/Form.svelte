@@ -12,7 +12,7 @@
     import Phone from "./Phone.svelte";
     import Signature from "./Field/Signature.svelte";
     import Rating from "./Rating.svelte";
-    import { emailValidation } from "$lib/utils/validators";
+    import { emailValidation, phoneValidation } from "$lib/utils/validators";
     import FieldLabel from "./FieldLabel.svelte";
     import FieldDescription from "./FieldDescription.svelte";
     import Descriptor from "./Field/Descriptor.svelte";
@@ -85,10 +85,6 @@
         const currentBlock = form.formSteps[form.currentStep];
         const currentBlockType = currentBlock.type;
 
-        if (form.isLastStep()) {
-            console.log("This is the last step...");
-        }
-
         switch (true) {
             case currentBlockType === "text":
                 currentBlock.required && currentBlock.value.length < 1
@@ -106,19 +102,24 @@
                 ) as HTMLInputElement;
                 if (stepWrapper && emailValidation(stepWrapper)) {
                     form.resetError();
-                    form.currentStep === form.formSteps.length - 1 &&
-                        incOrSubmit();
+                    incOrSubmit();
                 } else {
                     form.setError(true, "הזינו כתובת מייל תקנית");
                 }
+                break;
             case currentBlockType === "tel":
-                currentBlock.isValid &&
-                    form.currentStep < form.formSteps.length - 1 &&
+                if (currentBlock.isValid) {
                     incOrSubmit();
+                } else {
+                    console.log("invalid phone");
+                    form.setError(true, "הזינו מספר טלפון חוקי");
+                }
                 break;
             default:
                 console.log("Default Behavior Engaged...");
-                form.currentStep < form.formSteps.length - 1 && incOrSubmit();
+                incOrSubmit();
+                // not sure we need to check this with incOrSubmit's functionality
+                // form.currentStep < form.formSteps.length - 1 && incOrSubmit();
                 break;
         }
     }
@@ -131,6 +132,8 @@
         // TODO: transform this into a Form's Class Method
         for (let i = 0; i < f.length; i++) {
             const formElement = f[i];
+            // DO NOT include 'descriptor' fields
+            if (formElement.type === "descriptor") continue;
             questionAndValueList.push({
                 question: formElement.question,
                 value: formElement.value,
@@ -271,6 +274,9 @@
                                         {field}
                                         {stepIndex}
                                     />
+                                    {#if form.isError}
+                                        <ErrorNotif msg={form.errorMsg} />
+                                    {/if}
                                 {/if}
                                 {#if field.type !== "descriptor"}
                                     <div class="mt-8 inline-block">

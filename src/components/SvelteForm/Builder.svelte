@@ -55,8 +55,7 @@
                 .getFullList({
                     filter: pb.filter("form = {:f}", { f: formId }),
                 });
-            submissions =
-                (submissionsCollection && submissionsCollection[0]) || [];
+            submissions = submissionsCollection || [];
             form = new FormState(f);
             setForm(form);
             return form;

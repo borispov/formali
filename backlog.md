@@ -13,6 +13,7 @@
 - [x] add submissions page/component and LOAD the submissions from pocketbase
 - [x] Align descriptor's image according to the Descriptor's alignment setting
 - [ ] Add a Trademark at the end of a ```submitted``` form. Related: Form.svelte
+- [ ] Sanitize the form submission from Descriptor Fields!!
 
 
 # This is from a README.md file.

@@ -1,5 +1,5 @@
 import type { FormDesign } from "$src/types";
-import type { Form, FormStep } from "./store.svelte"
+import type { Form, FormStep } from "./store.svelte";
 
 import { setDesignStore } from "$lib/store/design";
 
@@ -19,67 +19,74 @@ export interface FormStateProps {
   addStep: (step: FormStep) => void;
   addEnding: (ending: FormStep) => void;
   isLastStep: () => boolean;
-  editDesignSetting: (field:string, val:string) => void;
+  editDesignSetting: (field: string, val: string) => void;
 }
 
 export class FormState implements FormStateProps {
   form = $state() as Form;
   currentStep = $state(0);
-  errorMsg = $state('');
+  errorMsg = $state("");
   isError = $state(false);
   currentValue = $derived(this.getCurrentValue());
   design = $derived(this.getDesignObject());
 
-  constructor(form: Form){
+  constructor(form: Form) {
     this.form = {
       ...form,
       formSteps: form.formSteps.map(this.mapStepsWithId),
-      endings: form?.endings?.map(this.mapStepsWithId) || [] // Old forms did not include endings[] prop, so add it on construction when entering a Builder/Form component
+      endings: form?.endings?.map(this.mapStepsWithId) || [], // Old forms did not include endings[] prop, so add it on construction when entering a Builder/Form component
     };
-    setDesignStore(this.form.design)
+    setDesignStore(this.form.design);
   }
 
-
-  get endings() { return this.form.endings }
+  get endings() {
+    return this.form.endings;
+  }
   set endings(v) {
-    this.form.endings = v
+    this.form.endings = v;
   }
 
-  get formSteps() { return this.form.formSteps }
+  get formSteps() {
+    return this.form.formSteps;
+  }
   set formSteps(v: FormStep[]) {
-    this.form.formSteps = v
+    this.form.formSteps = v;
   }
 
-  get id() { return this.form.id }
-  get name() { return this.form.name }
+  get id() {
+    return this.form.id;
+  }
+  get name() {
+    return this.form.name;
+  }
 
   private getCurrentValue() {
-    return this.form.formSteps[this.currentStep].value
+    return this.form.formSteps[this.currentStep].value;
   }
 
   public getDesignObject() {
-    return this.form.design
+    return this.form.design;
   }
 
-  private mapStepsWithId(block:FormStep, i:number) {
+  private mapStepsWithId(block: FormStep, i: number) {
     return {
       ...block,
-      id: block.type + '-' + i,
-    }
+      id: block.type + "-" + i,
+    };
   }
 
   setTheme(newTheme: FormDesign) {
     this.form = {
       ...this.form,
-      design: newTheme
-    }
-    setDesignStore(this.form.design)
-    console.log(this.form.design.answer)
+      design: newTheme,
+    };
+    setDesignStore(this.form.design);
+    console.log(this.form.design.answer);
   }
 
   // maybe save the old val? for undo changes...
-  editDesignSetting(designField:string, val:string) {
-    this.form.design[designField] = val
+  editDesignSetting(designField: string, val: string) {
+    this.form.design[designField] = val;
   }
 
   resetError() {
@@ -88,49 +95,50 @@ export class FormState implements FormStateProps {
   }
 
   decStep() {
-    this.currentStep -= 1
+    this.currentStep -= 1;
   }
 
   incStep() {
-    this.currentStep += 1
+    this.currentStep += 1;
   }
 
   isLastStep() {
-    const len = this.formSteps.length
-    return this.currentStep === len - 1
+    const len = this.formSteps.length;
+
+    console.log(`we are in step ${this.currentStep + 1} out of ${len}`);
+
+    return this.currentStep === len - 1;
   }
 
   setError(b: boolean, msg: string) {
     this.isError = b;
     this.errorMsg = msg;
-    $inspect(this.currentStep, this.isError, this.errorMsg)
+    $inspect(this.currentStep, this.isError, this.errorMsg);
   }
 
   addStep(step: FormStep) {
-    this.form.formSteps.push(step)
+    this.form.formSteps.push(step);
   }
 
   addEnding(ending: FormStep) {
-    this.form.endings.push(ending)
+    this.form.endings.push(ending);
   }
-
 }
 
-
 export default function createFormState(formData: Form) {
-  let currentStep = $state(0)
-  let currentValue = $state('')
-  let isError = $state(false)
-  let errorMsg = $state('')
+  let currentStep = $state(0);
+  let currentValue = $state("");
+  let isError = $state(false);
+  let errorMsg = $state("");
 
-  const mapStepsWithId = (block:FormStep, i:number) => ({
+  const mapStepsWithId = (block: FormStep, i: number) => ({
     ...block,
-    id: block.type + '-' + i,
-  })
+    id: block.type + "-" + i,
+  });
 
   let form = $state<Form>({
     ...formData,
-    formSteps: formData.formSteps.map(mapStepsWithId)
+    formSteps: formData.formSteps.map(mapStepsWithId),
   });
 
   return {
@@ -140,36 +148,56 @@ export default function createFormState(formData: Form) {
     },
 
     decStep: () => {
-      currentStep -= 1
+      currentStep -= 1;
     },
 
     incStep: () => {
-      currentStep += 1
+      currentStep += 1;
     },
 
-    get design() { return form.design },
-    get formSteps() { return form.formSteps},
-    get form() { return form},
-    get currentStep() { return currentStep},
-    get isError() { return isError},
-    get errorMsg() { return errorMsg},
-    get value() { return currentValue},
+    get design() {
+      return form.design;
+    },
+    get formSteps() {
+      return form.formSteps;
+    },
+    get form() {
+      return form;
+    },
+    get currentStep() {
+      return currentStep;
+    },
+    get isError() {
+      return isError;
+    },
+    get errorMsg() {
+      return errorMsg;
+    },
+    get value() {
+      return currentValue;
+    },
 
-    set formSteps(val) { form.formSteps = val},
-    set currentStep(val) { currentStep = val },
-    set isError(val) { isError = val },
-    set errorMsg(val) { errorMsg = val },
+    set formSteps(val) {
+      form.formSteps = val;
+    },
+    set currentStep(val) {
+      currentStep = val;
+    },
+    set isError(val) {
+      isError = val;
+    },
+    set errorMsg(val) {
+      errorMsg = val;
+    },
     setError: (b: boolean, msg: string) => {
-      console.log(`(${b}, ${msg})`)
+      console.log(`(${b}, ${msg})`);
       isError = b;
       errorMsg = msg;
-      console.log(`(${currentStep}, ${isError}, ${errorMsg})`)
+      console.log(`(${currentStep}, ${isError}, ${errorMsg})`);
     },
 
     addStep: (step: FormStep) => {
-      form.formSteps.push(step)
+      form.formSteps.push(step);
     },
-
-  }
+  };
 }
-
