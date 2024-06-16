@@ -1,11 +1,9 @@
 <script lang="ts">
     let { data } = $props();
 
-    console.log(`Here's the data: (stringified) ${JSON.stringify(data)}`);
-
-    let headRow = ``;
-
-    let rows = [];
+    const QUESTIONS = {
+        signature: "חתימה",
+    };
 </script>
 
 <div class="my-2 overflow-auto">
@@ -18,25 +16,21 @@
             >
                 <thead class="bg-gray-100">
                     <tr class="divide-x divide-gray-200">
-                        <th
-                            class="py-3 5 pr-4 text-right text-sm font-semibold text-gray-900"
-                        >
-                            שם פרטי
-                        </th>
-                        <th
-                            class="py-3 5 pr-4 text-right text-sm font-semibold text-gray-900"
-                        >
-                            שאלה #2
-                        </th>
-                        <th
-                            class="py-3 5 pr-4 text-right text-sm font-semibold text-gray-900"
-                        >
-                            שאלה #3
-                        </th>
+                        {#each data.submissionData as sub}
+                            <th
+                                class="py-3 5 pr-4 text-right text-sm font-semibold text-gray-900"
+                            >
+                                {sub.question}
+                            </th>
+                        {/each}
                     </tr>
                 </thead>
 
-                <tbody class="divide-y divide-gray-200 bg-white"></tbody>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                    {#each data.submissionData as sub}
+                        <tr><th class="text-neutral-600">{sub.value}</th></tr>
+                    {/each}
+                </tbody>
             </table>
         </div>
     </div>

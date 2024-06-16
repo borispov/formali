@@ -1,35 +1,3 @@
-# TODOS:
-- [x] Implement SelectInput as a list of cards-like items instead of <select>
-- [x] Implement a validation upon each ```nextStep``` function call, i.e,
-Landing Page:
-- [x] Write a compelling copy section for the landing page
-- [ ] Add More Images mimicking a form builder UI
-- [ ] Add those images to the landing page
-- [ ] Add SVGs and art to various sections to augment the experience.
-
-BUILDER:
-- [x] Add TextAreas with basic WYSIWYG elements (Bold, Italic, H2,H3,P for sizings) or maybe enable markdown? nah..
-- [x] Add YouTube Embeds As Fields or Descriptions // added Link
-- [x] DRAG & DROP functionality for side panel
-
-ADD BLOCKS:
-- [x] Create a block/form step creation modal - Settled on avoiding a modal.
-- [x] Add Phone field
-- [x] Added Next Button for Select and Text input fields
-- [x] Add Star Rating
-- [x] Add Opinion Scale
-- [ ] Add Multichoice
-
-SETTINGS:
-- [ ] Create a settings page
-- [ ] Create an integration page # or not
-- [ ] Create a hook to send form submissions to user's email.
-
-SUBMISSIONS:
-- [ ] Send Submissions To An Endpoint / 
-- [ ] Configure Submissions in Pocketbaase
-- [ ] Display Submissions under Form's Settings
-
 # The Stack
 After long contemplation between Svlte, HTMX, Unpoly, AlpineJS, Astro, etc,
 I have decided to use, primarily, Svelte with Astro. However, there are
@@ -90,7 +58,13 @@ Option 2:
 Option 3:
 - Bun, Hono, JSX, HTMX for all.
 
-## Database 
+#### 16th June, 2024 Addition:
+Option 4:
+- Laravel/Rails as a backend + Svelte frontend. This will provide full-control over authentication and an easily modeled DB with a great ORM.
+- One of the main bonuses is it'll provide useful services such as: a mailer, cron if needed, monitoring, auth, easier integrations overall.
+- MAIN bonus for Laravel is Cashier, which enables using PaddleJS without a sweat as compared to implementing everything myself.
+
+## Database
 Option 1: use NeonDB for a postgresql database to store everything.
 
 Modeling my use case with Relation Datbase is seemingly challenging.
@@ -103,4 +77,6 @@ I tried setting up Mongoose to use MongoDB. However, using mongoose
 usually involves writing up a schema which is met with the same problem.
 Therefore, using mongodb node driver is the solution I'm aiming for now.
 
-### The Chosen Stack
+
+### UPDATE from May 2023:
+I pivoted to use PocketBase backend for Authentication and Database. I still use some Astro backend features such as API endpoints for creating/updating forms.

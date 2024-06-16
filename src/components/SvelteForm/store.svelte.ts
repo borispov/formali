@@ -16,6 +16,14 @@ export type FormStep = {
   rating?: number|string;
 }
 
+export interface WelcomeEndingStep {
+  id: string;
+  type: string;
+  question: string;
+  description: string;
+  img?: string;
+}
+
 export interface RatingStep extends FormStep {
   rating: number;
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
 
-  // still need to decide whether to use this sort of 
+  // still need to decide whether to use this sort of
   // class builder or use utopia's way with auto scale stuff
   function getFontSize(val: string) {
     return val == 'lg' ?
@@ -18,7 +18,6 @@
   $effect(() => {
     let tmp = designStore2.get()
     fontSize = tmp?.fieldsFontSize
-    console.log(tmp?.descriptorsFontSize)
   })
 
   interface Label {
@@ -29,8 +28,8 @@
   }
 
   let {
-    id, 
-    required = false, 
+    id,
+    required = false,
     children
   }: Label  = $props();
 

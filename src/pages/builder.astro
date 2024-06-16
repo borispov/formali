@@ -5,30 +5,6 @@ import Builder from "$components/SvelteForm/Builder.svelte";
 let form = null
 let formId = Astro.url.searchParams.get('form')
 
-if (Astro.request.method === 'GET') {
-  console.log('inside /builder path')
-  const pb = Astro.locals.pb
-
-  const data = await pb.collection('forms').getFullList()
-
-  const userName = await pb.authStore.model.name
-
-  // filter: pb.filter("form.id = {:formId }", { formId: formId }) },
-// 508j2ou96eccuse
-  const subs = await pb.collection("submissions").getList(1, 20, 
-    { 
-    filter: pb.filter('form = {:f}', {f: String(formId)}) 
-    }
-  )
-
-  console.log(' string of formid: ', String(formId))
-
-  // console.log(data)
-  console.log('subs: ', subs)
-  console.log("who's fetching: ", userName)
-
-}
-
 ---
 
 <Layout title="builder">

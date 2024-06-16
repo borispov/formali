@@ -2,8 +2,6 @@ import type { FormDesign } from "$src/types";
 import type { Form, FormStep } from "./store.svelte"
 
 import { setDesignStore } from "$lib/store/design";
-import { setForm } from "$lib/store/form";
-
 
 export interface FormStateProps {
   formSteps: FormStep[];

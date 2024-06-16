@@ -7,7 +7,6 @@ export const POST: APIRoute = async ({ locals, request }) => {
   console.log(`PARSING POST REQUEST on /api/form/submission`)
   const resp = await request.json()
   // TODO: Eliminate Credentials!
-  //
   await pb.admins.authWithPassword(
     import.meta.env.PB_EMAIL,
     import.meta.env.PB_PASSWORD,

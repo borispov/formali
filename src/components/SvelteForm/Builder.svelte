@@ -47,16 +47,17 @@
             return;
         }
 
-        console.log(`form ID: `, formId);
         // var tmp = pb.authStore.isValid ?
         const f = await pb.collection("forms").getOne(formId);
         if (f) {
-            submissions =
-                (await pb.collection("submissions").getList(1, 20, {
+            const submissionsCollection = await pb
+                .collection("submissions")
+                .getFullList({
                     filter: pb.filter("form = {:f}", { f: formId }),
-                })) || [];
+                });
+            submissions =
+                (submissionsCollection && submissionsCollection[0]) || [];
             form = new FormState(f);
-            console.log("this is form, form BUILDER: ", form.endings);
             setForm(form);
             return form;
         }
@@ -195,6 +196,7 @@
                         onclick={(e) => {
                             e.preventDefault();
                             configurationTab = "design";
+                            showSubmissions = false;
                         }}
                         class={`nav-item ${configurationTab === "design" && "after:bg-teal-400"}`}
                         type="button"
