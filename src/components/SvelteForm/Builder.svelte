@@ -177,7 +177,7 @@
 {#if form}
     <div>
         <nav
-            class="navbar w-full border-b p-2 flex items-center flex justify-between h-5vh"
+            class="navbar w-full border-b p-2 flex items-center flex justify-between h-5vh bg-white"
         >
             <div class="flex items-center gap-2">
                 <div
@@ -748,6 +748,9 @@
         position: relative;
         background-color: rgba(25, 25, 25, 0);
         color: rgb(94, 94, 94);
+    }
+    .nav-item:hover {
+        color: var(--tw-primary);
     }
 
     .nav-item[aria-selected="true"]::after {
