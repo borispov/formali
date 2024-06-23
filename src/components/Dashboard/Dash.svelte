@@ -5,7 +5,8 @@
   import { onMount } from 'svelte';
   import CreateForm from './CreateForm.svelte';
 
-  const pb = new PocketBase('http://localhost:8090/')
+  const PB_URL = import.meta.env.PUBLIC_PB_URL || "http://localhost:8090/";
+  const pb = new PocketBase(PB_URL)
 
   let userId = $state({})
   let forms = $state([])

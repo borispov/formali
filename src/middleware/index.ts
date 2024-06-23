@@ -3,8 +3,10 @@ import PocketBase from 'pocketbase';
 
 import { defineMiddleware } from 'astro/middleware';
 
+const PB_URL = import.meta.env.PB_URL || 'http://localhost:8090/'
+
 export const onRequest = defineMiddleware(async ({locals, request}, next: () => any) => {
-  locals.pb = new PocketBase('http://localhost:8090/')
+  locals.pb = new PocketBase(PB_URL)
 
   locals.pb.authStore.loadFromCookie(request.headers.get('cookie') || '');
 

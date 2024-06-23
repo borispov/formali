@@ -1,10 +1,10 @@
 <script lang="ts">
-	import PocketBase from 'pocketbase';
+  import PocketBase from "pocketbase";
   import { formThemeDefaults } from "$lib/utils/formDefaults";
 
   let { data = $bindable() } = $props();
 
-  let error = $state('')
+  let error = $state("");
 
   const welcomeTitle = `יצירת טופס חדש`;
   const paraText = ``;
@@ -12,57 +12,60 @@
 
   async function handleSubmit(e: any) {
     e.preventDefault();
-    const data = new FormData(e.target)
+    const data = new FormData(e.target);
 
-    let formName = data.get('formName')
-    let userId = data.get('userId')
+    let formName = data.get("formName");
+    let userId = data.get("userId");
 
-    const pb = new PocketBase('http://localhost:8090')
-
+    const PB_URL = import.meta.env.PUBLIC_PB_URL || "http://localhost:8090/";
+    const pb = new PocketBase(PB_URL);
 
     // TODO: Is This Enough? Probably not. Maybe worry about it later...
     if (!formName || !userId) {
-      error = 'לא ניתן ליצור טופס ללא שם'
-      return
+      error = "לא ניתן ליצור טופס ללא שם";
+      return;
     }
 
-  try {
-      await pb.collection('forms').create({
+    try {
+      await pb.collection("forms").create({
         name: formName,
         design: formThemeDefaults,
         formSteps: [],
         endings: [],
         user: userId,
-      })
+      });
 
-    window && window.Toastify({
-      text: "טופס נוצר בהצלחה",
-      duration: 2000,
-      newWindow: true,
-      close: true,
-      gravity: "top", // `top` or `bottom`
-      position: "left", // `left`, `center` or `right`
-      style: {
-        display: 'flex',
-        alignItems: 'center',
-        color: '#363636',
-        background: 'white',
-        boxShadow: '0 3px 10px rgba(0, 0, 0, 0.1), 0 3px 3px rgba(0, 0, 0, 0.05)',
-        maxWidth: '350px',
-        pointerEvents: 'auto',
-        padding: '8px 10px',
-        borderRadius: '4px',
-        lineHeight: '1.3',
-        willChange: 'transform',
-      },
-      onClick: function(){} // Callback after click
-    }).showToast();
+      window &&
+        window
+          .Toastify({
+            text: "טופס נוצר בהצלחה",
+            duration: 2000,
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "left", // `left`, `center` or `right`
+            style: {
+              display: "flex",
+              alignItems: "center",
+              color: "#363636",
+              background: "white",
+              boxShadow:
+                "0 3px 10px rgba(0, 0, 0, 0.1), 0 3px 3px rgba(0, 0, 0, 0.05)",
+              maxWidth: "350px",
+              pointerEvents: "auto",
+              padding: "8px 10px",
+              borderRadius: "4px",
+              lineHeight: "1.3",
+              willChange: "transform",
+            },
+            onClick: function () {}, // Callback after click
+          })
+          .showToast();
 
-      e.target.submit()
+      e.target.submit();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
   }
 </script>
 
@@ -108,9 +111,15 @@
           id="formName"
           class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
           placeholder="שם הטופס"
-          onkeypress={() => error = ''}
+          onkeypress={() => (error = "")}
         />
-        <input name="userId" hidden value={data.userId} type="text" class="hidden" />
+        <input
+          name="userId"
+          hidden
+          value={data.userId}
+          type="text"
+          class="hidden"
+        />
       </div>
       <button
         type="submit"

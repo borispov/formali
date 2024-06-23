@@ -1,6 +1,7 @@
 import PocketBase from "pocketbase";
 
-const PB_URL = import.meta.env.PROD ? import.meta.env.PB_URL : 'http://localhost:8090/'
+// const PB_URL = import.meta.env.PROD ? import.meta.env.PB_URL : 'http://localhost:8090/'
+const PB_URL = import.meta.env.PUBLIC_PB_URL || "http://localhost:8090/";
 
 const pb = new PocketBase(PB_URL);
 

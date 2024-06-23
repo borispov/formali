@@ -5,17 +5,6 @@ import FormsList from '$components/Dashboard/FormList.svelte'
 
 // const dataForms = await locals.pb.collection('forms').getFullList({ sort: '-created' })
 
-import PocketBase from 'pocketbase';
-
-const pb = new PocketBase('http://localhost:8090/')
-
-import {formsCollection} from '../db'
-
-// fetch all user's forms
-const f  = await formsCollection()
-const forms = await f.find({}).toArray()
-// console.log(forms)
-
 ---
 <Layout>
   {
@@ -67,7 +56,7 @@ const forms = await f.find({}).toArray()
 
   <div class="mt-6">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-      <FormsList {forms} />
+      <FormsList forms={[]} />
     </div>
   </div>
 

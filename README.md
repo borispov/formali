@@ -64,19 +64,6 @@ Option 4:
 - One of the main bonuses is it'll provide useful services such as: a mailer, cron if needed, monitoring, auth, easier integrations overall.
 - MAIN bonus for Laravel is Cashier, which enables using PaddleJS without a sweat as compared to implementing everything myself.
 
-## Database
-Option 1: use NeonDB for a postgresql database to store everything.
-
-Modeling my use case with Relation Datbase is seemingly challenging.
-
-I have to model formSteps which isn't straightforward, becaues each form
-block can be different and there can be way too many types of blocks,
-i.e form field types.
-
-I tried setting up Mongoose to use MongoDB. However, using mongoose
-usually involves writing up a schema which is met with the same problem.
-Therefore, using mongodb node driver is the solution I'm aiming for now.
-
-
-### UPDATE from May 2023:
-I pivoted to use PocketBase backend for Authentication and Database. I still use some Astro backend features such as API endpoints for creating/updating forms.
+## Database - Update:
+I ended up using SQLite3 through Pocketbase. It seems perfectly fine, tbh. I leverage its Authentication as well.
+I wonder whether I should spin-off a dedicated Backend service with Laravel/Rails or flow with PocketBase

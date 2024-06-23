@@ -41,7 +41,9 @@
     let design = $derived(form && form.design);
 
     onMount(async () => {
-        const pb = new PocketBase("http://localhost:8090");
+        const PB_URL =
+            import.meta.env.PUBLIC_PB_URL || "http://localhost:8090/";
+        const pb = new PocketBase(PB_URL);
         if (!pb.authStore.isValid) {
             globalThis.location.href = "/login";
             return;
