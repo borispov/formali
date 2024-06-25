@@ -1,7 +1,8 @@
 import type { APIRoute } from "astro";
 
 import PocketBase from "pocketbase";
-const pb = new PocketBase("http://localhost:8090/");
+const PB_URL = import.meta.env.PUBLIC_PB_URL || "http://localhost:8090/";
+const pb = new PocketBase(PB_URL);
 
 export const POST: APIRoute = async ({ locals, request }) => {
   console.log(`PARSING POST REQUEST on /api/form/submission`);
