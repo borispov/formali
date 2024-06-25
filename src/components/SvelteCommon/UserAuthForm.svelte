@@ -31,13 +31,11 @@
       }
 
       formData.append("name", meta.name);
-      console.log("appending a whole new pieces of data");
       await pb.collection("users").update(authData.record.id, formData);
       isLoading = false;
     }
 
     const cookieString = pb.authStore.exportToCookie({ httpOnly: false });
-    console.log("setting cookie: ", cookieString);
     document.cookie = cookieString;
     // do we need this??
     if (pb.authStore.isValid) {
@@ -51,7 +49,6 @@
 
     if (pb.authStore.isValid) {
       const cookieString = pb.authStore.exportToCookie({ httpOnly: false });
-      console.log("setting cookie: ", cookieString);
       document.cookie = cookieString;
       // do we need this??
       window.location.href = "/dashboard";
