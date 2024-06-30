@@ -1,15 +1,17 @@
 ---
 import 'uno.css'
 
+import Footer from "../components/landing/Footer.astro"
 import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
 	title?: string;
 	topbar?: boolean;
 	unpoly?: boolean;
+	isPay?: boolean;
 }
 
-const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly, transition } = Astro.props;
+const { isPay = false, title = 'Formali | טפסים דיגיטליים', topbar, unpoly, transition } = Astro.props;
 // TODO: change favicon
 ---
 
@@ -22,6 +24,21 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly, trans
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/logo.png" />
 		<meta name="generator" content={Astro.generator} />
+
+		{
+			isPay &&
+			(
+				<!-- Paddle -->
+				<script is:inline src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+				<script is:inline>
+					console.log("Loading paddle...")
+					Paddle.Environment.set("sandbox");
+													Paddle.Initialize({
+													token: "test_6fb4380588c6b4b2401bd0c22b8"
+													})
+				</script>
+			)
+		}
 
     <!-- TOASTIFY -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -71,6 +88,7 @@ const { title = 'Formali | טפסים דיגיטליים', topbar, unpoly, trans
 			</div>
 	 }
 		<slot />
+	<Footer />
 	</body>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </html>

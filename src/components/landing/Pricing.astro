@@ -1,0 +1,113 @@
+---
+const MESSAGES = {
+  title: "חבילות ברורות, שקיפות מלאה.",
+  subtitle: 'בחרו בחבילה המתאימה לכם. אינכם בטוחים? נסו את החבילה החינמית הנדיבה שלנו עד שתצטרכו לשדרג.',
+}
+
+const PLANS = [
+{
+  id: '01',
+  title: 'רגע',
+  message: 'כל שקל חשוב לכם! נסו לפני שתשלמו',
+  price: 0,
+  features: ["עד 3 טפסים", "מילוי טפסים ללא הגבלה", "הטמעת טפסים בדפים ואתרים", "התראות למייל בעת מילוי טופס", "העלאת קבצים (מגבלת 5MB)", "הוספת תמונות לטפסים"],
+  },
+  {
+  id: '02',
+  title: 'יזם',
+  message: 'מה שצריך כדי להתחיל',
+  price: 69.90,
+  features: ["טפסים ללא הגבלה", "העלאת קבצים עד 20MB", "כל הפיצ׳רים", "דף תודה בהתאמה אישית", "הסר watermark", "חבר לדומיין", "אינטגרציה ל Google sheets, Zapier ועוד", "עיצובים מעניינים"],
+  },
+  // {
+  // id: '03',
+  // title: 'ארגון',
+  // message: 'החבילה לקבוצות וארגונים',
+  // price: 101,
+  // features: ["כל מה שבחבילת יזם", "ייצוא לאקסל", "משתמשים ללא הגבלה"],
+  // }
+]
+
+const popular = "popular flex flex-col order-first px-6 py-8 rounded-3xl sm:px-8 bg-black lg:order-none"
+const regular = "flex flex-col px-6 rounded-3xl lg:py-8"
+
+---
+
+<section aria-labelledby="pricing-section" id="pricing">
+  <div class="lg:px-16 max-w-7xl md:px-12 mx-auto px-8 py-24 scroll-mt-12">
+    <div class="text-center max-w-3xl mx-auto">
+      <p class="text-gray-200">
+        {MESSAGES.subtitle}
+      </p>
+      <h2
+        class="text-4xl tracking-tight font-medium text-white md:text-5xl font-display"
+      >
+      {MESSAGES.title}
+      </h2>
+    </div>
+  </div>
+  <div class="items-center px-8 lg:pt-12 pb-24 mx-auto max-w-7xl lg:px-16">
+    <div
+      class="grid max-w-2xl grid-cols-1 py-4 -mx-4 sm:grid-cols-2 gap-y-10 sm:mx-auto lg:max-w-none lg:grid-cols-2 xl:gap-x-4 lg:bg-gray-50 lg:border border-gray-500/10 lg:rounded-3xl"
+    >
+    {
+      PLANS.map((plan, id) => (
+      <section class={id == 1 ? popular : regular}>
+          <h3 class="mt-5 text-lg text-black font-display">{plan.title}</h3>
+          <p class="mt-2 text-sm text-gray-500">
+            {plan.message}
+          </p>
+          <p
+            class="order-first text-lg md:text-3xl font-light tracking-tight text-black font-display"
+          >
+          {plan.price} ש״ח/חודש
+          </p>
+          <ul
+            role="list"
+            class="flex flex-col order-last mt-10 text-sm text-gray-600 gap-y-3"
+          >
+          {plan.features.map(feature => 
+            <li class="flex items-center">
+              <div
+                class="w-1em h-1em i-mdi:check text-black"
+                aria-label="checkmark outline"></div><span class="mr-4"
+                >{feature}</span
+              >
+            </li>
+            )}
+          </ul>
+          <a
+            class="inline-flex items-center justify-center w-full px-6 py-3 h-12 mt-8 text-center text-black transition duration-200 ease-in-out transform bg-white border hover:bg-gray-200 hover:border-gray-200 rounded-xl focus:outline-none"
+            aria-label={plan.title}
+            href="/login">{id != 0 ? "צור חשבון" : "התחל ניסיון"}</a
+          >
+      </section>
+          
+      ))
+    }
+    </div>
+  </div>
+</section>
+
+
+<style>
+
+  .popular {
+    background: black;
+  }
+  .popular > h3 {
+    color: white;
+  }
+
+  .popular > p {
+    color: white;
+  }
+  /* FEATURE */
+  .popular > ul > li > span {
+    color: rgba(255, 255, 255, 0.78) !important;
+  }
+  /* ICON */
+  .popular > ul > li > div {
+    color: white !important;
+  }
+</style>
