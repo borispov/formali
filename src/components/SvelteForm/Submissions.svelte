@@ -14,6 +14,8 @@
 
     const head = data && data[0].submissionData.map((a) => a.question);
 
+    console.log(data && data[0].submissionData);
+
     const QUESTIONS = {
         signature: "חתימה",
     };

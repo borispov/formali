@@ -263,7 +263,7 @@
     </div>
 {/if}
 
-{#if (formStep && formStep.type == "descriptor") || formStep.type == "ending"}
+{#if (formStep && formStep.type == "descriptor") || formStep.type == "ending" || formStep.type == "welcome"}
     <div
         class="my-8 lg:px-6 md:px-4 px-2 divide-y-1 divide-teal-700 divide-dashed"
     >

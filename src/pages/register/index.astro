@@ -1,6 +1,5 @@
 ---
-import UserAuthForm from "$src/components/SvelteCommon/UserAuthForm.svelte";
-import LoginForm from "$components/landing/LoginForm.svelte";
+import RegisterForm from "$src/components/landing/RegisterForm.svelte"
 import Layout from "$src/layouts/Layout.astro";
 
 const locals = Astro.locals
@@ -17,12 +16,8 @@ if (Astro.request.method == 'GET') {
 <Layout>
   <div class="flex items-center justify-center flex-col h-screen px-12">
     <div class="card bg-base-100 shadow-xl">
-      <!-- <figure class="hidden md:block lg:block w-5/12">
-        <img class="" alt="card img" src="https://images.unsplash.com/photo-1484242857719-4b9144542727?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1280&q=80" alt="" />
-      </figure> -->
       <div class="card-body">
-        <LoginForm client:only="svelte" />
-        <!-- <UserAuthForm client:only="svelte" /> -->
+        <RegisterForm client:only="svelte" />
       </div>
     </div>
   </div>

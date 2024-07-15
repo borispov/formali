@@ -1,5 +1,4 @@
 <script lang="ts">
-
   const hebrewFieldTypes = {
     descriptor: "תיאור",
     signature: "חתימה",
@@ -10,11 +9,11 @@
     date: "תאריך",
     select: "בחירה",
     scale: "מדרג",
-    welcome: 'התחלה',
-    ending: 'סיום'
+    welcome: "התחלה",
+    ending: "סיום",
   };
 
-  const flipDurationMs = 150
+  const flipDurationMs = 150;
 
   let {
     step,
@@ -23,11 +22,11 @@
     mouseenter,
     mouseleave,
     selectStepHandler,
+    canRemove,
     onRemoveHandler,
     className,
-    bgColor
+    bgColor,
   } = $props();
-
 </script>
 
 <button
@@ -37,7 +36,7 @@
   ${className}
   [ flex items-center justify-start ]
   [ py-1 px-4 ]
-  [ hover:bg-slate-200 shadow-sm hover:shadow-md transition ]
+    [ hover:bg-orange-300/80 shadow-sm hover:shadow-md transition ]
 `}
   onclick={selectStepHandler}
 >
@@ -52,10 +51,12 @@
       {step.question}
     </span>
   </div>
-  <span
-    tabindex="0"
-    role="button"
-    onclick={onRemoveHandler}
-    class="del i-mdi:trash w-4 h-4 mr-auto bg-teal-400 hidden hover:bg-teal-700"
-  ></span>
+  {#if canRemove}
+    <span
+      tabindex="0"
+      role="button"
+      onclick={onRemoveHandler}
+      class="del i-mdi:trash w-4 h-4 mr-auto bg-teal-400 hidden hover:bg-teal-700"
+    ></span>
+  {/if}
 </button>

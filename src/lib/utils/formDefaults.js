@@ -50,6 +50,17 @@ export const textDefaults = {
   placeholder: "שם הפרטי שלכם...",
 };
 
+export const welcomeDefault = {
+  type: "welcome",
+  question: "ברוכים הבאים",
+  description: "הוסיפו מבוא (רשות)...",
+  required: false,
+  value: "",
+  required: false,
+  img: "",
+  // timeToComplete: false
+};
+
 export const endingDefault = {
   type: "ending",
   question: "תודה רבה!",
@@ -132,6 +143,12 @@ export const formThemeDefaults = {
 
 export function createInput(type, data) {
   switch (true) {
+    case type === "welcome":
+      return {
+        id: generateId("welcome"),
+        ...welcomeDefault,
+        data,
+      };
     case type === "ending":
       return {
         id: generateId("ending"),

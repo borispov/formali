@@ -3,7 +3,6 @@ import { defineConfig } from 'astro/config';
 import unocss from 'unocss/astro'
 import { presetUno } from 'unocss';
 import { presetForms } from '@julr/unocss-preset-forms';
-// import {presetDaisy} from 'unocss-preset-daisy'
 import { presetDaisy } from '@unscatty/unocss-preset-daisy'
 import presetMini from '@unocss/preset-mini';
 import presetIcons from '@unocss/preset-icons';

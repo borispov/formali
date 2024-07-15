@@ -17,6 +17,7 @@ export interface FormStateProps {
   resetError: () => void;
   setError: () => void;
   addStep: (step: FormStep) => void;
+  addWelcomeStep: (step: FormStep) => void;
   addEnding: (ending: FormStep) => void;
   isLastStep: () => boolean;
   editDesignSetting: (field: string, val: string) => void;
@@ -35,16 +36,15 @@ export class FormState implements FormStateProps {
       ...form,
       formSteps: form.formSteps.map(this.mapStepsWithId),
       endings: form?.endings?.map(this.mapStepsWithId) || [], // Old forms did not include endings[] prop, so add it on construction when entering a Builder/Form component
+      welcomeSteps: form?.welcomeSteps?.map(this.mapStepsWithId) || [],
     };
     setDesignStore(this.form.design);
   }
 
-  get endings() {
-    return this.form.endings;
-  }
-  set endings(v) {
-    this.form.endings = v;
-  }
+  get welcomeSteps() { return this.form.welcomeSteps }
+  set welcomeSteps(v) { this.form.welcomeSteps = v }
+  get endings() { return this.form.endings }
+  set endings(v) { this.form.endings = v }
 
   get formSteps() {
     return this.form.formSteps;
@@ -58,6 +58,10 @@ export class FormState implements FormStateProps {
   }
   get name() {
     return this.form.name;
+  }
+
+  set name(v) {
+    this.form.name = v
   }
 
   private getCurrentValue() {
@@ -120,9 +124,14 @@ export class FormState implements FormStateProps {
     this.form.formSteps.push(step);
   }
 
+  addWelcomeStep(step: FormStep) {
+    this.form.welcomeSteps.push(step);
+  }
+
   addEnding(ending: FormStep) {
     this.form.endings.push(ending);
   }
+
 }
 
 export default function createFormState(formData: Form) {

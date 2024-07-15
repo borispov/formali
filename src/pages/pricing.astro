@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Pricing from "../components/landing/Pricing.astro"
+import BuyPro from "../pages/landing/BuyPro.svelte"
 
 const faq = [
 {
@@ -71,9 +72,7 @@ value: 'ניתן להגיש בקשת לפיצ׳רים! שלחו לנו מייל 
         <header
           class="flex flex-col items-center col-span-3 lg:pr-16 xl:pr-20 bg-[#1B1A21] pt-28 pb-20">
           <Pricing />
-          <button class="payment rotate-1 text-2xl bg-teal border-2 border-black drop-shadow-3xl hover:drop-shadow-4xl px-10 py-2 text-black rounded-md button-xl">
-               צור חשבון עכשיו
-          </button>
+          <BuyPro client:only="svelte" />
         </header>
       </div>
     </div>
@@ -113,26 +112,6 @@ value: 'ניתן להגיש בקשת לפיצ׳רים! שלחו לנו מייל 
     </div>
   </main>
 </Layout>
-
-<script >
-  let itemsList = [
-    {
-      priceId: "pri_01j1n7zq79xtwzy44b7tprp5wt",
-      quantity: 1
-    },
-  ];
-    console.log("HELLO WORLD")
-  function openCheckout(items, customer) {
-    Paddle.Checkout.open({
-      items: itemsList,
-      customer,
-    })
-  }
-
-  let el = document.querySelector('.payment')
-  el?.addEventListener('click', openCheckout)
-
-</script>
 
 <style>
   .bg-paper {

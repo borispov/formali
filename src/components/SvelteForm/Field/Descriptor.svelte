@@ -10,7 +10,7 @@
     import FieldLabel from "../FieldLabel.svelte";
     import FieldDescription from "../FieldDescription.svelte";
 
-    let { id, question, description, img, bg, type }: Props = $props();
+    let { id, question, description , img, bg, type }: Props = $props();
 
     const fieldClass =
         "transition-all bg-transparent border-b-2 border-b-neutral-600 mt-8 pb-2 question-input__text placeholder:italic placeholder:text-neutral-500 focus:border-b-neutral-100 outline-0";
@@ -22,7 +22,11 @@
     </FieldLabel>
     {#if description}
         <FieldDescription>
-            {@html description}
+          <!-- <div class="border-[1px] border-dashed border-black/20">
+            <div contenteditable class="border-[1px dashed rgba(143, 199, 255, 0.5)] outline-none"> -->
+              {@html description}
+            <!-- </div>
+          </div> -->
         </FieldDescription>
     {/if}
 

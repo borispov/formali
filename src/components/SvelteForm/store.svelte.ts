@@ -84,6 +84,7 @@ export type Form = {
   design: FormDesign;
   formSteps: FormStep[];
   endings: FormStep[];
+  welcomeSteps: FormStep[];
 };
 
 const defaultDesign = {

@@ -1,4 +1,5 @@
 <script lang="ts">
+    // TODO: for some reason, welcome step doesn't work as intended!!!
     import { setForm } from "$lib/store/form";
     import PocketBase from "pocketbase";
     import { throttle, debounce } from "@github/mini-throttle";
@@ -75,7 +76,9 @@
     let formCurrentStep = $derived(
         formCurrentType === "endings"
             ? form.endings[formCurrentIndex]
-            : form.formSteps[formCurrentIndex],
+            : formCurrentType === "welcomeSteps"
+              ? form.welcomeSteps[formCurrentIndex]
+              : form.formSteps[formCurrentIndex],
     );
 
     let showAddMenu = $state(false);
@@ -92,6 +95,13 @@
         await updateFormToDB();
     }
 
+    async function addWelcomeStep() {
+        let step = createInput("welcome", {});
+        form.addWelcomeStep(step); // add ending in the UI and state
+        await updateFormToDB(); // save to DB
+        console.log(form.welcomeSteps)
+    }
+
     async function addEnding() {
         let step = createInput("ending", {});
         form.addEnding(step); // add ending in the UI and state
@@ -101,6 +111,8 @@
     async function addNewStep(inputType: string, data = {}, position?: number) {
         let step = createInput(inputType, data);
 
+        // position - if we decide to EVER add a step at a certain
+        // position this will be the place...
         if (!position) {
             form.addStep(step);
         }
@@ -174,6 +186,19 @@
         });
         console.log(resp.status);
     }
+
+    // change form name && save changes to DB
+    function formNameChangeHandler(e) {
+        const v = e.target.value;
+
+        if (!v) {
+            e.preventDefault();
+        } else {
+            form.name = v;
+            updateFormToDB();
+        }
+    }
+
 </script>
 
 {#if form}
@@ -181,13 +206,25 @@
         <nav
             class="navbar w-full border-b p-2 flex items-center flex justify-between h-5vh bg-white"
         >
-            <div class="flex items-center gap-2">
-                <div
-                    class="i-mdi:arrow-right w-1.2em h-1.2em text-blue-600"
-                ></div>
-                <a href="/dashboard" class="text-blue font-bold text-base-600"
-                    >חזור</a
-                >
+            <div class="flex gap-2 justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="i-mdi:arrow-right w-1.2em h-1.2em text-blue-600"
+                    ></div>
+                    <a
+                        href="/dashboard"
+                        class="text-blue font-bold text-base-600">חזור</a
+                    >
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <input
+                        oninput={formNameChangeHandler}
+                        value={form.name}
+                        type="text"
+                        class="border-none hover:border-[1px] text-base-600"
+                    />
+                </div>
             </div>
 
             <div class="flex items-center gap-2">
@@ -201,7 +238,7 @@
                             configurationTab = "design";
                             showSubmissions = false;
                         }}
-                        class={`nav-item ${configurationTab === "design" && "after:bg-teal-400"}`}
+                        class="nav-item"
                         type="button"
                         role="tab"
                         aria-selected={configurationTab === "design"}
@@ -214,12 +251,13 @@
                         onclick={(e) => {
                             e.preventDefault();
                             configurationTab = "build";
+                            showSubmissions = false;
                         }}
-                        class={`nav-item ${configurationTab === "design" && "after:bg-teal-400"}`}
+                        class="nav-item"
                         type="button"
                         role="tab"
                         aria-selected={configurationTab === "build"}
-                        href="/">הגדרות</a
+                        href="/">טופס</a
                     >
                     <a
                         data-state={configurationTab === "submissions"
@@ -227,9 +265,10 @@
                             : ""}
                         onclick={(e) => {
                             e.preventDefault();
+                            configurationTab = "submissions";
                             showSubmissions = true;
                         }}
-                        class={`nav-item ${configurationTab === "submissions" && "after:bg-teal-400"}`}
+                        class="nav-item"
                         type="button"
                         role="tab"
                         aria-selected={configurationTab === "submissions"}
@@ -257,54 +296,74 @@
 
         <div class="grid grid-cols-12 h-95vh bg-gray-50">
             <!-- CONFIGURATION PANEL -->
-            <aside
-                class="relative col-span-3 bg-white overflow-y-scroll border-l border-neutral-300 bg-neutral-200"
-            >
-                <div class="relative">
-                    <label
-                        for=""
-                        class="block mt-4 border-b border-b-2 w-full p-2"
-                    >
-                        {configurationTab === "build" ? "הגדרות" : "עיצוב"}
-                    </label>
-                    {#if configurationTab === "build"}
-                        {#if formCurrentStep}
-                            <SingleInput
-                                bind:formStep={form[formCurrentType][
-                                    formCurrentIndex
-                                ]}
+            {#if !showSubmissions}
+                <aside
+                    class="relative col-span-3 bg-white overflow-y-scroll border-l border-neutral-300 bg-neutral-200"
+                >
+                    <div class="relative">
+                        <label
+                            for=""
+                            class="block mt-4 border-b border-b-2 w-full p-2"
+                        >
+                            {configurationTab === "build" ? "הגדרות" : "עיצוב"}
+                        </label>
+                        {#if configurationTab === "build"}
+                            {#if formCurrentStep && !showSubmissions}
+                                <SingleInput
+                                    bind:formStep={form[formCurrentType][
+                                        formCurrentIndex
+                                    ]}
+                                />
+                            {/if}
+                        {/if}
+                        {#if configurationTab === "design"}
+                            <DesignConfig
+                                {setTheme}
+                                bind:formDesign={form.design}
+                                onDesignEdit={editDesign}
                             />
                         {/if}
-                    {/if}
-                    {#if configurationTab === "design"}
-                        <DesignConfig
-                            {setTheme}
-                            bind:formDesign={form.design}
-                            onDesignEdit={editDesign}
-                        />
-                    {/if}
-                </div>
-                <button
-                    class="absolute bg-teal-400 text-white font-thin bottom-0 left-0 right-0 w-full px-4 py-2 rounded-sm"
-                    onclick={updateFormToDB}
-                >
-                    שמור שינויים
-                </button>
-            </aside>
+                    </div>
+                    <button
+                        class="absolute bg-teal-400 text-white font-thin bottom-0 left-0 right-0 w-full px-4 py-2 rounded-sm"
+                        onclick={updateFormToDB}
+                    >
+                        שמור שינויים
+                    </button>
+                </aside>
+            {/if}
 
             <!-- MAIN CANVAS -->
             {#if showSubmissions}
                 <!-- TODO: Extract this out into a component -->
                 <main
                     id="main"
-                    class="bg-gray-50 dark:bg-neutral-800 col-span-6 pt-40"
+                    class="bg-gray-50 dark:bg-neutral-800 col-span-12"
                 >
-                    <div>
-                        <h1 class="font-bold p-10">
-                            תוצאות ותגובות עבור הטופס
-                        </h1>
-                        <Submissions data={submissions} />
-                    </div>
+                    {#if submissions.length > 1}
+                        <div class="mx-auto pt-40">
+                            <h1 class="font-bold p-10">
+                                תוצאות ותגובות עבור הטופס
+                            </h1>
+                            <Submissions data={submissions} />
+                        </div>
+                    {:else}
+                        <div class="mx-auto max-w-2xl">
+                            <img
+                                class="w-full h-1/2"
+                                src="no-results.png"
+                                alt="no results"
+                            />
+                            <div class="prose text-center p-10">
+                                <h1 class="font-bold">
+                                    בינתיים אין תוצאות. לאט לאט...
+                                </h1>
+                                <p>
+                                    התחל לפרסם את השאלון ולאסוף תגובות מעניינות.
+                                </p>
+                            </div>
+                        </div>
+                    {/if}
                 </main>
             {:else}
                 <main
@@ -354,7 +413,7 @@
                                             field={formCurrentStep}
                                         />
                                     {/if}
-                                    {#if formCurrentStep.type === "descriptor" || formCurrentStep.type == "ending"}
+                                    {#if formCurrentStep.type === "descriptor" || formCurrentStep.type == "ending" || formCurrentStep.type == "welcome"}
                                         <Descriptor
                                             {...formCurrentStep}
                                             {...formCurrentStep.design}
@@ -441,217 +500,278 @@
             {/if}
 
             <!-- SIDE PANEL -->
-            <div
-                class="col-span-3 pt-12 flex flex-col gap-2 px-2 bg-neutral-50 overflow-y-scroll border-r bg-neutral-200"
-            >
-                <section
-                    class="flex flex-col gap-4"
-                    onconsider={handleConsider}
-                    onfinalize={handleFinalize}
-                    use:dndzone={{
-                        items: form.formSteps,
-                        flipDurationMs: flipDurationMs,
-                    }}
+            {#if !showSubmissions}
+                <div
+                    class="col-span-3 pt-12 flex flex-col gap-2 px-2 bg-neutral-50 overflow-y-scroll border-r bg-neutral-200"
                 >
-                    {#each form.formSteps as step, stepIndex (step.id)}
-                        <button
-                            onmouseenter={(e) => {
-                                hoveredSideStepId = step.id;
-                                let el = e.target.querySelector(".del");
-                                el.classList.remove("hidden");
-                            }}
-                            onmouseleave={(e) => {
-                                hoveredSideStepId = "";
-                                let el = e.target.querySelector(".del");
-                                el.classList.add("hidden");
-                            }}
-                            animate:flip={{ duration: flipDurationMs }}
-                            class={`
-              [ flex items-center justify-start ]
-              [ py-1 px-4 ]
-              [ ${formCurrentType == "formSteps" && formCurrentIndex === stepIndex ? "bg-slate-200" : "bg-slate-100"} ]
-              [ hover:bg-slate-200 shadow-sm hover:shadow-md transition ]
-            `}
-                            onclick={() => {
-                                formCurrentType = "formSteps";
-                                formCurrentIndex = stepIndex;
-                            }}
-                        >
-                            <div
-                                class="i-mdi:dots-grid w-6 h-6 me-4 bg-neutral-300 hover:bg-neutral-400"
-                            ></div>
-                            <div class="flex flex-col items-start">
-                                <span
-                                    class="text-[14px] text-neutral-800 leading-6"
-                                >
-                                    {hebrewFieldTypes[step.type]}
-                                </span>
-                                <span class="text-xs text-neutral-400">
-                                    {step.question}
-                                </span>
-                            </div>
-                            <span
-                                tabindex="0"
-                                role="button"
-                                onclick={async () => {
-                                    form.formSteps = form.formSteps.filter(
-                                        (fs) => step.id !== fs.id,
-                                    );
-                                    await updateFormToDB();
-                                }}
-                                class="del i-mdi:trash w-4 h-4 mr-auto bg-teal-400 hidden hover:bg-teal-700"
-                            ></span>
-                        </button>
-                    {/each}
-                    <hr />
-                    <section
-                        data-el="endings"
-                        id="endings"
-                        class="flex flex-col gap-4"
+                    <div
+                        class="mt-4 mx-auto border-0 border-top-2 border-top border-gray-300"
                     >
-                        <button
-                            onclick={addEnding}
-                            class="btn btn-neutral !bg-[var(--tw-secondary)] btn-sm border-2 border-black text-white"
-                        >
-                            הוסף סיומת
-                            <div
-                                class="inline-block i-mdi:plus w-6 h-6 me-4"
-                            ></div>
-                        </button>
-                        {#each form.endings as ending, endingIndex}
+                        {#if !form.welcomeSteps.length}
+                            <button
+                                onclick={addWelcomeStep}
+                                class="btn btn-neutral !bg-[var(--tw-secondary)] btn-sm border-2 border-black text-white"
+                            >
+                                הוסף התחלה
+                                <div
+                                    class="inline-block i-mdi:plus w-6 h-6 me-4"
+                                ></div>
+                            </button>
+                        {/if}
+                        {#each form.welcomeSteps as welcome}
                             <SidePanelStep
-                                className={`border-dash ${formCurrentType == "endings" && formCurrentIndex === endingIndex ? "bg-green-300 border-dotted border-indigo border-2" : "bg-green-200"}`}
+                                className={`border-dash border-2 ${(formCurrentType == "welcomeSteps" && "bg-orange-300 border-dotted border-indigo border-2") || "bg-orange-200"}`}
                                 mouseenter={(e) => {
-                                    hoveredSideStepId = ending.id;
-                                    let el = e.target.querySelector(".del");
-                                    el.classList.remove("hidden");
+                                    hoveredSideStepId = welcome.id;
+                                    // let el = e.target.querySelector(".del");
+                                    // el.classList.remove("hidden");
                                 }}
                                 mouseleave={(e) => {
                                     hoveredSideStepId = "";
-                                    let el = e.target.querySelector(".del");
-                                    el.classList.add("hidden");
+                                    // let el = e.target.querySelector(".del");
+                                    // el.classList.add("hidden");
                                 }}
-                                step={ending}
+                                step={welcome}
                                 selectStepHandler={() => {
-                                    formCurrentType = "endings";
-                                    formCurrentIndex = endingIndex;
+                                    formCurrentType = "welcomeSteps";
+                                    formCurrentIndex = 0;
                                 }}
-                                stepIndex={endingIndex}
+                                stepIndex={0}
+                                canRemove={false}
                                 onRemoveHandler={async () => {
-                                    form.endings = form.endings.filter(
-                                        (e) => ending.id !== e.id,
-                                    );
+                                    form.welcomeSteps = [];
                                     await updateFormToDB();
                                 }}
                                 {formCurrentIndex}
                             />
                         {/each}
+                    </div>
+
+                    <section
+                        class="flex flex-col gap-4"
+                        onconsider={handleConsider}
+                        onfinalize={handleFinalize}
+                        use:dndzone={{
+                            items: form.formSteps,
+                            flipDurationMs: flipDurationMs,
+                        }}
+                    >
+                        {#each form.formSteps as step, stepIndex (step.id)}
+                            <button
+                                onmouseenter={(e) => {
+                                    hoveredSideStepId = step.id;
+                                    let el = e.target.querySelector(".del");
+                                    el.classList.remove("hidden");
+                                }}
+                                onmouseleave={(e) => {
+                                    hoveredSideStepId = "";
+                                    let el = e.target.querySelector(".del");
+                                    el.classList.add("hidden");
+                                }}
+                                animate:flip={{ duration: flipDurationMs }}
+                                class={`
+              [ flex items-center justify-start ]
+              [ py-1 px-4 ]
+              [ ${formCurrentType == "formSteps" && formCurrentIndex === stepIndex ? "bg-slate-200" : "bg-slate-100"} ]
+              [ hover:bg-slate-200 shadow-sm hover:shadow-md transition ]
+            `}
+                                onclick={() => {
+                                    formCurrentType = "formSteps";
+                                    formCurrentIndex = stepIndex;
+                                }}
+                            >
+                                <div
+                                    class="i-mdi:dots-grid w-6 h-6 me-4 bg-neutral-300 hover:bg-neutral-400"
+                                ></div>
+                                <div class="flex flex-col items-start">
+                                    <span
+                                        class="text-[14px] text-neutral-800 leading-6"
+                                    >
+                                        {hebrewFieldTypes[step.type]}
+                                    </span>
+                                    <span class="text-xs text-neutral-400">
+                                        {step.question}
+                                    </span>
+                                </div>
+                                <span
+                                    tabindex="0"
+                                    role="button"
+                                    onclick={async () => {
+                                        form.formSteps = form.formSteps.filter(
+                                            (fs) => step.id !== fs.id,
+                                        );
+                                        await updateFormToDB();
+                                    }}
+                                    class="del i-mdi:trash w-4 h-4 mr-auto bg-teal-400 hidden hover:bg-teal-700"
+                                ></span>
+                            </button>
+                        {/each}
+                        <hr />
+                        <section
+                            data-el="endings"
+                            id="endings"
+                            class="flex flex-col gap-4"
+                        >
+                            <button
+                                class:hidden={true}
+                                onclick={addEnding}
+                                class="btn btn-neutral !bg-[var(--tw-secondary)] btn-sm border-2 border-black text-white"
+                            >
+                                הוסף סיומת
+                                <div
+                                    class="inline-block i-mdi:plus w-6 h-6 me-4"
+                                ></div>
+                            </button>
+                            {#each form.endings as ending, endingIndex}
+                                <SidePanelStep
+                                    className={`border-dash border-2 ${formCurrentType == "endings" && formCurrentIndex === endingIndex ? "bg-orange-300 border-dotted border-indigo border-2" : "bg-orange-200"}`}
+                                    mouseenter={(e) => {
+                                        hoveredSideStepId = ending.id;
+                                        let el = e.target.querySelector(".del");
+                                        el.classList.remove("hidden");
+                                    }}
+                                    mouseleave={(e) => {
+                                        hoveredSideStepId = "";
+                                        let el = e.target.querySelector(".del");
+                                        el.classList.add("hidden");
+                                    }}
+                                    step={ending}
+                                    selectStepHandler={() => {
+                                        formCurrentType = "endings";
+                                        formCurrentIndex = endingIndex;
+                                    }}
+                                    stepIndex={endingIndex}
+                                    canRemove={false}
+                                    onRemoveHandler={async () => {
+                                        form.endings = form.endings.filter(
+                                            (e) => ending.id !== e.id,
+                                        );
+                                        await updateFormToDB();
+                                    }}
+                                    {formCurrentIndex}
+                                />
+                            {/each}
+                        </section>
                     </section>
-                </section>
-                <!-- ADD BLOCK  -->
-                <div
-                    class="mt-4 mx-auto border-0 border-top-2 border-top border-gray-300"
-                >
-                    <button
-                        onclick={() => (showAddMenu = !showAddMenu)}
-                        class="
+                    <!-- ADD BLOCK  -->
+                    <div
+                        class="mt-4 mx-auto border-0 border-top-2 border-top border-gray-300"
+                    >
+                        <button
+                            onclick={() => (showAddMenu = !showAddMenu)}
+                            class="
                         [ button-xl button-secondary ]
                         [ flex mx-auto items-center justify-evenly gap-2 ]
                         !text-white py-1 px-4"
-                    >
-                        הוסף שדה
-                        <div
-                            class={`transition ${!showAddMenu ? "i-mdi:arrow-down" : "i-mdi-arrow-up"}
+                        >
+                            הוסף שדה
+                            <div
+                                class={`transition ${!showAddMenu ? "i-mdi:arrow-down" : "i-mdi-arrow-up"}
                             inline-block w-6 h-6 me-4 bg-white`}
-                        ></div>
-                    </button>
-                    {#if showAddMenu}
-                        <div class="flex flex-col mt-8 transition">
-                            <h3 class="text-base mt-4 leading-6">בלוקים:</h3>
-                            <div class="grid grid-cols-1 gap-2 mt-2">
-                                <button
-                                    onclick={() => addNewStep("descriptor")}
-                                    class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
-                                >
-                                    <div
-                                        class="mx-auto i-mdi:layers-outline w-1.5rem h-1.5rem"
-                                    ></div>
-                                    <span class="text-sm mx-auto"> תיאור </span>
-                                </button>
-                                <button
-                                    onclick={() => addNewStep("text")}
-                                    class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
-                                >
-                                    <div
-                                        class="mx-auto i-mdi:format-text w-1.5rem h-1.5rem"
-                                    ></div>
-                                    <span class="text-sm mx-auto"> טקסט </span>
-                                </button>
-                                <button
-                                    onclick={() => addNewStep("email")}
-                                    class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
-                                >
-                                    <div
-                                        class="mx-auto i-mdi:email-outline w-1.5rem h-1.5rem"
-                                    ></div>
-                                    <span class="text-sm mx-auto">
-                                        אימייל
-                                    </span>
-                                </button>
-                                <button
-                                    onclick={() => addNewStep("select")}
-                                    class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
-                                >
-                                    <div
-                                        class="mx-auto i-mdi:checkbox-marked-outline w-1.5rem h-1.5rem"
-                                    ></div>
-                                    <span class="text-sm mx-auto"> בחירה </span>
-                                </button>
+                            ></div>
+                        </button>
+                        {#if showAddMenu}
+                            <div class="flex flex-col mt-8 transition">
+                                <h3 class="text-base mt-4 leading-6">
+                                    בלוקים:
+                                </h3>
+                                <div class="grid grid-cols-1 gap-2 mt-2">
+                                    <button
+                                        onclick={() => addNewStep("descriptor")}
+                                        class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+                                    >
+                                        <div
+                                            class="mx-auto i-mdi:layers-outline w-1.5rem h-1.5rem"
+                                        ></div>
+                                        <span class="text-sm mx-auto">
+                                            תיאור
+                                        </span>
+                                    </button>
+                                    <button
+                                        onclick={() => addNewStep("text")}
+                                        class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+                                    >
+                                        <div
+                                            class="mx-auto i-mdi:format-text w-1.5rem h-1.5rem"
+                                        ></div>
+                                        <span class="text-sm mx-auto">
+                                            טקסט
+                                        </span>
+                                    </button>
+                                    <button
+                                        onclick={() => addNewStep("email")}
+                                        class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+                                    >
+                                        <div
+                                            class="mx-auto i-mdi:email-outline w-1.5rem h-1.5rem"
+                                        ></div>
+                                        <span class="text-sm mx-auto">
+                                            אימייל
+                                        </span>
+                                    </button>
+                                    <button
+                                        onclick={() => addNewStep("select")}
+                                        class="cursor-pointer bg-gray-100 border hover:bg-neutral-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+                                    >
+                                        <div
+                                            class="mx-auto i-mdi:checkbox-marked-outline w-1.5rem h-1.5rem"
+                                        ></div>
+                                        <span class="text-sm mx-auto">
+                                            בחירה
+                                        </span>
+                                    </button>
 
-                                <button
-                                    onclick={() => addNewStep("tel")}
-                                    class="cursor-pointer bg-gray-100 border hover:bg-gray-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
-                                >
-                                    <div
-                                        class="mx-auto i-mdi:phone w-1.5rem h-1.5rem"
-                                    ></div>
-                                    <span class="text-sm mx-auto">טלפון</span>
-                                </button>
-
-                                <button
-                                    onclick={() => addNewStep("signature")}
-                                    class="cursor-pointer bg-gray-100 border hover:bg-gray-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
-                                >
-                                    <div class="mx-auto i-mdi:signatre">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="1.5em"
-                                            height="1.5em"
-                                            viewBox="0 0 24 24"
+                                    <button
+                                        onclick={() => addNewStep("tel")}
+                                        class="cursor-pointer bg-gray-100 border hover:bg-gray-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+                                    >
+                                        <div
+                                            class="mx-auto i-mdi:phone w-1.5rem h-1.5rem"
+                                        ></div>
+                                        <span class="text-sm mx-auto"
+                                            >טלפון</span
                                         >
-                                            <path
-                                                fill="currentColor"
-                                                d="M14.075 11.725q1.825-1.35 2.85-2.962T17.95 5.55q0-.8-.262-1.175T16.975 4Q15.8 4 14.9 5.988t-.9 4.487q0 .35.013.663t.062.587M3 21v-2h2v2zm4 0v-2h2v2zm4 0v-2h2v2zm4 0v-2h2v2zm4 0v-2h2v2zM3.4 17L2 15.6L3.6 14L2 12.4L3.4 11L5 12.6L6.6 11L8 12.4L6.4 14L8 15.6L6.6 17L5 15.4zm12.05-1q-.75 0-1.375-.288T13 14.776q-.625.35-1.287.625t-1.363.55l-.7-1.875q.7-.25 1.338-.537t1.237-.613q-.125-.55-.187-1.2t-.063-1.4q0-3.6 1.425-5.962T16.975 2q1.3 0 2.125.963t.825 2.687q0 2.15-1.362 4.25t-3.788 3.775q.175.175.363.263t.387.087q.65 0 1.513-.825t1.562-2.175l1.825.85q-.175.425-.275 1.025t.025 1.05q.25-.125.588-.425t.687-.75L23.025 14q-.65.9-1.5 1.45T19.95 16q-.525 0-.937-.312t-.688-.963q-.7.625-1.425.95T15.45 16"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <span class="text-sm mx-auto">חתימה</span>
-                                </button>
+                                    </button>
 
-                                <button
-                                    onclick={() => addNewStep("rating")}
-                                    class="cursor-pointer bg-gray-100 border hover:bg-gray-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
-                                >
-                                    <div
-                                        class="mx-auto i-mdi:star w-1.5rem h-1.5rem"
-                                    ></div>
-                                    <span class="text-sm mx-auto">דירוג</span>
-                                </button>
+                                    <button
+                                        onclick={() => addNewStep("signature")}
+                                        class="cursor-pointer bg-gray-100 border hover:bg-gray-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+                                    >
+                                        <div class="mx-auto i-mdi:signatre">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="1.5em"
+                                                height="1.5em"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    fill="currentColor"
+                                                    d="M14.075 11.725q1.825-1.35 2.85-2.962T17.95 5.55q0-.8-.262-1.175T16.975 4Q15.8 4 14.9 5.988t-.9 4.487q0 .35.013.663t.062.587M3 21v-2h2v2zm4 0v-2h2v2zm4 0v-2h2v2zm4 0v-2h2v2zm4 0v-2h2v2zM3.4 17L2 15.6L3.6 14L2 12.4L3.4 11L5 12.6L6.6 11L8 12.4L6.4 14L8 15.6L6.6 17L5 15.4zm12.05-1q-.75 0-1.375-.288T13 14.776q-.625.35-1.287.625t-1.363.55l-.7-1.875q.7-.25 1.338-.537t1.237-.613q-.125-.55-.187-1.2t-.063-1.4q0-3.6 1.425-5.962T16.975 2q1.3 0 2.125.963t.825 2.687q0 2.15-1.362 4.25t-3.788 3.775q.175.175.363.263t.387.087q.65 0 1.513-.825t1.562-2.175l1.825.85q-.175.425-.275 1.025t.025 1.05q.25-.125.588-.425t.687-.75L23.025 14q-.65.9-1.5 1.45T19.95 16q-.525 0-.937-.312t-.688-.963q-.7.625-1.425.95T15.45 16"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm mx-auto"
+                                            >חתימה</span
+                                        >
+                                    </button>
+
+                                    <button
+                                        onclick={() => addNewStep("rating")}
+                                        class="cursor-pointer bg-gray-100 border hover:bg-gray-200 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col justify-center"
+                                    >
+                                        <div
+                                            class="mx-auto i-mdi:star w-1.5rem h-1.5rem"
+                                        ></div>
+                                        <span class="text-sm mx-auto"
+                                            >דירוג</span
+                                        >
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    {/if}
+                        {/if}
+                    </div>
                 </div>
-            </div>
+            {/if}
         </div>
     </div>
 {/if}
@@ -709,6 +829,16 @@
         text-align: var(--theme-desc-align) !important;
     }
 
+    :global([data-el="welcomeStep"] > [data-el="question"]) {
+        font-size: var(--theme-desc-fs, --type-md) !important;
+    }
+    :global(
+            [data-el="welcomeStep"] > [data-el="question"],
+            [data-el="welcomeStep"] > [data-el="description"]
+        ) {
+        text-align: var(--theme-desc-align) !important;
+    }
+
     :global(label[data-el="question"]) {
         /* font-size: var(--theme-font-size); */
         font-size: var(--theme-question-fs, --type-md);
@@ -724,7 +854,7 @@
     }
 
     a {
-        text-decoration: underline !important;
+        text-decoration: underline;
     }
 
     .nav-item {
