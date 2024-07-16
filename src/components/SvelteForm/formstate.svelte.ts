@@ -43,6 +43,7 @@ export class FormState implements FormStateProps {
 
   get welcomeSteps() { return this.form.welcomeSteps }
   set welcomeSteps(v) { this.form.welcomeSteps = v }
+
   get endings() { return this.form.endings }
   set endings(v) { this.form.endings = v }
 

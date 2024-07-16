@@ -385,7 +385,7 @@
       --theme-desc-img-margin: ${form.design.fieldsAlign == "center" ? "0 auto" : "none"};
     `}
                     id="main"
-                    class="bg-gray-50 dark:bg-neutral-800 col-span-6"
+                    class="bg-gray-50 dark:bg-neutral-800 col-span-7"
                 >
                     <div
                         id="form-page"
@@ -502,7 +502,7 @@
             <!-- SIDE PANEL -->
             {#if !showSubmissions}
                 <div
-                    class="col-span-3 pt-12 flex flex-col gap-2 px-2 bg-neutral-50 overflow-y-scroll border-r bg-neutral-200"
+                    class="col-span-2 pt-12 flex flex-col gap-2 px-2 bg-neutral-50 overflow-y-scroll border-r bg-neutral-200"
                 >
                     <div
                         class="mt-4 mx-auto border-0 border-top-2 border-top border-gray-300"
@@ -520,6 +520,7 @@
                         {/if}
                         {#each form.welcomeSteps as welcome}
                             <SidePanelStep
+                                iconName="curtains"
                                 className={`border-dash border-2 ${(formCurrentType == "welcomeSteps" && "bg-orange-300 border-dotted border-indigo border-2") || "bg-orange-200"}`}
                                 mouseenter={(e) => {
                                     hoveredSideStepId = welcome.id;
@@ -624,6 +625,7 @@
                             </button>
                             {#each form.endings as ending, endingIndex}
                                 <SidePanelStep
+                                    iconName="curtains-closed"
                                     className={`border-dash border-2 ${formCurrentType == "endings" && formCurrentIndex === endingIndex ? "bg-orange-300 border-dotted border-indigo border-2" : "bg-orange-200"}`}
                                     mouseenter={(e) => {
                                         hoveredSideStepId = ending.id;

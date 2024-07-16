@@ -36,6 +36,8 @@
         reader.readAsDataURL(file);
         reader.onload = (e) => {
             console.log(" result : ", e.target.result);
+            // set the img, don't keep it in state (?! Not sure about this one...)
+            console.log(e.target.result.name)
             formStep.img = e.target.result;
         };
     }
@@ -55,6 +57,10 @@
     // dnd specific helper
     function handleFinalize(e) {
         formStep.options = e.detail.items;
+    }
+
+    function deleteCoverImage() {
+      formStep.img = ''
     }
 </script>
 
@@ -246,6 +252,7 @@
                             class="i-mdi:menu cursor-pointer w-6 h-6 me-4 bg-neutral-800 hover:bg-neutral-400"
                         ></div>
                         {option.value}
+                        <!-- svelte-ignore a11y_click_events_have_key_events -->
                         <span
                             tabindex="0"
                             role="button"
@@ -326,11 +333,12 @@
             <div class="flex items-center">
                 <label
                     for="file"
-                    class="flex items-center mt-2 justify-center border border-gray-200 rounded-md p-6 hover:bg-gray-50 cursor-pointer"
+                    class="flex flex-col gap-4 items-center mt-2 justify-center border border-gray-200 rounded-md p-6 hover:bg-gray-50 cursor-pointer"
                 >
                     <span class="text-gray-500 mx-auto text-center pt-2">
                         העלה תמונה כחלק מפתיח או סיום של מילוי טופס
                     </span>
+                    <div class="i-mdi:tray-upload w-8 h-8 text-gray-500"></div>
                     <input
                         onchange={setFile}
                         accept="image/png, image/jpeg"
@@ -341,6 +349,23 @@
                     />
                 </label>
             </div>
+
+            {#if formStep.img}
+            <div class="[ relative flex items-center justify-between ]
+             [ mt-4 rounded-sm p-2 ]
+              [ border-[1px] border-neutral-300 w-full]
+             [ h-[calc(calc(text-lg * 2) + 2 + 1rem)] ]">
+              <div class="overflow-hidden w-[50px] h-[50px] text-center">
+                <img class="w-full h-full overflow-hidden object-fit rounded-lg" src={formStep.img} alt="">
+              </div>
+
+              <!-- svelte-ignore a11y_click_events_have_key_events -->
+              <!-- svelte-ignore a11y_no_static_element_interactions -->
+              <div onclick={deleteCoverImage} class="i-mdi:trash w-6 h-6 bg-neutral-500"></div>
+
+            </div>
+            {/if}
+
         </div>
     </div>
 {/if}

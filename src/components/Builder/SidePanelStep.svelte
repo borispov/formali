@@ -26,6 +26,7 @@
     onRemoveHandler,
     className,
     bgColor,
+    iconName = ''
   } = $props();
 </script>
 
@@ -41,7 +42,7 @@
   onclick={selectStepHandler}
 >
   <div
-    class="i-mdi:dots-grid w-6 h-6 me-4 bg-neutral-300 hover:bg-neutral-400"
+    class="i-mdi:{iconName} w-6 h-6 me-4 bg-neutral-300 hover:bg-neutral-400"
   ></div>
   <div class="flex flex-col items-start">
     <span class="text-[14px] text-neutral-800 leading-6">
