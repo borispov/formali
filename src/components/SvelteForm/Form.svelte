@@ -137,6 +137,7 @@
             questionAndValueList.push({
                 question: formElement.question,
                 value: formElement.value,
+                type: formElement.type
             });
         }
 

@@ -340,11 +340,8 @@
                     id="main"
                     class="bg-gray-50 dark:bg-neutral-800 col-span-12"
                 >
-                    {#if submissions.length > 1}
-                        <div class="mx-auto pt-40">
-                            <h1 class="font-bold p-10">
-                                תוצאות ותגובות עבור הטופס
-                            </h1>
+                    {#if submissions.length}
+                        <div class="mx-auto pt-40 max-w-xl">
                             <Submissions data={submissions} />
                         </div>
                     {:else}

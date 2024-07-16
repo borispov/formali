@@ -27,7 +27,7 @@
   function onSignatureInput() {
     signatureList = signaturePad.toDataURL();
     if (typeof signatureList === "string") {
-      setVal(field.value, signatureList);
+      setVal(field, signatureList);
       // field.value = signatureList;
     }
   }
