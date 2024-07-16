@@ -26,8 +26,6 @@
       data && data[0].submissionData
         .map(({type, question }) => ({ type, question }))
 
-        console.log(heads)
-
     const QUESTIONS = {
         signature: "חתימה",
     };
@@ -37,6 +35,69 @@
       if (typeof value !== 'string') return false
       return value.includes('base64') || value.includes('data:image')
     }
+
+
+    function generateFilename(baseName) {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const date = `${day}-${month}-${year}`;
+  return `${baseName || 'formData'}_${date}.csv`;
+}
+
+function makeCsv(dataArray = data) {
+  if (!Array.isArray(dataArray) || dataArray.length === 0) {
+    throw new Error('Invalid data array');
+  }
+
+  const allSubmissions = dataArray.flatMap(item => item.submissionData);
+  const questions = [...new Set(allSubmissions.map(item => item.question))];
+  let csv = questions.join(',') + '\n';
+  dataArray.forEach(item => {
+    const rowValues = {};
+    item.submissionData.forEach(submission => {
+      rowValues[submission.question] = submission.value;
+    });
+    const dataRow = questions.map(question => {
+      let value = rowValues[question] ?? '';
+      // Convert value to string and escape double quotes
+      value = String(value).replace(/"/g, '""');
+      return `"${value}"`;
+    }).join(',');
+    csv += dataRow + '\n';
+  });
+  return csv;
+}
+
+function downloadCsv() {
+  try {
+    const csv = makeCsv();
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+    const formName = data && data[0] && data[0].form ? data[0].form.slice(0, 4) : 'formData';
+    const filename = generateFilename(formName);
+
+    if (navigator.msSaveBlob) {
+      navigator.msSaveBlob(blob, filename);
+    } else {
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+    }
+  } catch (error) {
+    console.error('Error generating CSV:', error);
+    // Here you might want to show an error message to the user
+  }
+}
 </script>
 
 <div class="my-2">
@@ -44,7 +105,7 @@
       <h1 class="font-bold">
         תוצאות ותגובות עבור הטופס
       </h1>
-      <button class="btn btn-sm btn-secondary">הורד הכל</button>
+      <button onclick={downloadCsv} class="btn btn-sm btn-secondary">הורד הכל</button>
     </div>
     <div class="inline-block min-w-full py-2 align-middle">
         <div
